@@ -105,7 +105,6 @@ namespace DevIdent.Forms
 
             SysInfoLabel_Click(sender, e);
             FormSettings();
-            mainNotify.Visible = true;
             BringToFront();
             if (!IsAdministrator())
             {
@@ -113,8 +112,6 @@ namespace DevIdent.Forms
                 MenuPanel.Controls.Remove(UninstallBtn);
                 MenuPanel.Controls.Remove(ServicesBtn);
                 BrowserBtn.Location = new Point(10, 220);
-                ОчисткаStripMenuItem1.Visible = false;
-                БраузерыStripMenuItem1.Visible = false;
                 if (OS.counter == 0)
                 {
                     OS.counter++;
@@ -151,18 +148,18 @@ namespace DevIdent.Forms
         private void TurnBtn_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Minimized;
-            mainNotify.Visible = true;
+
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            mainNotify.Visible = false;
+
             Application.Exit();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            mainNotify.Visible = false;
+
             Hide();
             _sensorForm.Show();
         }
@@ -195,7 +192,6 @@ namespace DevIdent.Forms
 
         private void CloseBth_Click(object sender, EventArgs e)
         {
-            mainNotify.Visible = false;
             Close();
         }
 
@@ -345,8 +341,8 @@ namespace DevIdent.Forms
         private void BrowserBtn_Click(object sender, EventArgs e)
         {
             BackgroundWorker _browserWorker = new BackgroundWorker();
-            _browserWorker.DoWork += CleanSystem;
-            _browserWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(SysWorkerCompleted);
+            _browserWorker.DoWork += CleanBrowser;
+            _browserWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BrowserWorkerCompleted);
             _browserWorker.RunWorkerAsync();
             Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.CloseIcon);
         }
@@ -426,7 +422,6 @@ namespace DevIdent.Forms
 
         private void SensorBtn_Click(object sender, EventArgs e)
         {
-            mainNotify.Visible = false;
             Visible = false;
             _sensorForm.Show();
         }
@@ -457,22 +452,14 @@ namespace DevIdent.Forms
 
         private void UninstallBtn_Click(object sender, EventArgs e)
         {
-            if (IsAdministrator())
+            if (Application.OpenForms["UninstallForm"] == null)
             {
-                if (Application.OpenForms["UninstallForm"] == null)
-                {
-                    UninstallForm uninstallForm = new UninstallForm();
-                    uninstallForm.Show();
-                }
-                else
-                {
-                    Application.OpenForms["UninstallForm"].BringToFront();
-                }
+                UninstallForm uninstallForm = new UninstallForm();
+                uninstallForm.Show();
             }
             else
             {
-                ReconForm();
-                Info.Show();
+                Application.OpenForms["UninstallForm"].BringToFront();
             }
         }
 
@@ -488,6 +475,22 @@ namespace DevIdent.Forms
         private void БраузерыStripMenuItem1_Click(object sender, EventArgs e)
         {
             BrowserBtn_Click(sender, e);
+        }
+
+        private AutorunForm _autorunForm = new AutorunForm();
+
+        private void AutorunBtn_Click(object sender, EventArgs e)
+        {
+            if (_autorunForm == null || _autorunForm.IsDisposed)
+            {
+                _autorunForm = new AutorunForm();
+                _autorunForm.Show();
+            }
+            else
+            {
+                _autorunForm.Show();
+                _autorunForm.Focus();
+            }
         }
     }
 }

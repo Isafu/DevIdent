@@ -39,14 +39,10 @@ namespace DevIdent.Forms
             this.CloseBtn = new System.Windows.Forms.PictureBox();
             this.TurnBtn = new System.Windows.Forms.PictureBox();
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.TrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.MainInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.AppClose = new System.Windows.Forms.ToolStripMenuItem();
             this.Timer = new System.Windows.Forms.Timer(this.components);
             this.SensorInfoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).BeginInit();
-            this.TrayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // SensorInfoPanel
@@ -109,8 +105,6 @@ namespace DevIdent.Forms
             this.CloseBtn.TabIndex = 2;
             this.CloseBtn.TabStop = false;
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
-            this.CloseBtn.MouseEnter += new System.EventHandler(this.CloseBtn_MouseEnter);
-            this.CloseBtn.MouseLeave += new System.EventHandler(this.CloseBtn_MouseLeave);
             // 
             // TurnBtn
             // 
@@ -122,47 +116,7 @@ namespace DevIdent.Forms
             this.TurnBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.TurnBtn.TabIndex = 6;
             this.TurnBtn.TabStop = false;
-            this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);
-            // 
-            // TrayIcon
-            // 
-            this.TrayIcon.ContextMenuStrip = this.TrayMenu;
-            this.TrayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayIcon.Icon")));
-            this.TrayIcon.Text = "Датчики";
-            this.TrayIcon.Click += new System.EventHandler(this.TrayIcon_Click);
-            // 
-            // TrayMenu
-            // 
-            this.TrayMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.TrayMenu.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.TrayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MainInfo,
-            this.AppClose});
-            this.TrayMenu.Name = "contextMenuStrip1";
-            this.TrayMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.TrayMenu.ShowImageMargin = false;
-            this.TrayMenu.Size = new System.Drawing.Size(189, 74);
-            // 
-            // MainInfo
-            // 
-            this.MainInfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.MainInfo.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.MainInfo.ForeColor = System.Drawing.Color.White;
-            this.MainInfo.Name = "MainInfo";
-            this.MainInfo.Size = new System.Drawing.Size(188, 24);
-            this.MainInfo.Text = "Информация о ПК";
-            this.MainInfo.Click += new System.EventHandler(this.MainInfo_Click);
-            // 
-            // AppClose
-            // 
-            this.AppClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.AppClose.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AppClose.ForeColor = System.Drawing.Color.White;
-            this.AppClose.Name = "AppClose";
-            this.AppClose.Size = new System.Drawing.Size(188, 24);
-            this.AppClose.Text = "Закрыть";
-            this.AppClose.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.AppClose.Click += new System.EventHandler(this.AppClose_Click);
+            this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);   
             // 
             // Timer
             // 
@@ -197,7 +151,6 @@ namespace DevIdent.Forms
             this.SensorInfoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).EndInit();
-            this.TrayMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,9 +165,6 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label SensorLb2;
         private System.Windows.Forms.PictureBox TurnBtn;
         private System.Windows.Forms.NotifyIcon TrayIcon;
-        private System.Windows.Forms.ContextMenuStrip TrayMenu;
-        private System.Windows.Forms.ToolStripMenuItem MainInfo;
-        private System.Windows.Forms.ToolStripMenuItem AppClose;
         private System.Windows.Forms.Label SensorLb3;
         private System.Windows.Forms.Timer Timer;
     }

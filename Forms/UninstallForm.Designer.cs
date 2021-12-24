@@ -173,18 +173,18 @@ namespace DevIdent.Forms
             this.ФайлToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.ФайлToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.ФайлToolStripMenuItem.Name = "ФайлToolStripMenuItem";
-            this.ФайлToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.ФайлToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
             this.ФайлToolStripMenuItem.Text = "Файл";
-            this.ФайлToolStripMenuItem.Click += new System.EventHandler(this.файлToolStripMenuItem_Click);
+            this.ФайлToolStripMenuItem.Click += new System.EventHandler(this.ФайлToolStripMenuItem_Click);
             // 
             // HTMLToolStripMenuItem
             // 
             this.HTMLToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.HTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.HTMLToolStripMenuItem.Name = "HTMLToolStripMenuItem";
-            this.HTMLToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.HTMLToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
             this.HTMLToolStripMenuItem.Text = "HTML";
-            this.HTMLToolStripMenuItem.Click += new System.EventHandler(this.hTMLToolStripMenuItem_Click);
+            this.HTMLToolStripMenuItem.Click += new System.EventHandler(this.HTMLToolStripMenuItem_Click);
             // 
             // CloseBth
             // 

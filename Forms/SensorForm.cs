@@ -128,24 +128,14 @@ namespace DevIdent.Forms
 
         #region Tray
 
-        private void TrayIcon_Click(object sender, EventArgs e)
-        {
-            Show();
-            TrayIcon.Visible = false;
-            WindowState = FormWindowState.Normal;
-        }
-
         private void TurnBtn_Click(object sender, EventArgs e)
         {
             Timer.Enabled = false;
-            Main.mainNotify.Visible = false;
-            Visible = false;
-            TrayIcon.Visible = true;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void MainInfo_Click(object sender, EventArgs e)
         {
-            TrayIcon.Visible = false;
             Timer.Enabled = false;
             Hide();
             Main.Visible = true;
@@ -165,23 +155,7 @@ namespace DevIdent.Forms
             BringToFront();
         }
 
-        #endregion Загрузка и активация формы
-
-        #region Изменение цвета контрола
-
-        private void CloseBtn_MouseEnter(object sender, EventArgs e)
-        {
-            ColorChanger.ChangeColor(CloseBtn, 0, 0, 255);
-        }
-
-        private void CloseBtn_MouseLeave(object sender, EventArgs e)
-        {
-            ColorChanger.ChangeColor(CloseBtn, 0, 0, 200);
-        }
-
-
-
-        #endregion Изменение цвета контрола
+        #endregion
 
     }
 }

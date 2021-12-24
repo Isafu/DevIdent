@@ -29,11 +29,11 @@ namespace DevIdent.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.TitleLabel = new System.Windows.Forms.Label();
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.AutorunBtn = new System.Windows.Forms.Label();
             this.UninstallBtn = new System.Windows.Forms.Label();
             this.ServicesBtn = new System.Windows.Forms.Label();
             this.SysClearBtn = new System.Windows.Forms.Label();
@@ -60,18 +60,11 @@ namespace DevIdent.Forms
             this.InfoLb8 = new System.Windows.Forms.Label();
             this.SensorBtn = new System.Windows.Forms.PictureBox();
             this.TurnBtn = new System.Windows.Forms.PictureBox();
-            this.mainNotify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ОчисткаStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.БраузерыStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.SensorItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExitItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
             this.MenuPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).BeginInit();
-            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -103,6 +96,7 @@ namespace DevIdent.Forms
             // MenuPanel
             // 
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(47)))));
+            this.MenuPanel.Controls.Add(this.AutorunBtn);
             this.MenuPanel.Controls.Add(this.UninstallBtn);
             this.MenuPanel.Controls.Add(this.ServicesBtn);
             this.MenuPanel.Controls.Add(this.SysClearBtn);
@@ -118,6 +112,18 @@ namespace DevIdent.Forms
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(175, 470);
             this.MenuPanel.TabIndex = 6;
+            // 
+            // AutorunBtn
+            // 
+            this.AutorunBtn.AutoSize = true;
+            this.AutorunBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AutorunBtn.ForeColor = System.Drawing.Color.White;
+            this.AutorunBtn.Location = new System.Drawing.Point(10, 340);
+            this.AutorunBtn.Name = "AutorunBtn";
+            this.AutorunBtn.Size = new System.Drawing.Size(99, 19);
+            this.AutorunBtn.TabIndex = 17;
+            this.AutorunBtn.Text = "Автозапуск";
+            this.AutorunBtn.Click += new System.EventHandler(this.AutorunBtn_Click);
             // 
             // UninstallBtn
             // 
@@ -402,71 +408,6 @@ namespace DevIdent.Forms
             this.TurnBtn.TabStop = false;
             this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);
             // 
-            // mainNotify
-            // 
-            this.mainNotify.ContextMenuStrip = this.menuStrip;
-            this.mainNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("mainNotify.Icon")));
-            this.mainNotify.Text = "Информация о ПК";
-            this.mainNotify.DoubleClick += new System.EventHandler(this.mainNotify_DoubleClick);
-            // 
-            // menuStrip
-            // 
-            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.menuStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.menuStrip.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ОчисткаStripMenuItem1,
-            this.БраузерыStripMenuItem1,
-            this.SensorItem,
-            this.ExitItem});
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip.ShowImageMargin = false;
-            this.menuStrip.Size = new System.Drawing.Size(207, 100);
-            // 
-            // ОчисткаStripMenuItem1
-            // 
-            this.ОчисткаStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ОчисткаStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ОчисткаStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.ОчисткаStripMenuItem1.Name = "ОчисткаStripMenuItem1";
-            this.ОчисткаStripMenuItem1.Size = new System.Drawing.Size(206, 24);
-            this.ОчисткаStripMenuItem1.Text = "Очистка системы";
-            this.ОчисткаStripMenuItem1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.ОчисткаStripMenuItem1.Click += new System.EventHandler(this.ОчисткаStripMenuItem1_Click);
-            // 
-            // БраузерыStripMenuItem1
-            // 
-            this.БраузерыStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.БраузерыStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.БраузерыStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.БраузерыStripMenuItem1.Name = "БраузерыStripMenuItem1";
-            this.БраузерыStripMenuItem1.Size = new System.Drawing.Size(206, 24);
-            this.БраузерыStripMenuItem1.Text = "Очистка браузеров";
-            this.БраузерыStripMenuItem1.Click += new System.EventHandler(this.БраузерыStripMenuItem1_Click);
-            // 
-            // SensorItem
-            // 
-            this.SensorItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.SensorItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SensorItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SensorItem.ForeColor = System.Drawing.Color.White;
-            this.SensorItem.Name = "SensorItem";
-            this.SensorItem.Size = new System.Drawing.Size(206, 24);
-            this.SensorItem.Text = "Датчики";
-            this.SensorItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // ExitItem
-            // 
-            this.ExitItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ExitItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ExitItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ExitItem.ForeColor = System.Drawing.Color.White;
-            this.ExitItem.Name = "ExitItem";
-            this.ExitItem.Size = new System.Drawing.Size(206, 24);
-            this.ExitItem.Text = "Закрыть";
-            this.ExitItem.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -500,7 +441,6 @@ namespace DevIdent.Forms
             this.ContentPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).EndInit();
-            this.menuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,15 +473,10 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label InfoLb11;
         private System.Windows.Forms.Label InfoLb10;
         private System.Windows.Forms.PictureBox TurnBtn;
-        private System.Windows.Forms.ToolStripMenuItem SensorItem;
-        private System.Windows.Forms.ToolStripMenuItem ExitItem;
-        public System.Windows.Forms.NotifyIcon mainNotify;
         public System.Windows.Forms.Label ServicesBtn;
         public System.Windows.Forms.Label SysClearBtn;
         public System.Windows.Forms.Label UninstallBtn;
-        private System.Windows.Forms.ToolStripMenuItem ОчисткаStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem БраузерыStripMenuItem1;
-        private System.Windows.Forms.ContextMenuStrip menuStrip;
+        public System.Windows.Forms.Label AutorunBtn;
     }
 }
 

@@ -3,11 +3,11 @@ using DevIdent.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace DevIdent.Forms
@@ -36,10 +36,6 @@ namespace DevIdent.Forms
 
         #endregion
 
-        #region Получение разрядности системы
-
-        #endregion
-
         #region Извлечение путей к деинсталлятору из реестра
 
         private void GetInstalledProgramms(RegistryHive registryHive, string registryPath)
@@ -49,26 +45,17 @@ namespace DevIdent.Forms
             {
                 RegistryKey subkey = _pathToProgramm.OpenSubKey(keyName);
                 string displayName = (string)subkey.GetValue("DisplayName");
-                if (string.IsNullOrEmpty((string)subkey.GetValue("DisplayName")))
-                {
-                    continue;
-                }
-
+                if (string.IsNullOrEmpty((string)subkey.GetValue("DisplayName"))) continue;
                 if (string.IsNullOrEmpty((string)subkey.GetValue("UninstallString")))
                 {
-                    if (string.IsNullOrEmpty((string)subkey.GetValue("InstallLocation")) &&
-                        !Directory.Exists((string)subkey.GetValue("InstallLocation")))
-                    {
-                        continue;
-                    }
-
+                    if (string.IsNullOrEmpty((string)subkey.GetValue("InstallLocation")) && 
+                        !Directory.Exists((string)subkey.GetValue("InstallLocation"))) continue;
                     if (!UninstallBox.Items.Contains(displayName))
                     {
                         _programmsOnLocalMachine.Add(displayName);
                         _registyPathes.Add(subkey.Name);
                         UninstallBox.Items.Add("Приложение без деинсталлятора " + displayName);
-                        _searchPathes.Add(displayName);
-
+                        _searchPathes.Add("Приложение без деинсталлятора " + displayName);
                     }
                 }
                 else
@@ -80,6 +67,7 @@ namespace DevIdent.Forms
                 }
             }
         }
+
 
         #endregion
 
@@ -432,62 +420,81 @@ namespace DevIdent.Forms
 
         #region Создание txt файла
 
-        private void файлToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CreateTxtFile(object sender, DoWorkEventArgs e)
         {
-            new Thread(() =>
+            File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")).Close();
+            using (StreamWriter myWriter = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")))
             {
-                BeginInvoke((Action)(() =>
+                myWriter.WriteLine("   Список установленных программ:" + Environment.NewLine);
+                for (int i = 0; i < _programmsOnLocalMachine.Count - 1; i++)
                 {
-                    if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")))
-                    {
-                        Notify.ShowNotify("Файл уже был создан", Resources.CloseIcon);
-                        return;
-                    }
-                    File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")).Close();
-                    using (StreamWriter myWriter = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")))
-                    {
-                        myWriter.WriteLine("   Список установленных программ:" + Environment.NewLine);
-                        for (int i = 0; i < _programmsOnLocalMachine.Count - 1; i++)
-                        {
-                            myWriter.WriteLine("-- " + UninstallBox.Items[i] + " " + FileSize(i));
-                        }
-                    }
-
-                    Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
-                }));
-            }).Start();
+                    myWriter.WriteLine("-- " + UninstallBox.Items[i] + " " + FileSize(i));
+                }
+            }
         }
+
+        private void TxtFileCreated(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
+        }
+
+        private void ФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")))
+            {
+                Notify.ShowNotify("Файл Установленное ПО.txt уже существует на рабочем столе", Resources.CloseIcon);
+
+                return;
+            }
+            else
+            {
+                BackgroundWorker _txtWorker = new BackgroundWorker();
+                _txtWorker.DoWork += CreateTxtFile;
+                _txtWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TxtFileCreated);
+                _txtWorker.RunWorkerAsync();
+                Notify.ShowNotify("Начало создания файла", Resources.CloseIcon);
+            }
+        }
+
 
         #endregion
 
         #region Создание html файла
 
-        private void hTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CreateHTMLFile(object sender, DoWorkEventArgs e)
         {
-            new Thread(() =>
+            File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
+                        "\\Установленное ПО.html").Close();
+            using (StreamWriter myWriter = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html"))
             {
-                BeginInvoke((Action)(() =>
+                myWriter.WriteLine("<h1>Список установленных программ:</h1>");
+                for (int i = 0; i < _programmsOnLocalMachine.Count - 1; i++)
                 {
-                    if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html")))
-                    {
-                        Notify.ShowNotify("Файл уже был создан", Resources.CloseIcon);
-                        return;
-                    }
-                    File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
-                                "\\Установленное ПО.html").Close();
-                    using (StreamWriter myWriter = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html"))
-                    {
-                        myWriter.WriteLine("<h1>Список установленных программ:</h1>");
-                        for (int i = 0; i < _programmsOnLocalMachine.Count - 1; i++)
-                        {
-                            myWriter.Write("<p>-- " + UninstallBox.Items[i] + " " + FileSize(i) + "</p>");
-                        }
-                    }
+                    myWriter.Write("<p>-- " + UninstallBox.Items[i] + " " + FileSize(i) + "</p>");
+                }
+            }
+        }
 
-                    Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html");
-                    Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
-                }));
-            }).Start();
+        private void HTMLFileCreated(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
+        }
+
+        private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html")))
+            {
+                Notify.ShowNotify("Файл Установленное ПО.html уже существует на рабочем столе", Resources.CloseIcon);
+                return;
+            }
+            else
+            {
+                BackgroundWorker _htmlWorker = new BackgroundWorker();
+                _htmlWorker.DoWork += CreateHTMLFile;
+                _htmlWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(HTMLFileCreated);
+                _htmlWorker.RunWorkerAsync();
+                Notify.ShowNotify("Начало создания файла", Resources.CloseIcon);
+            }
         }
 
         #endregion
@@ -549,35 +556,16 @@ namespace DevIdent.Forms
 
         #region Изменение InfoForm если не найден путь
 
-        private readonly InfoForm _infoForm = new InfoForm();
-
-        private void InfoForm()
-        {
-            _infoForm.label2.Visible = false;
-            _infoForm.OkButton.Size = new Size(125, 25);
-            _infoForm.OkButton.Location = new Point(88, 90);
-            _infoForm.OkButton.Visible = true;
-            _infoForm.Show();
-        }
-
         #endregion
 
         #region Открытие проводника
 
         private void расположениеНаДискеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (UninstallBox.SelectedIndex == -1)
-            {
-                return;
-            }
-
+            if (UninstallBox.SelectedIndex == -1) return;
             int programm = _searchPathes.IndexOf((string)UninstallBox.SelectedItem);
-            string[] hive = _registyPathes[programm].Split('\\');
-            _pathToProgramm = RegistryKey.OpenBaseKey(GetHive(programm), registryView)
-                .OpenSubKey(GetPathByDepth() + @"\" + hive[hive.Length - 1]) ?? RegistryKey
-                .OpenBaseKey(GetHive(programm), registryView)
-                .OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" + @"\" + hive[hive.Length - 1]);
-            if (_pathToProgramm.GetValue("InstallLocation") == null || !Directory.Exists((string)_pathToProgramm.GetValue("InstallLocation")))
+            if (Registry.GetValue(_registyPathes[programm],"InstallLocation", "") == null 
+                || !Directory.Exists(Registry.GetValue(_registyPathes[programm], "InstallLocation", "").ToString()))
             {
                 if (_pathToProgramm.GetValue("InstallSource") != null)
                 {
@@ -608,14 +596,13 @@ namespace DevIdent.Forms
                     }
                     else
                     {
-                        _infoForm.label1.Text = "Путь к программе не найден :(";
-                        InfoForm();
+                        Notify.ShowNotify("Путь к программе не найден :(", Resources.MainInfo);
                     }
                 }
             }
             else
             {
-                Process.Start(new ProcessStartInfo { FileName = "explorer", Arguments = "/n, " + _pathToProgramm.GetValue("InstallLocation") });
+                Process.Start(new ProcessStartInfo { FileName = "explorer", Arguments = "/n, " + Registry.GetValue(_registyPathes[programm], "InstallLocation", "") });
             }
         }
 
@@ -631,9 +618,9 @@ namespace DevIdent.Forms
             {
                 return;
             }
-
             int programm = _searchPathes.IndexOf((string)UninstallBox.SelectedItem);
-            string target = @"https://www.google.com/search?q=" + _searchPathes[programm] + " что это?";
+            string target = @"https://www.google.com/search?q=" + 
+                _searchPathes[programm].Replace("Приложение без деинсталлятора ", string.Empty) + " что это?";
             Process.Start(target);
         }
 
@@ -648,9 +635,12 @@ namespace DevIdent.Forms
         }
 
 
+
+
         #endregion
 
         #endregion
+
 
 
     }
