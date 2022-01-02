@@ -25,14 +25,39 @@ namespace DevIdent.Forms
 
         #region Форма
 
-        public ServicesForm()
+        public void FormSettings()
         {
+            ContentPanel.BackColor = Settings.Default.ColorContent;
+            MenuPanel.BackColor = Settings.Default.ColorMenu;
+            BackColor = Settings.Default.ColorForm;
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(Settings.Default.ColorButtonsDefault);
+            }
+            ServiceBox.BackColor = Settings.Default.ColorContent;
+            foreach (ToolStripMenuItem item in MenuStrip.Items)
+            {
+                item.BackColor = Settings.Default.ColorForm;
+            }
+            foreach (ToolStripMenuItem item in WorkWithServicesMenuItem.DropDownItems)
+            {
+                item.BackColor = Settings.Default.ColorForm;
+            }
+        }
+
+        public ServicesForm(MainForm owner)
+        {
+            Owner = owner;
             InitializeComponent();
             Width = 500;
+            ServiceBox.DoubleClick += (s, e) => Width = 500;
+            MenuPanel.Click += (s, e) => Width = 500;
+            SearchBox.DoubleClick += (s, e) => SearchBox.Text = "";
+
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 255); };
-                picture.MouseLeave += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 200); };
+                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
+                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
             }
 
             ServiceBox.Click += (s, e) =>
@@ -40,10 +65,7 @@ namespace DevIdent.Forms
                 GetInfoAboutSelectedService();
                 Width = 800;
             };
-
-            ServiceBox.DoubleClick += (s, e) => Width = 500;
-            flowPanel.Click += (s, e) => Width = 500;
-            SearchBox.DoubleClick += (s, e) => SearchBox.Text = "";
+            FormSettings();
         }
 
         #region Перемещение формы
@@ -184,18 +206,18 @@ namespace DevIdent.Forms
             {
                 if (service.Status == ServiceControllerStatus.Running)
                 {
-                    Notify.ShowNotify("Служба " + GetName() + " уже запущена ", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " уже запущена ", Resources.Close);
                 }
                 else
                 {
                     service.Start();
                     service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " запущена ", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " запущена ", Resources.Close);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось запустить службу " + GetName(), Resources.CloseIcon);
+                Notify.ShowNotify("Не удалось запустить службу " + GetName(), Resources.Close);
             }
         }
 
@@ -213,16 +235,16 @@ namespace DevIdent.Forms
                 {
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " остановлена", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " остановлена", Resources.Close);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.CloseIcon);
+                    Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Close);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.CloseIcon);
+                Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Close);
             }
         }
 
@@ -240,16 +262,16 @@ namespace DevIdent.Forms
                 {
                     service.Pause();
                     service.WaitForStatus(ServiceControllerStatus.Paused, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " на паузе", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " на паузе", Resources.Close);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.CloseIcon);
+                    Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Close);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.CloseIcon);
+                Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Close);
             }
         }
 
@@ -269,20 +291,20 @@ namespace DevIdent.Forms
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
                     service.Start();
                     service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " перезапущена", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " перезапущена", Resources.Close);
                 }
                 else if (service.Status == ServiceControllerStatus.Stopped)
                 {
-                    Notify.ShowNotify("Служба " + GetName() + " не запущена", Resources.CloseIcon);
+                    Notify.ShowNotify("Служба " + GetName() + " не запущена", Resources.Close);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.CloseIcon);
+                    Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Close);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.CloseIcon);
+                Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Close);
             }
         }
 

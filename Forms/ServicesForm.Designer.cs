@@ -41,15 +41,15 @@ namespace DevIdent.Forms
             this.перезапуститьСлужбуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.MenuPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ServiceInfoLb = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ContentPanel = new System.Windows.Forms.Panel();
             this.SearchBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
-            this.flowPanel.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.MenuPanel.SuspendLayout();
+            this.ContentPanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -142,7 +142,7 @@ namespace DevIdent.Forms
             // CloseBth
             // 
             this.CloseBth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.CloseBth.Image = ((System.Drawing.Image)(resources.GetObject("CloseBth.Image")));
+            this.CloseBth.Image = global::DevIdent.Properties.Resources.Close;
             this.CloseBth.Location = new System.Drawing.Point(465, 0);
             this.CloseBth.Name = "CloseBth";
             this.CloseBth.Size = new System.Drawing.Size(35, 30);
@@ -162,14 +162,14 @@ namespace DevIdent.Forms
             this.label1.TabIndex = 6;
             this.label1.Text = "Службы Windows";
             // 
-            // flowPanel
+            // MenuPanel
             // 
-            this.flowPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.flowPanel.Controls.Add(this.ServiceInfoLb);
-            this.flowPanel.Location = new System.Drawing.Point(500, 0);
-            this.flowPanel.Name = "flowPanel";
-            this.flowPanel.Size = new System.Drawing.Size(300, 285);
-            this.flowPanel.TabIndex = 7;
+            this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.MenuPanel.Controls.Add(this.ServiceInfoLb);
+            this.MenuPanel.Location = new System.Drawing.Point(500, 0);
+            this.MenuPanel.Name = "MenuPanel";
+            this.MenuPanel.Size = new System.Drawing.Size(300, 285);
+            this.MenuPanel.TabIndex = 7;
             // 
             // ServiceInfoLb
             // 
@@ -182,14 +182,14 @@ namespace DevIdent.Forms
             this.ServiceInfoLb.Size = new System.Drawing.Size(0, 15);
             this.ServiceInfoLb.TabIndex = 0;
             // 
-            // panel1
+            // ContentPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
-            this.panel1.Controls.Add(this.ServiceBox);
-            this.panel1.Location = new System.Drawing.Point(0, 30);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 255);
-            this.panel1.TabIndex = 8;
+            this.ContentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
+            this.ContentPanel.Controls.Add(this.ServiceBox);
+            this.ContentPanel.Location = new System.Drawing.Point(0, 30);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(500, 255);
+            this.ContentPanel.TabIndex = 8;
             // 
             // SearchBox
             // 
@@ -199,10 +199,10 @@ namespace DevIdent.Forms
             this.SearchBox.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SearchBox.ForeColor = System.Drawing.Color.Black;
             this.SearchBox.Location = new System.Drawing.Point(0, 5);
-            this.SearchBox.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.SearchBox.Margin = new System.Windows.Forms.Padding(0);
             this.SearchBox.MinimumSize = new System.Drawing.Size(160, 25);
             this.SearchBox.Name = "SearchBox";
-            this.SearchBox.Size = new System.Drawing.Size(160, 25);
+            this.SearchBox.Size = new System.Drawing.Size(160, 19);
             this.SearchBox.TabIndex = 10;
             this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
             // 
@@ -223,8 +223,8 @@ namespace DevIdent.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(800, 285);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.flowPanel);
+            this.Controls.Add(this.ContentPanel);
+            this.Controls.Add(this.MenuPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CloseBth);
             this.DoubleBuffered = true;
@@ -237,13 +237,14 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Services";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ServicesForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServicesForm_MouseDown);
             this.MenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
-            this.flowPanel.ResumeLayout(false);
-            this.flowPanel.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.MenuPanel.ResumeLayout(false);
+            this.MenuPanel.PerformLayout();
+            this.ContentPanel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -256,9 +257,9 @@ namespace DevIdent.Forms
         private System.Windows.Forms.ListBox ServiceBox;
         private System.Windows.Forms.PictureBox CloseBth;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.FlowLayoutPanel flowPanel;
+        private System.Windows.Forms.FlowLayoutPanel MenuPanel;
         private System.Windows.Forms.Label ServiceInfoLb;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.TextBox SearchBox;
         private System.Windows.Forms.ContextMenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OpenServicesMenuItem;

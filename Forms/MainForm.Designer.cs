@@ -29,11 +29,10 @@ namespace DevIdent.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.TitleLabel = new System.Windows.Forms.Label();
-            this.CloseBth = new System.Windows.Forms.PictureBox();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.AutorunBtn = new System.Windows.Forms.Label();
             this.UninstallBtn = new System.Windows.Forms.Label();
             this.ServicesBtn = new System.Windows.Forms.Label();
             this.SysClearBtn = new System.Windows.Forms.Label();
@@ -58,20 +57,24 @@ namespace DevIdent.Forms
             this.InfoLb6 = new System.Windows.Forms.Label();
             this.InfoLb7 = new System.Windows.Forms.Label();
             this.InfoLb8 = new System.Windows.Forms.Label();
-            this.SensorBtn = new System.Windows.Forms.PictureBox();
+            this.colorEditor1 = new Cyotek.Windows.Forms.ColorEditor();
+            this.SetTheme = new System.Windows.Forms.Label();
+            this.SetDefaultTheme = new System.Windows.Forms.Label();
+            this.ThemePanel = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TurnBtn = new System.Windows.Forms.PictureBox();
-            this.mainNotify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ОчисткаStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.БраузерыStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.SensorItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExitItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
+            this.SensorBtn = new System.Windows.Forms.PictureBox();
+            this.CloseBth = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.InvPanel = new System.Windows.Forms.Panel();
             this.MenuPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).BeginInit();
+            this.ThemePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).BeginInit();
-            this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -88,21 +91,10 @@ namespace DevIdent.Forms
             this.TitleLabel.Text = "DevIdent";
             this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // CloseBth
-            // 
-            this.CloseBth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.CloseBth.Image = ((System.Drawing.Image)(resources.GetObject("CloseBth.Image")));
-            this.CloseBth.Location = new System.Drawing.Point(615, 0);
-            this.CloseBth.Name = "CloseBth";
-            this.CloseBth.Size = new System.Drawing.Size(35, 30);
-            this.CloseBth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.CloseBth.TabIndex = 4;
-            this.CloseBth.TabStop = false;
-            this.CloseBth.Click += new System.EventHandler(this.CloseBth_Click);
-            // 
             // MenuPanel
             // 
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(47)))));
+            this.MenuPanel.Controls.Add(this.AutorunBtn);
             this.MenuPanel.Controls.Add(this.UninstallBtn);
             this.MenuPanel.Controls.Add(this.ServicesBtn);
             this.MenuPanel.Controls.Add(this.SysClearBtn);
@@ -118,6 +110,18 @@ namespace DevIdent.Forms
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(175, 470);
             this.MenuPanel.TabIndex = 6;
+            // 
+            // AutorunBtn
+            // 
+            this.AutorunBtn.AutoSize = true;
+            this.AutorunBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AutorunBtn.ForeColor = System.Drawing.Color.White;
+            this.AutorunBtn.Location = new System.Drawing.Point(10, 340);
+            this.AutorunBtn.Name = "AutorunBtn";
+            this.AutorunBtn.Size = new System.Drawing.Size(99, 19);
+            this.AutorunBtn.TabIndex = 17;
+            this.AutorunBtn.Text = "Автозапуск";
+            this.AutorunBtn.Click += new System.EventHandler(this.AutorunBtn_Click);
             // 
             // UninstallBtn
             // 
@@ -378,22 +382,64 @@ namespace DevIdent.Forms
             this.InfoLb8.Size = new System.Drawing.Size(0, 15);
             this.InfoLb8.TabIndex = 9;
             // 
-            // SensorBtn
+            // colorEditor1
             // 
-            this.SensorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.SensorBtn.Image = global::DevIdent.Properties.Resources.SensorIcon1;
-            this.SensorBtn.Location = new System.Drawing.Point(545, 0);
-            this.SensorBtn.Name = "SensorBtn";
-            this.SensorBtn.Size = new System.Drawing.Size(35, 30);
-            this.SensorBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.SensorBtn.TabIndex = 8;
-            this.SensorBtn.TabStop = false;
-            this.SensorBtn.Click += new System.EventHandler(this.SensorBtn_Click);
+            this.colorEditor1.Color = System.Drawing.Color.Empty;
+            this.colorEditor1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.colorEditor1.Location = new System.Drawing.Point(5, 5);
+            this.colorEditor1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.colorEditor1.Name = "colorEditor1";
+            this.colorEditor1.Size = new System.Drawing.Size(288, 132);
+            this.colorEditor1.TabIndex = 16;
+            // 
+            // SetTheme
+            // 
+            this.SetTheme.AutoSize = true;
+            this.SetTheme.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SetTheme.Location = new System.Drawing.Point(5, 145);
+            this.SetTheme.Name = "SetTheme";
+            this.SetTheme.Size = new System.Drawing.Size(90, 19);
+            this.SetTheme.TabIndex = 14;
+            this.SetTheme.Text = "Применить";
+            this.SetTheme.Click += new System.EventHandler(this.SetTheme_Click);
+            // 
+            // SetDefaultTheme
+            // 
+            this.SetDefaultTheme.AutoSize = true;
+            this.SetDefaultTheme.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SetDefaultTheme.Location = new System.Drawing.Point(5, 175);
+            this.SetDefaultTheme.Name = "SetDefaultTheme";
+            this.SetDefaultTheme.Size = new System.Drawing.Size(261, 19);
+            this.SetDefaultTheme.TabIndex = 17;
+            this.SetDefaultTheme.Text = "Вернуться к стандартной теме";
+            this.SetDefaultTheme.Click += new System.EventHandler(this.SetDefaultTheme_Click);
+            // 
+            // ThemePanel
+            // 
+            this.ThemePanel.Controls.Add(this.colorEditor1);
+            this.ThemePanel.Controls.Add(this.SetDefaultTheme);
+            this.ThemePanel.Controls.Add(this.SetTheme);
+            this.ThemePanel.Location = new System.Drawing.Point(650, 0);
+            this.ThemePanel.Name = "ThemePanel";
+            this.ThemePanel.Size = new System.Drawing.Size(305, 205);
+            this.ThemePanel.TabIndex = 18;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.pictureBox1.Image = global::DevIdent.Properties.Resources.Paint;
+            this.pictureBox1.Location = new System.Drawing.Point(510, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(35, 30);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // TurnBtn
             // 
             this.TurnBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.TurnBtn.Image = ((System.Drawing.Image)(resources.GetObject("TurnBtn.Image")));
+            this.TurnBtn.Image = global::DevIdent.Properties.Resources.Minimize;
             this.TurnBtn.Location = new System.Drawing.Point(580, 0);
             this.TurnBtn.Name = "TurnBtn";
             this.TurnBtn.Size = new System.Drawing.Size(35, 30);
@@ -402,78 +448,61 @@ namespace DevIdent.Forms
             this.TurnBtn.TabStop = false;
             this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);
             // 
-            // mainNotify
+            // SensorBtn
             // 
-            this.mainNotify.ContextMenuStrip = this.menuStrip;
-            this.mainNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("mainNotify.Icon")));
-            this.mainNotify.Text = "Информация о ПК";
-            this.mainNotify.DoubleClick += new System.EventHandler(this.mainNotify_DoubleClick);
+            this.SensorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.SensorBtn.Image = ((System.Drawing.Image)(resources.GetObject("SensorBtn.Image")));
+            this.SensorBtn.Location = new System.Drawing.Point(545, 0);
+            this.SensorBtn.Name = "SensorBtn";
+            this.SensorBtn.Size = new System.Drawing.Size(35, 30);
+            this.SensorBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SensorBtn.TabIndex = 8;
+            this.SensorBtn.TabStop = false;
+            this.SensorBtn.Click += new System.EventHandler(this.SensorBtn_Click);
             // 
-            // menuStrip
+            // CloseBth
             // 
-            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.menuStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.menuStrip.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ОчисткаStripMenuItem1,
-            this.БраузерыStripMenuItem1,
-            this.SensorItem,
-            this.ExitItem});
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip.ShowImageMargin = false;
-            this.menuStrip.Size = new System.Drawing.Size(207, 100);
+            this.CloseBth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.CloseBth.Image = global::DevIdent.Properties.Resources.Close;
+            this.CloseBth.Location = new System.Drawing.Point(615, 0);
+            this.CloseBth.Name = "CloseBth";
+            this.CloseBth.Size = new System.Drawing.Size(35, 30);
+            this.CloseBth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.CloseBth.TabIndex = 4;
+            this.CloseBth.TabStop = false;
+            this.CloseBth.Click += new System.EventHandler(this.CloseBth_Click);
             // 
-            // ОчисткаStripMenuItem1
+            // pictureBox2
             // 
-            this.ОчисткаStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ОчисткаStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ОчисткаStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.ОчисткаStripMenuItem1.Name = "ОчисткаStripMenuItem1";
-            this.ОчисткаStripMenuItem1.Size = new System.Drawing.Size(206, 24);
-            this.ОчисткаStripMenuItem1.Text = "Очистка системы";
-            this.ОчисткаStripMenuItem1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.ОчисткаStripMenuItem1.Click += new System.EventHandler(this.ОчисткаStripMenuItem1_Click);
+            this.pictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.pictureBox2.Image = global::DevIdent.Properties.Resources.Back;
+            this.pictureBox2.Location = new System.Drawing.Point(650, 205);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(302, 30);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox2.TabIndex = 20;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // БраузерыStripMenuItem1
+            // InvPanel
             // 
-            this.БраузерыStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.БраузерыStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.БраузерыStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.БраузерыStripMenuItem1.Name = "БраузерыStripMenuItem1";
-            this.БраузерыStripMenuItem1.Size = new System.Drawing.Size(206, 24);
-            this.БраузерыStripMenuItem1.Text = "Очистка браузеров";
-            this.БраузерыStripMenuItem1.Click += new System.EventHandler(this.БраузерыStripMenuItem1_Click);
-            // 
-            // SensorItem
-            // 
-            this.SensorItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.SensorItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SensorItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SensorItem.ForeColor = System.Drawing.Color.White;
-            this.SensorItem.Name = "SensorItem";
-            this.SensorItem.Size = new System.Drawing.Size(206, 24);
-            this.SensorItem.Text = "Датчики";
-            this.SensorItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // ExitItem
-            // 
-            this.ExitItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ExitItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ExitItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ExitItem.ForeColor = System.Drawing.Color.White;
-            this.ExitItem.Name = "ExitItem";
-            this.ExitItem.Size = new System.Drawing.Size(206, 24);
-            this.ExitItem.Text = "Закрыть";
-            this.ExitItem.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            this.InvPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(150)))), ((int)(((byte)(120)))));
+            this.InvPanel.Location = new System.Drawing.Point(650, 235);
+            this.InvPanel.Name = "InvPanel";
+            this.InvPanel.Size = new System.Drawing.Size(302, 265);
+            this.InvPanel.TabIndex = 21;
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.ClientSize = new System.Drawing.Size(650, 500);
+            this.ClientSize = new System.Drawing.Size(950, 500);
             this.ControlBox = false;
+            this.Controls.Add(this.InvPanel);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.ThemePanel);
             this.Controls.Add(this.TurnBtn);
             this.Controls.Add(this.SensorBtn);
             this.Controls.Add(this.MenuPanel);
@@ -491,16 +520,21 @@ namespace DevIdent.Forms
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DevIdent";
+            this.TopMost = true;
+            this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(150)))), ((int)(((byte)(120)))));
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
-            ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanel.PerformLayout();
             this.ContentPanel.ResumeLayout(false);
             this.ContentPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).EndInit();
+            this.ThemePanel.ResumeLayout(false);
+            this.ThemePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).EndInit();
-            this.menuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,15 +567,17 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label InfoLb11;
         private System.Windows.Forms.Label InfoLb10;
         private System.Windows.Forms.PictureBox TurnBtn;
-        private System.Windows.Forms.ToolStripMenuItem SensorItem;
-        private System.Windows.Forms.ToolStripMenuItem ExitItem;
-        public System.Windows.Forms.NotifyIcon mainNotify;
         public System.Windows.Forms.Label ServicesBtn;
         public System.Windows.Forms.Label SysClearBtn;
         public System.Windows.Forms.Label UninstallBtn;
-        private System.Windows.Forms.ToolStripMenuItem ОчисткаStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem БраузерыStripMenuItem1;
-        private System.Windows.Forms.ContextMenuStrip menuStrip;
+        public System.Windows.Forms.Label AutorunBtn;
+        private Cyotek.Windows.Forms.ColorEditor colorEditor1;
+        private System.Windows.Forms.Label SetTheme;
+        private System.Windows.Forms.Label SetDefaultTheme;
+        private System.Windows.Forms.Panel ThemePanel;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Panel InvPanel;
     }
 }
 

@@ -14,6 +14,40 @@ namespace DevIdent.Classes
         public static long sysSize = 0;
         public static long browserSize = 0;
 
+        public static void DirectoryCleanerWithoutSize(DirectoryInfo folder)
+        {
+            if (!Directory.Exists(folder.FullName)) return;
+            DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullName);
+            DirectoryInfo[] directories = directoryInfo.GetDirectories();
+            FileInfo[] fileInfo = directoryInfo.GetFiles();
+            foreach (FileInfo file in fileInfo)
+            {
+                try
+                {
+                    DeleteFile(file.FullName);
+                }
+                catch
+                {
+
+                }
+            }
+            foreach (DirectoryInfo directory in directories)
+            {
+                DirectoryCleaner(directory);
+            }
+            if (directoryInfo.GetDirectories().Length == 0 && directoryInfo.GetFiles().Length == 0)
+            {
+                try
+                {
+                    directoryInfo.Delete();
+                    Notify.ShowNotify("Директория удалена", Properties.Resources.Close);
+                }
+                catch
+                {
+                }
+            }
+        }
+
         public static long DirectoryCleaner(DirectoryInfo folder)
         {
             if (!Directory.Exists(folder.FullName))

@@ -107,7 +107,7 @@ namespace DevIdent.Classes
             {
                 ManagementObject queryObj = (ManagementObject)o;
                 _totalMemoryCapacity = (ulong)queryObj["TotalVisibleMemorySize"] / 1024;
-                return (ulong)queryObj["TotalVisibleMemorySize"] / 1024;
+                return _totalMemoryCapacity;
             }
 
             return 0;

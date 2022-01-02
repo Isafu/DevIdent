@@ -1,4 +1,5 @@
 ﻿using DevIdent.Classes;
+using DevIdent.Properties;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -15,14 +16,25 @@ namespace DevIdent.Forms
         public SensorForm()
         {
             InitializeComponent();
+            FormSettings();
             StartPositionOfForm();
             SensorInfoPanel.DoubleClick += (s, e) => StartPositionOfForm();
             SensorLb1.DoubleClick += (s, e) => StartPositionOfForm();
             SensorLb2.DoubleClick += (s, e) => StartPositionOfForm();
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 255); };
-                picture.MouseLeave += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 200); };
+                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
+                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+            }
+        }
+
+        public void FormSettings()
+        {
+            BackColor = Settings.Default.ColorForm;
+            SensorInfoPanel.BackColor = Settings.Default.ColorContent;
+            foreach (PictureBox button in Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(Settings.Default.ColorButtonsDefault);
             }
         }
 
@@ -128,24 +140,14 @@ namespace DevIdent.Forms
 
         #region Tray
 
-        private void TrayIcon_Click(object sender, EventArgs e)
-        {
-            Show();
-            TrayIcon.Visible = false;
-            WindowState = FormWindowState.Normal;
-        }
-
         private void TurnBtn_Click(object sender, EventArgs e)
         {
             Timer.Enabled = false;
-            Main.mainNotify.Visible = false;
-            Visible = false;
-            TrayIcon.Visible = true;
+            WindowState = FormWindowState.Minimized;
         }
 
         private void MainInfo_Click(object sender, EventArgs e)
         {
-            TrayIcon.Visible = false;
             Timer.Enabled = false;
             Hide();
             Main.Visible = true;
@@ -165,23 +167,7 @@ namespace DevIdent.Forms
             BringToFront();
         }
 
-        #endregion Загрузка и активация формы
-
-        #region Изменение цвета контрола
-
-        private void CloseBtn_MouseEnter(object sender, EventArgs e)
-        {
-            ColorChanger.ChangeColor(CloseBtn, 0, 0, 255);
-        }
-
-        private void CloseBtn_MouseLeave(object sender, EventArgs e)
-        {
-            ColorChanger.ChangeColor(CloseBtn, 0, 0, 200);
-        }
-
-
-
-        #endregion Изменение цвета контрола
+        #endregion
 
     }
 }
