@@ -97,7 +97,7 @@ namespace DevIdent.Forms
             // CloseBtn
             // 
             this.CloseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.CloseBtn.Image = global::DevIdent.Properties.Resources.CloseIcon;
+            this.CloseBtn.Image = global::DevIdent.Properties.Resources.Close;
             this.CloseBtn.Location = new System.Drawing.Point(235, 0);
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.Size = new System.Drawing.Size(35, 30);
@@ -109,14 +109,14 @@ namespace DevIdent.Forms
             // TurnBtn
             // 
             this.TurnBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.TurnBtn.Image = global::DevIdent.Properties.Resources.TurnIcon;
+            this.TurnBtn.Image = global::DevIdent.Properties.Resources.Minimize;
             this.TurnBtn.Location = new System.Drawing.Point(200, 0);
             this.TurnBtn.Name = "TurnBtn";
             this.TurnBtn.Size = new System.Drawing.Size(35, 30);
             this.TurnBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.TurnBtn.TabIndex = 6;
             this.TurnBtn.TabStop = false;
-            this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);   
+            this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);
             // 
             // Timer
             // 

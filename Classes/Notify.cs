@@ -1,4 +1,5 @@
-﻿using NotificationManager;
+﻿using DevIdent.Properties;
+using NotificationManager;
 using System.Drawing;
 
 namespace DevIdent.Classes
@@ -11,7 +12,7 @@ namespace DevIdent.Classes
         {
             notify.Font = new Font("Consolas", 12);
             notify.MaxTextWidth = 700;
-            notify.Alert(text, NotificationType.Custom, Color.FromArgb(0, 0, 125), image);
+            notify.Alert(text, NotificationType.Custom, Settings.Default.ColorForm, image);
         }
     }
 }

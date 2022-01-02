@@ -60,7 +60,6 @@ namespace DevIdent.Forms
                     }
                     else
                     {
-                        ;
                         _registyPathes.Add(subkey.Name);
                         UninstallBox.Items.Add(displayName);
                         _searchPathes.Add(displayName);
@@ -69,7 +68,7 @@ namespace DevIdent.Forms
             }
             catch (Exception ex)
             {
-                Notify.ShowNotify(ex.Message, Resources.MainInfo);
+                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
 
@@ -137,11 +136,37 @@ namespace DevIdent.Forms
 
         #region Форма
 
-        public UninstallForm()
+        public void FormSettings()
         {
+            ContentPanel.BackColor = Settings.Default.ColorContent;
+            BackColor = Settings.Default.ColorForm;
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(Settings.Default.ColorButtonsDefault);
+            }
+            UninstallBox.BackColor = Settings.Default.ColorContent;
+            foreach (ToolStripMenuItem item in MenuStrip.Items)
+            {
+                item.BackColor = Settings.Default.ColorForm;
+            }
+            foreach (ToolStripMenuItem item in CreateInfoFileToolStripMenuItem.DropDownItems)
+            {
+                item.BackColor = Settings.Default.ColorForm;
+            }
+        }
+
+        public UninstallForm(MainForm owner)
+        {
+            Owner = owner;
             InitializeComponent();
             Click += (s, e) => { BringToFront(); };
             DoubleClick += (s, e) => { CenterToScreen(); };
+            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            {
+                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
+                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+            }
+            FormSettings();
         }
 
         #region Закрытие Формы
@@ -291,7 +316,7 @@ namespace DevIdent.Forms
             }
             catch (Exception ex)
             {
-                Notify.ShowNotify(ex.Message, Resources.MainInfo);
+                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
 
@@ -332,11 +357,10 @@ namespace DevIdent.Forms
 
         private void RemoveFromListAndRegistry(int indexOfProgramm)
         {
-            int ind = indexOfProgramm;
-            DeleteInfoFromRegistry(ind);
+            DeleteInfoFromRegistry(indexOfProgramm);
             UninstallBox.Items.RemoveAt(UninstallBox.SelectedIndex);
-            _registyPathes.RemoveAt(ind);
-            _searchPathes.RemoveAt(ind);
+            _registyPathes.RemoveAt(indexOfProgramm);
+            _searchPathes.RemoveAt(indexOfProgramm);
         }
 
         private void Uninstall(int index)
@@ -386,7 +410,7 @@ namespace DevIdent.Forms
 
         private void TxtFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
+            Notify.ShowNotify("Файл создан на рабочем столе", Resources.Close);
         }
 
         private void ФайлToolStripMenuItem_Click(object sender, EventArgs e)
@@ -395,7 +419,7 @@ namespace DevIdent.Forms
             _txtWorker.DoWork += CreateTxtFile;
             _txtWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TxtFileCreated);
             _txtWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало создания файла", Resources.CloseIcon);
+            Notify.ShowNotify("Начало создания файла", Resources.Close);
         }
 
 
@@ -419,7 +443,7 @@ namespace DevIdent.Forms
 
         private void HTMLFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify("Файл создан на рабочем столе", Resources.CloseIcon);
+            Notify.ShowNotify("Файл создан на рабочем столе", Resources.Close);
         }
 
         private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -428,7 +452,7 @@ namespace DevIdent.Forms
             _htmlWorker.DoWork += CreateHTMLFile;
             _htmlWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(HTMLFileCreated);
             _htmlWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало создания файла", Resources.CloseIcon);
+            Notify.ShowNotify("Начало создания файла", Resources.Close);
         }
 
         #endregion
@@ -493,7 +517,7 @@ namespace DevIdent.Forms
                     }
                     else
                     {
-                        Notify.ShowNotify("Путь к программе не найден :(", Resources.MainInfo);
+                        Notify.ShowNotify("Путь к программе не найден :(", Resources.Close);
                     }
                 }
                 else
@@ -503,7 +527,7 @@ namespace DevIdent.Forms
             }
             catch (Exception ex)
             {
-                Notify.ShowNotify(ex.Message, Resources.MainInfo);
+                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
 
@@ -534,6 +558,5 @@ namespace DevIdent.Forms
         #endregion
 
         #endregion
-
     }
 }

@@ -61,8 +61,8 @@ namespace DevIdent.Forms
 
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 255); };
-                picture.MouseLeave += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 200); };
+                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
+                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
             }
 
             Click += (s, e) => { BringToFront(); };
@@ -102,7 +102,6 @@ namespace DevIdent.Forms
                 () => MotherBoard.GetMotherBoardInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard")),
                 () => GetDiskInfo()
                 );
-
             SysInfoLabel_Click(sender, e);
             FormSettings();
             BringToFront();
@@ -111,6 +110,7 @@ namespace DevIdent.Forms
                 MenuPanel.Controls.Remove(SysClearBtn);
                 MenuPanel.Controls.Remove(UninstallBtn);
                 MenuPanel.Controls.Remove(ServicesBtn);
+                MenuPanel.Controls.Remove(AutorunBtn);
                 BrowserBtn.Location = new Point(10, 220);
                 if (OS.counter == 0)
                 {
@@ -138,28 +138,18 @@ namespace DevIdent.Forms
 
         #region Трей
 
-        private void mainNotify_DoubleClick(object sender, EventArgs e)
-        {
-            Show();
-            WindowState = FormWindowState.Normal;
-            CenterToScreen();
-        }
-
         private void TurnBtn_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Minimized;
-
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-
             Application.Exit();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
             Hide();
             _sensorForm.Show();
         }
@@ -170,9 +160,19 @@ namespace DevIdent.Forms
 
         private void FormSettings()
         {
+            Width = 650;
             Controls.Add(MenuPanel);
             Controls.Add(ContentPanel);
             Opacity = 0.85;
+            ContentPanel.BackColor = Settings.Default.ColorPanel;
+            MenuPanel.BackColor = Settings.Default.ColorMenu;
+            BackColor = Settings.Default.ColorForm;
+            
+            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            {
+                picture.ChangeColor(Settings.Default.ColorButtonsDefault);
+            }
+            colorEditor1.Color = Settings.Default.ColorForm;
         }
 
         #endregion Настройка формы
@@ -335,7 +335,7 @@ namespace DevIdent.Forms
         private void BrowserWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Notify.ShowNotify(((UniversalCleaner.browserSize) / 1048576) > 1024 ? "Браузеры: очищено " + (UniversalCleaner.browserSize) / 1073741824
-                   + " ГБ" : "Браузеры: очищено " + (UniversalCleaner.browserSize) / 1048576 + " МБ", Resources.CloseIcon);
+                   + " ГБ" : "Браузеры: очищено " + (UniversalCleaner.browserSize) / 1048576 + " МБ", Resources.Close);
         }
 
         private void BrowserBtn_Click(object sender, EventArgs e)
@@ -344,7 +344,7 @@ namespace DevIdent.Forms
             _browserWorker.DoWork += CleanBrowser;
             _browserWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BrowserWorkerCompleted);
             _browserWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.CloseIcon);
+            Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.Close);
         }
 
         private void CleanBrowser(object sender, DoWorkEventArgs e)
@@ -401,13 +401,13 @@ namespace DevIdent.Forms
             _sysWorker.DoWork += CleanSystem;
             _sysWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(SysWorkerCompleted);
             _sysWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало очистки системы, подождите", Resources.CloseIcon);
+            Notify.ShowNotify("Начало очистки системы, подождите", Resources.Close);
         }
 
         private void SysWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Notify.ShowNotify(((UniversalCleaner.sysSize) / 1048576) > 1024 ? "Система: очищено " + (UniversalCleaner.sysSize) / 1073741824
-                   + " ГБ" : "Система: очищено " + (UniversalCleaner.sysSize) / 1048576 + " МБ", Resources.CloseIcon);
+                   + " ГБ" : "Система: очищено " + (UniversalCleaner.sysSize) / 1048576 + " МБ", Resources.Close);
         }
 
         #endregion
@@ -418,11 +418,12 @@ namespace DevIdent.Forms
 
         #region Сенсор форма
 
-        private readonly SensorForm _sensorForm = new SensorForm();
+        public SensorForm _sensorForm;
 
         private void SensorBtn_Click(object sender, EventArgs e)
         {
             Visible = false;
+            _sensorForm = new SensorForm();
             _sensorForm.Show();
         }
 
@@ -430,13 +431,13 @@ namespace DevIdent.Forms
 
         #region Службы
 
-        private ServicesForm _servicesForm = new ServicesForm();
+        public ServicesForm _servicesForm;
 
         private void ServicesLb_Click(object sender, EventArgs e)
         {
             if (_servicesForm == null || _servicesForm.IsDisposed)
             {
-                _servicesForm = new ServicesForm();
+                _servicesForm = new ServicesForm(this);
                 _servicesForm.Show();
             }
             else
@@ -450,16 +451,19 @@ namespace DevIdent.Forms
 
         #region Uninstall Форма
 
+        public UninstallForm _uninstallForm;
+
         private void UninstallBtn_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms["UninstallForm"] == null)
+            if (_uninstallForm == null || _uninstallForm.IsDisposed)
             {
-                UninstallForm uninstallForm = new UninstallForm();
-                uninstallForm.Show();
+                _uninstallForm = new UninstallForm(this);
+                _uninstallForm.Show();
             }
             else
             {
-                Application.OpenForms["UninstallForm"].BringToFront();
+                _uninstallForm.Show();
+                _uninstallForm.Focus();
             }
         }
 
@@ -477,13 +481,13 @@ namespace DevIdent.Forms
             BrowserBtn_Click(sender, e);
         }
 
-        private AutorunForm _autorunForm = new AutorunForm();
+        public AutorunForm _autorunForm;
 
         private void AutorunBtn_Click(object sender, EventArgs e)
         {
             if (_autorunForm == null || _autorunForm.IsDisposed)
             {
-                _autorunForm = new AutorunForm();
+                _autorunForm = new AutorunForm(this);
                 _autorunForm.Show();
             }
             else
@@ -491,6 +495,66 @@ namespace DevIdent.Forms
                 _autorunForm.Show();
                 _autorunForm.Focus();
             }
+        }
+
+        private void ChangeFormStyle()
+        {
+            if (_servicesForm != null)
+            {
+                _servicesForm.FormSettings();
+            }
+            if (_uninstallForm != null)
+            {
+                _uninstallForm.FormSettings();
+            }
+            if (_sensorForm != null)
+            {
+                _sensorForm.FormSettings();
+            }
+            if (_autorunForm != null)
+            {
+                _autorunForm.FormSettings();
+            }
+        }
+
+        private void SetTheme_Click(object sender, EventArgs e)
+        {
+            var color = colorEditor1.Color;
+            ThemeChanger.SetUserTheme(color);
+            this.ChangeColor(color);
+            ContentPanel.ChangeColor(ThemeChanger.panelColor);
+            TransparencyKey = Color.FromArgb(Math.Min(Math.Abs(color.R - 13), 255), Math.Min(Math.Abs(color.G - 12), 255), Math.Min(Math.Abs(color.B - 11), 255));
+            InvPanel.BackColor = TransparencyKey;
+            MenuPanel.ChangeColor(ThemeChanger.contentColor);
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(ThemeChanger.buttonColor);
+            }
+            ChangeFormStyle();
+        }
+
+        private void SetDefaultTheme_Click(object sender, EventArgs e)
+        {
+            ContentPanel.BackColor = Color.FromArgb(23, 28, 42);
+            MenuPanel.BackColor = Color.FromArgb(29, 34, 47);
+            BackColor = Color.FromArgb(0, 0, 125);
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(Color.FromArgb(0, 0, 200));
+            }
+            ThemeChanger.SetDefaultTheme();
+            colorEditor1.Color = Settings.Default.ColorForm;
+            ChangeFormStyle();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Width = 950;
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Width = 650;
         }
     }
 }

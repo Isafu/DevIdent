@@ -22,5 +22,77 @@ namespace DevIdent.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorForm {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorForm"]));
+            }
+            set {
+                this["ColorForm"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorMenu {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorMenu"]));
+            }
+            set {
+                this["ColorMenu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorButtonsDefault {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorButtonsDefault"]));
+            }
+            set {
+                this["ColorButtonsDefault"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorButtonsHover {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorButtonsHover"]));
+            }
+            set {
+                this["ColorButtonsHover"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorPanel {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPanel"]));
+            }
+            set {
+                this["ColorPanel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
+        public global::System.Drawing.Color ColorContent {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorContent"]));
+            }
+            set {
+                this["ColorContent"] = value;
+            }
+        }
     }
 }

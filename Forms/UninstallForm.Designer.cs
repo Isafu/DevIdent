@@ -32,22 +32,24 @@ namespace DevIdent.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UninstallForm));
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ContentPanel = new System.Windows.Forms.Panel();
             this.UninstallBox = new System.Windows.Forms.ListBox();
             this.MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.УдалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.УдалитьИзРеестраStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.ЗаписьВРеестреToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.РасположениеНаДискеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.СформироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteFromRegistyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RegistyPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DrivePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SearchInGoogleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CreateInfoFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RefreshBtn = new System.Windows.Forms.PictureBox();
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.SearchBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
+            this.ContentPanel.SuspendLayout();
             this.MenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RefreshBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -63,15 +65,15 @@ namespace DevIdent.Forms
             this.label1.TabIndex = 7;
             this.label1.Text = "Удаление программ";
             // 
-            // panel1
+            // ContentPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
-            this.panel1.Controls.Add(this.UninstallBox);
-            this.panel1.ForeColor = System.Drawing.Color.White;
-            this.panel1.Location = new System.Drawing.Point(0, 30);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 255);
-            this.panel1.TabIndex = 9;
+            this.ContentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
+            this.ContentPanel.Controls.Add(this.UninstallBox);
+            this.ContentPanel.ForeColor = System.Drawing.Color.White;
+            this.ContentPanel.Location = new System.Drawing.Point(0, 30);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(500, 255);
+            this.ContentPanel.TabIndex = 9;
             // 
             // UninstallBox
             // 
@@ -92,80 +94,80 @@ namespace DevIdent.Forms
             // MenuStrip
             // 
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.УдалитьToolStripMenuItem,
-            this.УдалитьИзРеестраStripMenuItem1,
-            this.ЗаписьВРеестреToolStripMenuItem,
-            this.РасположениеНаДискеToolStripMenuItem,
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem,
-            this.СформироватьToolStripMenuItem});
+            this.DeleteToolStripMenuItem,
+            this.DeleteFromRegistyStripMenuItem,
+            this.RegistyPathToolStripMenuItem,
+            this.DrivePathToolStripMenuItem,
+            this.SearchInGoogleToolStripMenuItem,
+            this.CreateInfoFileToolStripMenuItem});
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(293, 170);
+            this.MenuStrip.Size = new System.Drawing.Size(293, 148);
             // 
-            // УдалитьToolStripMenuItem
+            // DeleteToolStripMenuItem
             // 
-            this.УдалитьToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.УдалитьToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.УдалитьToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
-            this.УдалитьToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.УдалитьToolStripMenuItem.Name = "УдалитьToolStripMenuItem";
-            this.УдалитьToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
-            this.УдалитьToolStripMenuItem.Text = "Удалить";
-            this.УдалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
+            this.DeleteToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.DeleteToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.DeleteToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.DeleteToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.DeleteToolStripMenuItem.Text = "Удалить";
+            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
-            // УдалитьИзРеестраStripMenuItem1
+            // DeleteFromRegistyStripMenuItem
             // 
-            this.УдалитьИзРеестраStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.УдалитьИзРеестраStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.УдалитьИзРеестраStripMenuItem1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.УдалитьИзРеестраStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.УдалитьИзРеестраStripMenuItem1.Name = "УдалитьИзРеестраStripMenuItem1";
-            this.УдалитьИзРеестраStripMenuItem1.Size = new System.Drawing.Size(292, 24);
-            this.УдалитьИзРеестраStripMenuItem1.Text = "Удалить запись в реестре";
-            this.УдалитьИзРеестраStripMenuItem1.Click += new System.EventHandler(this.удалитьИзРеестраStripMenuItem1_Click);
+            this.DeleteFromRegistyStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.DeleteFromRegistyStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.DeleteFromRegistyStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DeleteFromRegistyStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.DeleteFromRegistyStripMenuItem.Name = "DeleteFromRegistyStripMenuItem";
+            this.DeleteFromRegistyStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.DeleteFromRegistyStripMenuItem.Text = "Удалить запись в реестре";
+            this.DeleteFromRegistyStripMenuItem.Click += new System.EventHandler(this.удалитьИзРеестраStripMenuItem1_Click);
             // 
-            // ЗаписьВРеестреToolStripMenuItem
+            // RegistyPathToolStripMenuItem
             // 
-            this.ЗаписьВРеестреToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.ЗаписьВРеестреToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ЗаписьВРеестреToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
-            this.ЗаписьВРеестреToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.ЗаписьВРеестреToolStripMenuItem.Name = "ЗаписьВРеестреToolStripMenuItem";
-            this.ЗаписьВРеестреToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
-            this.ЗаписьВРеестреToolStripMenuItem.Text = "Запись в реестре";
-            this.ЗаписьВРеестреToolStripMenuItem.Click += new System.EventHandler(this.записьВРеестреToolStripMenuItem_Click);
+            this.RegistyPathToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.RegistyPathToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.RegistyPathToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.RegistyPathToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.RegistyPathToolStripMenuItem.Name = "RegistyPathToolStripMenuItem";
+            this.RegistyPathToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.RegistyPathToolStripMenuItem.Text = "Запись в реестре";
+            this.RegistyPathToolStripMenuItem.Click += new System.EventHandler(this.записьВРеестреToolStripMenuItem_Click);
             // 
-            // РасположениеНаДискеToolStripMenuItem
+            // DrivePathToolStripMenuItem
             // 
-            this.РасположениеНаДискеToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.РасположениеНаДискеToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
-            this.РасположениеНаДискеToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.РасположениеНаДискеToolStripMenuItem.Name = "РасположениеНаДискеToolStripMenuItem";
-            this.РасположениеНаДискеToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
-            this.РасположениеНаДискеToolStripMenuItem.Text = "Расположение на диске";
-            this.РасположениеНаДискеToolStripMenuItem.Click += new System.EventHandler(this.расположениеНаДискеToolStripMenuItem_Click);
+            this.DrivePathToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.DrivePathToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.DrivePathToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.DrivePathToolStripMenuItem.Name = "DrivePathToolStripMenuItem";
+            this.DrivePathToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.DrivePathToolStripMenuItem.Text = "Расположение на диске";
+            this.DrivePathToolStripMenuItem.Click += new System.EventHandler(this.расположениеНаДискеToolStripMenuItem_Click);
             // 
-            // ЧтоЭтоЗаПрограммаToolStripMenuItem
+            // SearchInGoogleToolStripMenuItem
             // 
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.Name = "ЧтоЭтоЗаПрограммаToolStripMenuItem";
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.Text = "Что это за программа?";
-            this.ЧтоЭтоЗаПрограммаToolStripMenuItem.Click += new System.EventHandler(this.чтоЭтоЗаПрограммаToolStripMenuItem_Click);
+            this.SearchInGoogleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.SearchInGoogleToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SearchInGoogleToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.SearchInGoogleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.SearchInGoogleToolStripMenuItem.Name = "SearchInGoogleToolStripMenuItem";
+            this.SearchInGoogleToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.SearchInGoogleToolStripMenuItem.Text = "Что это за программа?";
+            this.SearchInGoogleToolStripMenuItem.Click += new System.EventHandler(this.чтоЭтоЗаПрограммаToolStripMenuItem_Click);
             // 
-            // СформироватьToolStripMenuItem
+            // CreateInfoFileToolStripMenuItem
             // 
-            this.СформироватьToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.СформироватьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreateInfoFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.CreateInfoFileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ФайлToolStripMenuItem,
             this.HTMLToolStripMenuItem});
-            this.СформироватьToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
-            this.СформироватьToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.СформироватьToolStripMenuItem.Name = "СформироватьToolStripMenuItem";
-            this.СформироватьToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
-            this.СформироватьToolStripMenuItem.Text = "Сформировать";
+            this.CreateInfoFileToolStripMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
+            this.CreateInfoFileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.CreateInfoFileToolStripMenuItem.Name = "CreateInfoFileToolStripMenuItem";
+            this.CreateInfoFileToolStripMenuItem.Size = new System.Drawing.Size(292, 24);
+            this.CreateInfoFileToolStripMenuItem.Text = "Сформировать";
             // 
             // ФайлToolStripMenuItem
             // 
@@ -173,7 +175,7 @@ namespace DevIdent.Forms
             this.ФайлToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.ФайлToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.ФайлToolStripMenuItem.Name = "ФайлToolStripMenuItem";
-            this.ФайлToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.ФайлToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.ФайлToolStripMenuItem.Text = "Файл";
             this.ФайлToolStripMenuItem.Click += new System.EventHandler(this.ФайлToolStripMenuItem_Click);
             // 
@@ -182,14 +184,24 @@ namespace DevIdent.Forms
             this.HTMLToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.HTMLToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.HTMLToolStripMenuItem.Name = "HTMLToolStripMenuItem";
-            this.HTMLToolStripMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.HTMLToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.HTMLToolStripMenuItem.Text = "HTML";
             this.HTMLToolStripMenuItem.Click += new System.EventHandler(this.HTMLToolStripMenuItem_Click);
+            // 
+            // RefreshBtn
+            // 
+            this.RefreshBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.RefreshBtn.Location = new System.Drawing.Point(269, 0);
+            this.RefreshBtn.Name = "RefreshBtn";
+            this.RefreshBtn.Size = new System.Drawing.Size(35, 30);
+            this.RefreshBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.RefreshBtn.TabIndex = 11;
+            this.RefreshBtn.TabStop = false;
             // 
             // CloseBth
             // 
             this.CloseBth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.CloseBth.Image = ((System.Drawing.Image)(resources.GetObject("CloseBth.Image")));
+            this.CloseBth.Image = global::DevIdent.Properties.Resources.Close;
             this.CloseBth.Location = new System.Drawing.Point(465, 0);
             this.CloseBth.Name = "CloseBth";
             this.CloseBth.Size = new System.Drawing.Size(35, 30);
@@ -229,9 +241,10 @@ namespace DevIdent.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(500, 285);
+            this.Controls.Add(this.RefreshBtn);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.CloseBth);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -242,10 +255,12 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Uninstall";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.UninstallForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UninstallForm_MouseDown);
-            this.panel1.ResumeLayout(false);
+            this.ContentPanel.ResumeLayout(false);
             this.MenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RefreshBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -257,19 +272,20 @@ namespace DevIdent.Forms
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.PictureBox CloseBth;
         private System.Windows.Forms.ListBox UninstallBox;
         private System.Windows.Forms.ContextMenuStrip MenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem УдалитьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ЗаписьВРеестреToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem РасположениеНаДискеToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ЧтоЭтоЗаПрограммаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem СформироватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RegistyPathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DrivePathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SearchInGoogleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CreateInfoFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ФайлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem HTMLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem УдалитьИзРеестраStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem DeleteFromRegistyStripMenuItem;
         private System.Windows.Forms.TextBox SearchBox;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.PictureBox RefreshBtn;
     }
 }

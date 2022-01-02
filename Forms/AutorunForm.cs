@@ -1,4 +1,5 @@
 ﻿using DevIdent.Classes;
+using DevIdent.Properties;
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using System;
@@ -10,18 +11,18 @@ namespace DevIdent.Forms
 {
     public partial class AutorunForm : Form
     {
-        public AutorunForm()
+        public AutorunForm(MainForm owner)
         {
+            Owner = owner;
             InitializeComponent();
+            FormSettings();
             CloseBth.Click += (s, e) => { Close(); };
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 255); };
-                picture.MouseLeave += (s, e) => { ColorChanger.ChangeColor(picture, 0, 0, 200); };
+                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
+                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
             }
         }
-
-
 
         #region Перемещение формы
 
@@ -34,6 +35,20 @@ namespace DevIdent.Forms
 
         #endregion
 
+        public void FormSettings()
+        {
+            BackColor = Settings.Default.ColorForm;
+            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            {
+                picture.ChangeColor(Settings.Default.ColorButtonsDefault);
+            }
+            foreach (ToolStripMenuItem item in MenuStrip.Items)
+            {
+                item.BackColor = Settings.Default.ColorForm;
+            }
+            AutorunList.BackColor = Settings.Default.ColorContent;
+        }
+
         private void GetProgramsFromSchedul()
         {
             TaskFolder tf = TaskService.Instance.RootFolder;
@@ -44,7 +59,7 @@ namespace DevIdent.Forms
                     ListViewItem item = new ListViewItem(t.Name);
                     item.SubItems.Add("C:\\Windows\\System32\\Tasks");
                     item.SubItems.Add(t.Enabled ? "Да" : "Нет");
-                    listView1.Items.Add(item);
+                    AutorunList.Items.Add(item);
                 }
                 catch { }
             }
@@ -69,7 +84,7 @@ namespace DevIdent.Forms
                                 {
                                     ListViewItem item = new ListViewItem(valueName);
                                     item.SubItems.Add(key.GetValue(valueName).ToString());
-                                    listView1.Items.Add(item);
+                                    AutorunList.Items.Add(item);
                                 }
                             }
                         }
@@ -97,12 +112,12 @@ namespace DevIdent.Forms
         {
             try
             {
-                if (listView1.SelectedIndices.Count == 0) return;
-                string path = listView1.SelectedItems[0].SubItems[1].Text;
-                switch (listView1.SelectedItems[0].SubItems[1].Text)
+                if (AutorunList.SelectedIndices.Count == 0) return;
+                string path = AutorunList.SelectedItems[0].SubItems[0].Text;
+                switch (AutorunList.SelectedItems[0].SubItems[1].Text)
                 {
                     case "C:\\Windows\\System32\\Tasks":
-                        OpenExplorer(listView1.SelectedItems[0].SubItems[1].Text + "\\" + path);
+                        OpenExplorer(AutorunList.SelectedItems[0].SubItems[1].Text + "\\" + path);
                         break;
                     default:
                         if (path.Contains('-'))
@@ -123,7 +138,7 @@ namespace DevIdent.Forms
             }
             catch (Exception ex)
             {
-                Notify.ShowNotify(ex.Message, Properties.Resources.MainInfo);
+                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
 
@@ -131,21 +146,21 @@ namespace DevIdent.Forms
         {
             try
             {
-                if (listView1.SelectedIndices.Count == 0) return;
+                if (AutorunList.SelectedIndices.Count == 0) return;
                 TaskFolder tf = TaskService.Instance.RootFolder;
-                tf.Tasks[listView1.SelectedIndices[0]].Enabled = !tf.Tasks[listView1.SelectedIndices[0]].Enabled;
-                if (tf.Tasks[listView1.SelectedIndices[0]].Enabled)
+                tf.Tasks[AutorunList.SelectedIndices[0]].Enabled = !tf.Tasks[AutorunList.SelectedIndices[0]].Enabled;
+                if (tf.Tasks[AutorunList.SelectedIndices[0]].Enabled)
                 {
-                    listView1.SelectedItems[0].SubItems[2].Text = "Да";
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Да";
                 }
                 else
                 {
-                    listView1.SelectedItems[0].SubItems[2].Text = "Нет";
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Нет";
                 }
             }
             catch (Exception ex)
             {
-                Notify.ShowNotify(ex.Message, Properties.Resources.MainInfo);
+                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
     }

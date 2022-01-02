@@ -8,15 +8,12 @@ namespace DevIdent.Forms
         public InfoForm()
         {
             InitializeComponent();
+            BringToFront();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Visible = false;
         }
-
-        #region Ответ
-
-        #endregion Ответ
     }
 }

@@ -40,7 +40,7 @@ namespace DevIdent.Classes
                 try
                 {
                     directoryInfo.Delete();
-                    Notify.ShowNotify("Директория удалена", Properties.Resources.MainInfo);
+                    Notify.ShowNotify("Директория удалена", Properties.Resources.Close);
                 }
                 catch
                 {
