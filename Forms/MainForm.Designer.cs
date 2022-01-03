@@ -497,7 +497,7 @@ namespace DevIdent.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.ClientSize = new System.Drawing.Size(950, 500);
+            this.ClientSize = new System.Drawing.Size(650, 500);
             this.ControlBox = false;
             this.Controls.Add(this.InvPanel);
             this.Controls.Add(this.pictureBox2);

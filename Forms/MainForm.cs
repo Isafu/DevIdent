@@ -135,7 +135,6 @@ namespace DevIdent.Forms
             }
         }
 
-
         #region Трей
 
         private void TurnBtn_Click(object sender, EventArgs e)
