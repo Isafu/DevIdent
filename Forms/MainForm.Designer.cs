@@ -114,6 +114,8 @@ namespace DevIdent.Forms
             // AutorunBtn
             // 
             this.AutorunBtn.AutoSize = true;
+            this.AutorunBtn.BackColor = System.Drawing.Color.Transparent;
+            this.AutorunBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AutorunBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AutorunBtn.ForeColor = System.Drawing.Color.White;
             this.AutorunBtn.Location = new System.Drawing.Point(10, 340);
@@ -126,6 +128,8 @@ namespace DevIdent.Forms
             // UninstallBtn
             // 
             this.UninstallBtn.AutoSize = true;
+            this.UninstallBtn.BackColor = System.Drawing.Color.Transparent;
+            this.UninstallBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UninstallBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.UninstallBtn.ForeColor = System.Drawing.Color.White;
             this.UninstallBtn.Location = new System.Drawing.Point(10, 310);
@@ -138,6 +142,8 @@ namespace DevIdent.Forms
             // ServicesBtn
             // 
             this.ServicesBtn.AutoSize = true;
+            this.ServicesBtn.BackColor = System.Drawing.Color.Transparent;
+            this.ServicesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ServicesBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ServicesBtn.ForeColor = System.Drawing.Color.White;
             this.ServicesBtn.Location = new System.Drawing.Point(10, 220);
@@ -150,6 +156,8 @@ namespace DevIdent.Forms
             // SysClearBtn
             // 
             this.SysClearBtn.AutoSize = true;
+            this.SysClearBtn.BackColor = System.Drawing.Color.Transparent;
+            this.SysClearBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SysClearBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SysClearBtn.ForeColor = System.Drawing.Color.White;
             this.SysClearBtn.Location = new System.Drawing.Point(10, 250);
@@ -162,6 +170,8 @@ namespace DevIdent.Forms
             // BrowserBtn
             // 
             this.BrowserBtn.AutoSize = true;
+            this.BrowserBtn.BackColor = System.Drawing.Color.Transparent;
+            this.BrowserBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowserBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BrowserBtn.ForeColor = System.Drawing.Color.White;
             this.BrowserBtn.Location = new System.Drawing.Point(10, 280);
@@ -174,6 +184,8 @@ namespace DevIdent.Forms
             // DiskInfoBtn
             // 
             this.DiskInfoBtn.AutoSize = true;
+            this.DiskInfoBtn.BackColor = System.Drawing.Color.Transparent;
+            this.DiskInfoBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DiskInfoBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DiskInfoBtn.ForeColor = System.Drawing.Color.White;
             this.DiskInfoBtn.Location = new System.Drawing.Point(10, 190);
@@ -186,6 +198,8 @@ namespace DevIdent.Forms
             // BiosBtn
             // 
             this.BiosBtn.AutoSize = true;
+            this.BiosBtn.BackColor = System.Drawing.Color.Transparent;
+            this.BiosBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BiosBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BiosBtn.ForeColor = System.Drawing.Color.White;
             this.BiosBtn.Location = new System.Drawing.Point(10, 40);
@@ -198,6 +212,8 @@ namespace DevIdent.Forms
             // MotherBoardBtn
             // 
             this.MotherBoardBtn.AutoSize = true;
+            this.MotherBoardBtn.BackColor = System.Drawing.Color.Transparent;
+            this.MotherBoardBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MotherBoardBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MotherBoardBtn.ForeColor = System.Drawing.Color.White;
             this.MotherBoardBtn.Location = new System.Drawing.Point(10, 70);
@@ -210,6 +226,8 @@ namespace DevIdent.Forms
             // RAMInfoBtn
             // 
             this.RAMInfoBtn.AutoSize = true;
+            this.RAMInfoBtn.BackColor = System.Drawing.Color.Transparent;
+            this.RAMInfoBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RAMInfoBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.RAMInfoBtn.ForeColor = System.Drawing.Color.White;
             this.RAMInfoBtn.Location = new System.Drawing.Point(10, 160);
@@ -222,6 +240,8 @@ namespace DevIdent.Forms
             // VideoInfoBtn
             // 
             this.VideoInfoBtn.AutoSize = true;
+            this.VideoInfoBtn.BackColor = System.Drawing.Color.Transparent;
+            this.VideoInfoBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VideoInfoBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.VideoInfoBtn.ForeColor = System.Drawing.Color.White;
             this.VideoInfoBtn.Location = new System.Drawing.Point(10, 130);
@@ -234,6 +254,8 @@ namespace DevIdent.Forms
             // CPUInfoBtn
             // 
             this.CPUInfoBtn.AutoSize = true;
+            this.CPUInfoBtn.BackColor = System.Drawing.Color.Transparent;
+            this.CPUInfoBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CPUInfoBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CPUInfoBtn.ForeColor = System.Drawing.Color.White;
             this.CPUInfoBtn.Location = new System.Drawing.Point(10, 100);
@@ -246,6 +268,8 @@ namespace DevIdent.Forms
             // SysInfoBtn
             // 
             this.SysInfoBtn.AutoSize = true;
+            this.SysInfoBtn.BackColor = System.Drawing.Color.Transparent;
+            this.SysInfoBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SysInfoBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SysInfoBtn.Location = new System.Drawing.Point(10, 10);
             this.SysInfoBtn.Name = "SysInfoBtn";
@@ -277,6 +301,8 @@ namespace DevIdent.Forms
             // InfoLb12
             // 
             this.InfoLb12.AutoSize = true;
+            this.InfoLb12.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb12.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb12.Location = new System.Drawing.Point(10, 340);
             this.InfoLb12.Name = "InfoLb12";
@@ -286,6 +312,8 @@ namespace DevIdent.Forms
             // InfoLb11
             // 
             this.InfoLb11.AutoSize = true;
+            this.InfoLb11.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb11.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb11.Location = new System.Drawing.Point(10, 310);
             this.InfoLb11.Name = "InfoLb11";
@@ -295,6 +323,8 @@ namespace DevIdent.Forms
             // InfoLb10
             // 
             this.InfoLb10.AutoSize = true;
+            this.InfoLb10.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb10.Location = new System.Drawing.Point(10, 280);
             this.InfoLb10.Name = "InfoLb10";
@@ -304,6 +334,8 @@ namespace DevIdent.Forms
             // InfoLb9
             // 
             this.InfoLb9.AutoSize = true;
+            this.InfoLb9.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb9.Location = new System.Drawing.Point(10, 250);
             this.InfoLb9.Name = "InfoLb9";
@@ -313,6 +345,8 @@ namespace DevIdent.Forms
             // InfoLb1
             // 
             this.InfoLb1.AutoSize = true;
+            this.InfoLb1.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb1.Location = new System.Drawing.Point(10, 10);
             this.InfoLb1.Name = "InfoLb1";
@@ -322,6 +356,8 @@ namespace DevIdent.Forms
             // InfoLb2
             // 
             this.InfoLb2.AutoSize = true;
+            this.InfoLb2.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb2.Location = new System.Drawing.Point(10, 40);
             this.InfoLb2.Name = "InfoLb2";
@@ -331,6 +367,8 @@ namespace DevIdent.Forms
             // InfoLb3
             // 
             this.InfoLb3.AutoSize = true;
+            this.InfoLb3.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb3.Location = new System.Drawing.Point(10, 70);
             this.InfoLb3.Name = "InfoLb3";
@@ -340,6 +378,8 @@ namespace DevIdent.Forms
             // InfoLb4
             // 
             this.InfoLb4.AutoSize = true;
+            this.InfoLb4.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb4.Location = new System.Drawing.Point(10, 100);
             this.InfoLb4.Name = "InfoLb4";
@@ -349,6 +389,8 @@ namespace DevIdent.Forms
             // InfoLb5
             // 
             this.InfoLb5.AutoSize = true;
+            this.InfoLb5.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb5.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb5.Location = new System.Drawing.Point(10, 130);
             this.InfoLb5.Name = "InfoLb5";
@@ -358,6 +400,8 @@ namespace DevIdent.Forms
             // InfoLb6
             // 
             this.InfoLb6.AutoSize = true;
+            this.InfoLb6.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb6.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb6.Location = new System.Drawing.Point(10, 160);
             this.InfoLb6.Name = "InfoLb6";
@@ -367,6 +411,8 @@ namespace DevIdent.Forms
             // InfoLb7
             // 
             this.InfoLb7.AutoSize = true;
+            this.InfoLb7.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb7.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb7.Location = new System.Drawing.Point(10, 190);
             this.InfoLb7.Name = "InfoLb7";
@@ -376,6 +422,8 @@ namespace DevIdent.Forms
             // InfoLb8
             // 
             this.InfoLb8.AutoSize = true;
+            this.InfoLb8.BackColor = System.Drawing.Color.Transparent;
+            this.InfoLb8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoLb8.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InfoLb8.Location = new System.Drawing.Point(10, 220);
             this.InfoLb8.Name = "InfoLb8";
@@ -518,6 +566,7 @@ namespace DevIdent.Forms
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(650, 500);
             this.Name = "MainForm";
+            this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DevIdent";
             this.TopMost = true;

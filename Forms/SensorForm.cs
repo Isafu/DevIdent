@@ -23,18 +23,18 @@ namespace DevIdent.Forms
             SensorLb2.DoubleClick += (s, e) => StartPositionOfForm();
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
-                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
+                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
             }
         }
 
         public void FormSettings()
         {
-            BackColor = Settings.Default.ColorForm;
-            SensorInfoPanel.BackColor = Settings.Default.ColorContent;
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
+            SensorInfoPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
             foreach (PictureBox button in Controls.OfType<PictureBox>())
             {
-                button.ChangeColor(Settings.Default.ColorButtonsDefault);
+                button.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
             }
         }
 

@@ -29,15 +29,6 @@ namespace DevIdent.Forms
 
         #region Изменение формы если не админ
 
-        private static void ReconForm()
-        {
-            Info.label1.Text = "Отсутствуют права администратора";
-            Info.label2.Text = "Функции удаления и очистки отключены";
-            Info.OkButton.Size = new Size(125, 25);
-            Info.OkButton.Location = new Point(88, 90);
-            Info.OkButton.Visible = true;
-        }
-
         #endregion
 
         #region Форма
@@ -71,28 +62,20 @@ namespace DevIdent.Forms
 
         #endregion
 
-        #region Свернуть и развернуть при нажатии на иконку
-
-        private const int WsMinimizebox = 0x20000;
-        private const int CsDblclks = 0x8;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.Style |= WsMinimizebox;
-                cp.ClassStyle |= CsDblclks;
-                return cp;
-            }
-        }
-
-        #endregion
-
         #region Загрузка формы
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            FormSettings();
+            if (!IsAdministrator())
+            {
+                MenuPanel.Controls.Remove(SysClearBtn);
+                MenuPanel.Controls.Remove(UninstallBtn);
+                MenuPanel.Controls.Remove(ServicesBtn);
+                MenuPanel.Controls.Remove(AutorunBtn);
+                BrowserBtn.Location = new Point(10, 220);
+                Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Close);
+            }
             Parallel.Invoke(
                 () => Processor.GetCpuinfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor")),
                 () => OS.GetSysInfo(),
@@ -103,22 +86,7 @@ namespace DevIdent.Forms
                 () => GetDiskInfo()
                 );
             SysInfoLabel_Click(sender, e);
-            FormSettings();
             BringToFront();
-            if (!IsAdministrator())
-            {
-                MenuPanel.Controls.Remove(SysClearBtn);
-                MenuPanel.Controls.Remove(UninstallBtn);
-                MenuPanel.Controls.Remove(ServicesBtn);
-                MenuPanel.Controls.Remove(AutorunBtn);
-                BrowserBtn.Location = new Point(10, 220);
-                if (OS.counter == 0)
-                {
-                    OS.counter++;
-                    ReconForm();
-                    Info.Show();
-                }
-            }
         }
 
         #endregion
@@ -142,39 +110,104 @@ namespace DevIdent.Forms
             WindowState = FormWindowState.Minimized;
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Hide();
-            _sensorForm.Show();
-        }
-
         #endregion Трей
 
         #region Настройка формы
+
+        #region Убрать мерцание
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
+        }
+
+        #endregion
 
         private void FormSettings()
         {
             Width = 650;
             Controls.Add(MenuPanel);
             Controls.Add(ContentPanel);
-            Opacity = 0.85;
-            ContentPanel.BackColor = Settings.Default.ColorPanel;
-            MenuPanel.BackColor = Settings.Default.ColorMenu;
-            BackColor = Settings.Default.ColorForm;
-            
+            ContentPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorPanel.Name);
+            MenuPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Name);
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.ChangeColor(Settings.Default.ColorButtonsDefault);
+                picture.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
             }
-            colorEditor1.Color = Settings.Default.ColorForm;
+            colorEditor1.Color = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
         }
 
-        #endregion Настройка формы
+        #region Тема для окон
+
+        private void ChangeFormStyle()
+        {
+            if (_servicesForm != null)
+            {
+                _servicesForm.FormSettings();
+            }
+            if (_uninstallForm != null)
+            {
+                _uninstallForm.FormSettings();
+            }
+            if (_sensorForm != null)
+            {
+                _sensorForm.FormSettings();
+            }
+            if (_autorunForm != null)
+            {
+                _autorunForm.FormSettings();
+            }
+        }
+
+        private void SetTheme_Click(object sender, EventArgs e)
+        {
+            var color = colorEditor1.Color;
+            ThemeChanger.SetUserTheme(color);
+            this.ChangeColor(color);
+            ContentPanel.ChangeColor(ThemeChanger.panelColor);
+            TransparencyKey = Color.FromArgb(Math.Min(Math.Abs(color.R - 13), 255), Math.Min(Math.Abs(color.G - 12), 255), Math.Min(Math.Abs(color.B - 11), 255));
+            InvPanel.BackColor = TransparencyKey;
+            MenuPanel.ChangeColor(ThemeChanger.contentColor);
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(ThemeChanger.buttonColor);
+            }
+            ChangeFormStyle();
+        }
+
+        private void SetDefaultTheme_Click(object sender, EventArgs e)
+        {
+            ContentPanel.BackColor = Color.FromArgb(23, 28, 42);
+            MenuPanel.BackColor = Color.FromArgb(29, 34, 47);
+            BackColor = Color.FromArgb(0, 0, 125);
+            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            {
+                button.ChangeColor(Color.FromArgb(0, 0, 200));
+            }
+            ThemeChanger.SetDefaultTheme();
+            colorEditor1.Color = Settings.Default.ColorForm;
+            ChangeFormStyle();
+        }
+
+
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Width = 950;
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Width = 650;
+        }
+
+        #endregion
 
         #region Перемещение формы
 
@@ -186,6 +219,8 @@ namespace DevIdent.Forms
         }
 
         #endregion Перемещение формы
+
+        #endregion Настройка формы
 
         #region Закрытие программы
 
@@ -327,8 +362,6 @@ namespace DevIdent.Forms
 
         #region Работа с очисткой
 
-        private static readonly InfoForm Info = new InfoForm();
-
         #region Очистка браузера
 
         private void BrowserWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -468,17 +501,7 @@ namespace DevIdent.Forms
 
         #endregion
 
-        #endregion
-
-        private void ОчисткаStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            SysClearBtn_Click(sender, e);
-        }
-
-        private void БраузерыStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            BrowserBtn_Click(sender, e);
-        }
+        #region Autorun Форма
 
         public AutorunForm _autorunForm;
 
@@ -496,64 +519,9 @@ namespace DevIdent.Forms
             }
         }
 
-        private void ChangeFormStyle()
-        {
-            if (_servicesForm != null)
-            {
-                _servicesForm.FormSettings();
-            }
-            if (_uninstallForm != null)
-            {
-                _uninstallForm.FormSettings();
-            }
-            if (_sensorForm != null)
-            {
-                _sensorForm.FormSettings();
-            }
-            if (_autorunForm != null)
-            {
-                _autorunForm.FormSettings();
-            }
-        }
+        #endregion
 
-        private void SetTheme_Click(object sender, EventArgs e)
-        {
-            var color = colorEditor1.Color;
-            ThemeChanger.SetUserTheme(color);
-            this.ChangeColor(color);
-            ContentPanel.ChangeColor(ThemeChanger.panelColor);
-            TransparencyKey = Color.FromArgb(Math.Min(Math.Abs(color.R - 13), 255), Math.Min(Math.Abs(color.G - 12), 255), Math.Min(Math.Abs(color.B - 11), 255));
-            InvPanel.BackColor = TransparencyKey;
-            MenuPanel.ChangeColor(ThemeChanger.contentColor);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
-            {
-                button.ChangeColor(ThemeChanger.buttonColor);
-            }
-            ChangeFormStyle();
-        }
+        #endregion
 
-        private void SetDefaultTheme_Click(object sender, EventArgs e)
-        {
-            ContentPanel.BackColor = Color.FromArgb(23, 28, 42);
-            MenuPanel.BackColor = Color.FromArgb(29, 34, 47);
-            BackColor = Color.FromArgb(0, 0, 125);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
-            {
-                button.ChangeColor(Color.FromArgb(0, 0, 200));
-            }
-            ThemeChanger.SetDefaultTheme();
-            colorEditor1.Color = Settings.Default.ColorForm;
-            ChangeFormStyle();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            Width = 950;
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-            Width = 650;
-        }
     }
 }

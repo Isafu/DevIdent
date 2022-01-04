@@ -138,20 +138,20 @@ namespace DevIdent.Forms
 
         public void FormSettings()
         {
-            ContentPanel.BackColor = Settings.Default.ColorContent;
-            BackColor = Settings.Default.ColorForm;
+            ContentPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             foreach (PictureBox button in this.Controls.OfType<PictureBox>())
             {
-                button.ChangeColor(Settings.Default.ColorButtonsDefault);
+                button.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
             }
-            UninstallBox.BackColor = Settings.Default.ColorContent;
+            UninstallBox.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
             foreach (ToolStripMenuItem item in MenuStrip.Items)
             {
-                item.BackColor = Settings.Default.ColorForm;
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             }
             foreach (ToolStripMenuItem item in CreateInfoFileToolStripMenuItem.DropDownItems)
             {
-                item.BackColor = Settings.Default.ColorForm;
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             }
         }
 
@@ -163,8 +163,8 @@ namespace DevIdent.Forms
             DoubleClick += (s, e) => { CenterToScreen(); };
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
-                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
+                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
             }
             FormSettings();
         }

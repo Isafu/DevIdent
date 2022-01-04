@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -19,8 +20,8 @@ namespace DevIdent.Forms
             CloseBth.Click += (s, e) => { Close(); };
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
-                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
+                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
             }
         }
 
@@ -37,16 +38,16 @@ namespace DevIdent.Forms
 
         public void FormSettings()
         {
-            BackColor = Settings.Default.ColorForm;
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             foreach (PictureBox picture in Controls.OfType<PictureBox>())
             {
-                picture.ChangeColor(Settings.Default.ColorButtonsDefault);
+                picture.ChangeColor(ColorTranslator.FromHtml("#"+ Settings.Default.ColorButtonsDefault.Name));
             }
             foreach (ToolStripMenuItem item in MenuStrip.Items)
             {
-                item.BackColor = Settings.Default.ColorForm;
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             }
-            AutorunList.BackColor = Settings.Default.ColorContent;
+            AutorunList.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
         }
 
         private void GetProgramsFromSchedul()
