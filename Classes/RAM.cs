@@ -5,8 +5,7 @@ namespace DevIdent.Classes
 {
     public static class RAM
     {
-
-        private static readonly ManagementObjectSearcher RamSearsherFromOs =
+        private static readonly ManagementObjectSearcher RamSearcherFromOs =
             new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem");
 
         private static readonly ManagementObjectSearcher Searcher =
@@ -14,98 +13,13 @@ namespace DevIdent.Classes
 
         private static ulong _totalMemoryCapacity;
 
-        #region Получение информации
-
-        public static readonly string[] ramInfoList = { "", "", "", "", "", "" };
-
-        public static void GetRamInfo(ManagementObjectSearcher searcher)
-        {
-            if (ramInfoList[0]?.Length != 0)
-            {
-                return;
-            }
-
-            foreach (ManagementBaseObject o in searcher.Get())
-            {
-                int i = 0;
-                ManagementObject queryObj = (ManagementObject)o;
-                try
-                {
-                    ramInfoList[i] = "Общий объем памяти ОЗУ: " + GetRamCapacity() + "МБ";
-                    ++i;
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить информацию о объеме памяти ОЗУ";
-                    ++i;
-                }
-
-                try
-                {
-                    ramInfoList[i] = "Тактовая частота ОЗУ: " + queryObj["ConfiguredClockSpeed"];
-                    ++i;
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить информацию о тактовой частоте ОЗУ";
-                    ++i;
-                }
-
-                try
-                {
-                    ramInfoList[i] = "Тип памяти ОЗУ: " + GetTypeOfRamMemory();
-                    ++i;
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить информацию о типе памяти ОЗУ";
-                    ++i;
-                }
-
-                try
-                {
-                    ramInfoList[i] = "Форм фактор ОЗУ: " + GetFormFactorOfRam();
-                    ++i;
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить информацию о форм факторе ОЗУ";
-                    ++i;
-                }
-
-                try
-                {
-                    ramInfoList[i] = "Минимальный вольтаж: " + double.Parse(queryObj["MinVoltage"].ToString()) / 1000 +
-                                     " В";
-                    ++i;
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить данные о минимальном вольтаже";
-                    ++i;
-                }
-
-                try
-                {
-                    ramInfoList[i] = "Максимальный вольтаж: " + double.Parse(queryObj["MaxVoltage"].ToString()) / 1000 +
-                                     " В";
-                }
-                catch
-                {
-                    ramInfoList[i] = "Не удалось получить данные о максимальном вольтаже";
-                }
-            }
-        }
-
-        #endregion
-
         #region Количество оперативной памяти
 
         public static ulong GetRamCapacity()
         {
-            foreach (ManagementBaseObject o in RamSearsherFromOs.Get())
+            foreach (var o in RamSearcherFromOs.Get())
             {
-                ManagementObject queryObj = (ManagementObject)o;
+                var queryObj = (ManagementObject)o;
                 _totalMemoryCapacity = (ulong)queryObj["TotalVisibleMemorySize"] / 1024;
                 return _totalMemoryCapacity;
             }
@@ -119,9 +33,9 @@ namespace DevIdent.Classes
 
         public static ulong GetBusyRamCapacity()
         {
-            foreach (ManagementBaseObject o in RamSearsherFromOs.Get())
+            foreach (var o in RamSearcherFromOs.Get())
             {
-                ManagementObject queryObj = (ManagementObject)o;
+                var queryObj = (ManagementObject)o;
                 return _totalMemoryCapacity - (ulong)queryObj["FreePhysicalMemory"] / 1024;
             }
 
@@ -130,26 +44,14 @@ namespace DevIdent.Classes
 
         #endregion Количество свободной памяти
 
-        #region Процент занятой памяти
-
-        public static int GetProcentOfBusyRam()
-        {
-            while (true)
-            {
-                return (int)(GetBusyRamCapacity() * 100 / _totalMemoryCapacity);
-            }
-        }
-
-        #endregion Процент занятой памяти
-
         #region Тип памяти ОЗУ
 
         private static string GetTypeOfRamMemory()
         {
-            foreach (ManagementBaseObject o in Searcher.Get())
+            foreach (var o in Searcher.Get())
             {
-                ManagementObject queryObj = (ManagementObject)o;
-                int arc = Convert.ToInt32(queryObj["MemoryType"]);
+                var queryObj = (ManagementObject)o;
+                var arc = Convert.ToInt32(queryObj["MemoryType"]);
                 switch (arc)
                 {
                     case 2:
@@ -238,10 +140,10 @@ namespace DevIdent.Classes
 
         private static string GetFormFactorOfRam()
         {
-            foreach (ManagementBaseObject o in Searcher.Get())
+            foreach (var o in Searcher.Get())
             {
-                ManagementObject queryObj = (ManagementObject)o;
-                int formFactor = Convert.ToInt32(queryObj["FormFactor"]);
+                var queryObj = (ManagementObject)o;
+                var formFactor = Convert.ToInt32(queryObj["FormFactor"]);
                 switch (formFactor)
                 {
                     case 2:
@@ -317,5 +219,86 @@ namespace DevIdent.Classes
 
         #endregion Форм фактор
 
+        #region Получение информации
+
+        public static readonly string[] ramInfoList = { "", "", "", "", "", "" };
+
+        public static void GetRamInfo(ManagementObjectSearcher searcher)
+        {
+            if (ramInfoList[0]?.Length != 0) return;
+
+            foreach (var o in searcher.Get())
+            {
+                var i = 0;
+                var queryObj = (ManagementObject)o;
+                try
+                {
+                    ramInfoList[i] = "Общий объем памяти ОЗУ: " + GetRamCapacity() + "МБ";
+                    ++i;
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить информацию о объеме памяти ОЗУ";
+                    ++i;
+                }
+
+                try
+                {
+                    ramInfoList[i] = "Тактовая частота ОЗУ: " + queryObj["ConfiguredClockSpeed"];
+                    ++i;
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить информацию о тактовой частоте ОЗУ";
+                    ++i;
+                }
+
+                try
+                {
+                    ramInfoList[i] = "Тип памяти ОЗУ: " + GetTypeOfRamMemory();
+                    ++i;
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить информацию о типе памяти ОЗУ";
+                    ++i;
+                }
+
+                try
+                {
+                    ramInfoList[i] = "Форм фактор ОЗУ: " + GetFormFactorOfRam();
+                    ++i;
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить информацию о форм факторе ОЗУ";
+                    ++i;
+                }
+
+                try
+                {
+                    ramInfoList[i] = "Минимальный вольтаж: " + double.Parse(queryObj["MinVoltage"].ToString()) / 1000 +
+                                     " В";
+                    ++i;
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить данные о минимальном вольтаже";
+                    ++i;
+                }
+
+                try
+                {
+                    ramInfoList[i] = "Максимальный вольтаж: " + double.Parse(queryObj["MaxVoltage"].ToString()) / 1000 +
+                                     " В";
+                }
+                catch
+                {
+                    ramInfoList[i] = "Не удалось получить данные о максимальном вольтаже";
+                }
+            }
+        }
+
+        #endregion
     }
 }

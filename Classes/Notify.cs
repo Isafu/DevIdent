@@ -11,8 +11,9 @@ namespace DevIdent.Classes
         public static void ShowNotify(string text, Image image)
         {
             notify.Font = new Font("Consolas", 12);
-            notify.MaxTextWidth = 700;
-            notify.Alert(text, NotificationType.Custom, Settings.Default.ColorForm, image);
+            notify.MaxTextWidth = 1000;
+            notify.Alert(text, NotificationType.Custom,
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty)), image);
         }
     }
 }

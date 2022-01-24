@@ -16,6 +16,7 @@ namespace DevIdent.Forms
 {
     public partial class MainForm : Form
     {
+
         #region Работа с главной формой
 
         #region Права администратора
@@ -27,37 +28,33 @@ namespace DevIdent.Forms
 
         #endregion
 
-        #region Изменение формы если не админ
-
-        #endregion
-
         #region Форма
 
         public MainForm()
         {
             InitializeComponent();
+            if (Settings.Default.ResetParams == 0)
+            {
+                Settings.Default.Reset();
+                Settings.Default.ResetParams = 1;
+            }
             ContentPanel.DoubleClick += (s, e) => CenterToScreen();
             MenuPanel.DoubleClick += (s, e) => CenterToScreen();
             TitleLabel.Click += (s, e) => Process.Start("https://github.com/Isafu");
 
-            foreach (Label label in MenuPanel.Controls.OfType<Label>())
-            {
+            foreach (var label in MenuPanel.Controls.OfType<Label>())
                 label.MouseEnter += (s, e) => { label.Font = new Font("Consolas", 12, FontStyle.Underline); };
-            }
 
-            foreach (Label label in MenuPanel.Controls.OfType<Label>())
-            {
+            foreach (var label in MenuPanel.Controls.OfType<Label>())
                 label.MouseLeave += (s, e) => { label.Font = new Font("Consolas", 12); };
-            }
 
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            foreach (var picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsHover; };
-                picture.MouseLeave += (s, e) => { picture.BackColor = Settings.Default.ColorButtonsDefault; };
+                picture.MouseEnter += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsHover); };
+                picture.MouseLeave += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsDefault); };
             }
 
             Click += (s, e) => { BringToFront(); };
-
         }
 
         #endregion
@@ -73,18 +70,21 @@ namespace DevIdent.Forms
                 MenuPanel.Controls.Remove(UninstallBtn);
                 MenuPanel.Controls.Remove(ServicesBtn);
                 MenuPanel.Controls.Remove(AutorunBtn);
-                BrowserBtn.Location = new Point(10, 220);
+                MenuPanel.Controls.Remove(BrowserBtn);
                 Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Close);
             }
             Parallel.Invoke(
-                () => Processor.GetCpuinfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor")),
+                () => Processor.GetCpuinfo(new ManagementObjectSearcher("root\\CIMV2",
+                    "SELECT * FROM Win32_Processor")),
                 () => OS.GetSysInfo(),
                 () => BIOS.GetBIOSInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BIOS")),
-                () => VideoController.GetVideoInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController")),
+                () => VideoController.GetVideoInfo(new ManagementObjectSearcher("root\\CIMV2",
+                    "SELECT * FROM Win32_VideoController")),
                 () => RAM.GetRamInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory")),
-                () => MotherBoard.GetMotherBoardInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard")),
+                () => MotherBoard.GetMotherBoardInfo(new ManagementObjectSearcher("root\\CIMV2",
+                    "SELECT * FROM Win32_BaseBoard")),
                 () => GetDiskInfo()
-                );
+            );
             SysInfoLabel_Click(sender, e);
             BringToFront();
         }
@@ -97,10 +97,7 @@ namespace DevIdent.Forms
 
         private void LabelVisible(int start, int end, bool visible)
         {
-            for (int i = start; i < end + 1; i++)
-            {
-                ContentPanel.Controls["InfoLb" + i].Visible = visible;
-            }
+            for (var i = start; i < end + 1; i++) ContentPanel.Controls["InfoLb" + i].Visible = visible;
         }
 
         #region Трей
@@ -120,7 +117,7 @@ namespace DevIdent.Forms
         {
             get
             {
-                CreateParams handleParam = base.CreateParams;
+                var handleParam = base.CreateParams;
                 handleParam.ExStyle |= 0x02000000;
                 return handleParam;
             }
@@ -130,79 +127,76 @@ namespace DevIdent.Forms
 
         private void FormSettings()
         {
-            Width = 650;
+            //Settings.Default.Reset();
+            CurrentOpacityValueLb.Text = Settings.Default.Opacity * 100 + "%";
+            OpacityBar.Value = (int)(Settings.Default.Opacity * 100);
+            Opacity = Settings.Default.Opacity;
             Controls.Add(MenuPanel);
             Controls.Add(ContentPanel);
-            ContentPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorPanel.Name);
-            MenuPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Name);
-            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
-            {
-                picture.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
-            }
-            colorEditor1.Color = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
+            MenuPanel.ChangeColor(Settings.Default.ColorMenu);
+            ContentPanel.ChangeColor(Settings.Default.ColorContent);
+            this.ChangeColor(Settings.Default.ColorForm);
+            foreach (var picture in Controls.OfType<PictureBox>())
+                picture.ChangeColor(Settings.Default.ColorButtonsDefault);
+            ColorEditor.Color = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
         }
 
         #region Тема для окон
 
         private void ChangeFormStyle()
         {
-            if (_servicesForm != null)
-            {
-                _servicesForm.FormSettings();
-            }
-            if (_uninstallForm != null)
-            {
-                _uninstallForm.FormSettings();
-            }
-            if (_sensorForm != null)
-            {
-                _sensorForm.FormSettings();
-            }
-            if (_autorunForm != null)
-            {
-                _autorunForm.FormSettings();
-            }
+            if (_servicesForm != null) _servicesForm.FormSettings();
+            if (_uninstallForm != null) _uninstallForm.FormSettings();
+            if (_autorunForm != null) _autorunForm.FormSettings();
         }
 
         private void SetTheme_Click(object sender, EventArgs e)
         {
-            var color = colorEditor1.Color;
-            ThemeChanger.SetUserTheme(color);
-            this.ChangeColor(color);
-            ContentPanel.ChangeColor(ThemeChanger.panelColor);
-            TransparencyKey = Color.FromArgb(Math.Min(Math.Abs(color.R - 13), 255), Math.Min(Math.Abs(color.G - 12), 255), Math.Min(Math.Abs(color.B - 11), 255));
-            InvPanel.BackColor = TransparencyKey;
-            MenuPanel.ChangeColor(ThemeChanger.contentColor);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
-            {
-                button.ChangeColor(ThemeChanger.buttonColor);
-            }
+            var color = ColorEditor.Color;
+            Opacity = (double)OpacityBar.Value / 100;
+            ThemeChanger.SetUserTheme(color, OpacityBar.Value);
+            this.ChangeColor(string.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B));
+            MenuPanel.ChangeColor(Settings.Default.ColorMenu);
+            ContentPanel.ChangeColor(Settings.Default.ColorContent);
+            foreach (var button in Controls.OfType<PictureBox>())
+                button.ChangeColor(Settings.Default.ColorButtonsDefault);
             ChangeFormStyle();
         }
 
         private void SetDefaultTheme_Click(object sender, EventArgs e)
         {
-            ContentPanel.BackColor = Color.FromArgb(23, 28, 42);
-            MenuPanel.BackColor = Color.FromArgb(29, 34, 47);
-            BackColor = Color.FromArgb(0, 0, 125);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
-            {
-                button.ChangeColor(Color.FromArgb(0, 0, 200));
-            }
+            Opacity = 0.85;
+            CurrentOpacityValueLb.Text = "85%";
+            OpacityBar.Value = 85;
+            ContentPanel.BackColor = ColorTranslator.FromHtml("#171c2a");
+            MenuPanel.BackColor = ColorTranslator.FromHtml("#1d222f");
+            BackColor = ColorTranslator.FromHtml("#00007d");
+            foreach (var button in Controls.OfType<PictureBox>()) button.ChangeColor("0000c8");
             ThemeChanger.SetDefaultTheme();
-            colorEditor1.Color = Settings.Default.ColorForm;
+            ColorEditor.Color = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             ChangeFormStyle();
         }
 
+        private void OpacityBar_Scroll(object sender, EventArgs e)
+        {
+            CurrentOpacityValueLb.Text = OpacityBar.Value + "%";
+            Settings.Default.Opacity = (double)OpacityBar.Value / 100;
+            ChangeFormStyle();
+            Opacity = Settings.Default.Opacity;
+            Settings.Default.Save();
+        }
 
+        private void ColorEditor_ColorChanged(object sender, EventArgs e)
+        {
+            CurrentColorBtn.BackColor = ColorEditor.Color;
+        }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void OpenThemeEditorBtn_Click(object sender, EventArgs e)
         {
             Width = 950;
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void CloseThemeEditorBtn_Click(object sender, EventArgs e)
         {
             Width = 650;
         }
@@ -214,7 +208,7 @@ namespace DevIdent.Forms
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
             Capture = false;
-            Message m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
+            var m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
         }
 
@@ -239,10 +233,7 @@ namespace DevIdent.Forms
 
         private void ClickOnComponent(int countOfLines, string[] array)
         {
-            for (int i = 1; i < countOfLines; i++)
-            {
-                ContentPanel.Controls["InfoLb" + i].Text = array[i - 1];
-            }
+            for (var i = 1; i < countOfLines; i++) ContentPanel.Controls["InfoLb" + i].Text = array[i - 1];
         }
 
         #endregion
@@ -323,28 +314,29 @@ namespace DevIdent.Forms
         {
             driveInfoList.Clear();
             drives = DriveInfo.GetDrives();
-            int i = 0;
+            var i = 0;
             try
             {
-                foreach (DriveInfo drive in drives)
+                foreach (var drive in drives)
                 {
                     try
                     {
-                        driveInfoList.Add("Диск " + drives[i].Name + ", общий объем: " + drives[i].TotalSize / 1073741824
-                            + " ГБ" + ", доступный объем: " + drives[i].AvailableFreeSpace / 1073741824 +
-                        " ГБ" + Environment.NewLine + "Файловая система: " + drives[i].DriveFormat);
+                        driveInfoList.Add("Диск " + drives[i].Name + ", общий объем: " +
+                                          drives[i].TotalSize / 1073741824
+                                          + " ГБ" + ", доступный объем: " + drives[i].AvailableFreeSpace / 1073741824 +
+                                          " ГБ" + Environment.NewLine + "Файловая система: " + drives[i].DriveFormat);
                     }
                     catch
                     {
                         driveInfoList.Add("Не удалось получить инфомацию о диске " + drives[i].Name);
                     }
+
                     i++;
                 }
             }
 
             catch
             {
-
             }
         }
 
@@ -366,15 +358,22 @@ namespace DevIdent.Forms
 
         private void BrowserWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify(((UniversalCleaner.browserSize) / 1048576) > 1024 ? "Браузеры: очищено " + (UniversalCleaner.browserSize) / 1073741824
-                   + " ГБ" : "Браузеры: очищено " + (UniversalCleaner.browserSize) / 1048576 + " МБ", Resources.Close);
+            Notify.ShowNotify(UniversalCleaner.browserSize / 1048576 > 1024
+                ? "Браузеры: очищено " + UniversalCleaner.browserSize / 1073741824
+                                       + " ГБ"
+                : "Браузеры: очищено " + UniversalCleaner.browserSize / 1048576 + " МБ", Resources.Close);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки браузеров, размер удаленных данных: "
+                + (UniversalCleaner.browserSize / 1048576 > 1024 ? UniversalCleaner.browserSize / 1073741824
+                + " ГБ" : UniversalCleaner.browserSize / 1048576 + " МБ") + Environment.NewLine);
         }
 
         private void BrowserBtn_Click(object sender, EventArgs e)
         {
-            BackgroundWorker _browserWorker = new BackgroundWorker();
+            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + "  || Начало очистки браузеров" + Environment.NewLine);
+            var _browserWorker = new BackgroundWorker();
             _browserWorker.DoWork += CleanBrowser;
-            _browserWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BrowserWorkerCompleted);
+            _browserWorker.RunWorkerCompleted += BrowserWorkerCompleted;
             _browserWorker.RunWorkerAsync();
             Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.Close);
         }
@@ -383,20 +382,20 @@ namespace DevIdent.Forms
         {
             UniversalCleaner.browserSize = 0;
             long length = 0;
-            for (int i = 0; i < Browser.directoryOfChrome.Length; i++)
+            foreach (var t in Browser.directoryOfChrome)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(Browser.directoryOfChrome[i]);
+                length += UniversalCleaner.DirectoryCleaner(t);
             }
-            for (int i = 0; i < Browser.directoryOfGx.Length; i++)
+            foreach (var t in Browser.directoryOfGx)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(Browser.directoryOfGx[i]);
+                length += UniversalCleaner.DirectoryCleaner(t);
             }
-            for (int i = 0; i < Browser.directoryOfOpera.Length; i++)
+            foreach (var t in Browser.directoryOfOpera)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(Browser.directoryOfOpera[i]);
+                length += UniversalCleaner.DirectoryCleaner(t);
             }
             UniversalCleaner.size = 0;
             length += UniversalCleaner.FileCleaner(Browser.operaGxCachePathes);
@@ -416,10 +415,10 @@ namespace DevIdent.Forms
         {
             UniversalCleaner.sysSize = 0;
             long length = 0;
-            for (int i = 0; i < SystemCleaner.directoryPathes.Length; i++)
+            foreach (DirectoryInfo t in SystemCleaner.directoryPathes)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(SystemCleaner.directoryPathes[i]);
+                length += UniversalCleaner.DirectoryCleaner(t);
             }
             UniversalCleaner.size = 0;
             length += UniversalCleaner.FileCleaner(SystemCleaner.filePathes);
@@ -429,17 +428,24 @@ namespace DevIdent.Forms
 
         public void SysClearBtn_Click(object sender, EventArgs e)
         {
-            BackgroundWorker _sysWorker = new BackgroundWorker();
+            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + "  || Начало очистки системы" + Environment.NewLine);
+            var _sysWorker = new BackgroundWorker();
             _sysWorker.DoWork += CleanSystem;
-            _sysWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(SysWorkerCompleted);
+            _sysWorker.RunWorkerCompleted += SysWorkerCompleted;
             _sysWorker.RunWorkerAsync();
             Notify.ShowNotify("Начало очистки системы, подождите", Resources.Close);
         }
 
         private void SysWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify(((UniversalCleaner.sysSize) / 1048576) > 1024 ? "Система: очищено " + (UniversalCleaner.sysSize) / 1073741824
-                   + " ГБ" : "Система: очищено " + (UniversalCleaner.sysSize) / 1048576 + " МБ", Resources.Close);
+            Notify.ShowNotify(UniversalCleaner.sysSize / 1048576 > 1024
+                ? "Система: очищено " + UniversalCleaner.sysSize / 1073741824
+                                      + " ГБ"
+                : "Система: очищено " + UniversalCleaner.sysSize / 1048576 + " МБ", Resources.Close);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки системы, размер удаленных данных: "
+                + (UniversalCleaner.sysSize / 1048576 > 1024 ? UniversalCleaner.sysSize / 1073741824
+                + " ГБ" : UniversalCleaner.sysSize / 1048576 + " МБ") + Environment.NewLine);
         }
 
         #endregion
@@ -447,19 +453,6 @@ namespace DevIdent.Forms
         #endregion
 
         #region Побочные формы
-
-        #region Сенсор форма
-
-        public SensorForm _sensorForm;
-
-        private void SensorBtn_Click(object sender, EventArgs e)
-        {
-            Visible = false;
-            _sensorForm = new SensorForm();
-            _sensorForm.Show();
-        }
-
-        #endregion
 
         #region Службы
 
@@ -523,5 +516,16 @@ namespace DevIdent.Forms
 
         #endregion
 
+        private void LogBtn_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(@"C:\DevLog.txt"))
+            {
+                Process.Start(@"C:\DevLog.txt");
+            }
+            else
+            {
+                Notify.ShowNotify("Файл не существует", Resources.Close);
+            }
+        }
     }
 }

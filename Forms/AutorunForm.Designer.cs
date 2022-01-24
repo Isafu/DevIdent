@@ -111,9 +111,11 @@
             this.AutorunList.ContextMenuStrip = this.MenuStrip;
             this.AutorunList.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AutorunList.ForeColor = System.Drawing.Color.White;
+            this.AutorunList.FullRowSelect = true;
             this.AutorunList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.AutorunList.HideSelection = false;
             this.AutorunList.Location = new System.Drawing.Point(0, 30);
+            this.AutorunList.Margin = new System.Windows.Forms.Padding(5);
             this.AutorunList.MultiSelect = false;
             this.AutorunList.Name = "AutorunList";
             this.AutorunList.ShowGroups = false;
@@ -151,9 +153,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AutorunForm";
+            this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AutorunForm";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.AutorunForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AutorunForm_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();

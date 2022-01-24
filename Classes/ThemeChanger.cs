@@ -6,36 +6,35 @@ namespace DevIdent.Classes
 {
     internal static class ThemeChanger
     {
-        public static Color contentColor;
-        public static Color buttonColor;
-        public static Color buttonHoverColor;
-        public static Color panelColor;
-
         public static void SetDefaultTheme()
         {
-            Settings.Default.ColorContent = Color.FromArgb(23, 28, 42);
-            Settings.Default.ColorPanel = Color.FromArgb(29, 34, 47);
-            Settings.Default.ColorMenu = Color.FromArgb(23, 28, 42);
-            Settings.Default.ColorForm = Color.FromArgb(0, 0, 125);
-            Settings.Default.ColorButtonsDefault = Color.FromArgb(0, 0, 200);
-            Settings.Default.ColorButtonsHover = Color.FromArgb(0, 0, 255);
+            Settings.Default.Opacity = 0.85;
+            Settings.Default.ColorForm = $"{0:X2}{0:X2}{125:X2}";
+            Settings.Default.ColorMenu = $"{29:X2}{34:X2}{47:X2}";
+            Settings.Default.ColorButtonsDefault = $"{0:X2}{0:X2}{200:X2}";
+            Settings.Default.ColorButtonsHover = $"{0:X2}{0:X2}{254:X2}";
+            Settings.Default.ColorContent = $"{23:X2}{28:X2}{42:X2}";
             Settings.Default.Save();
         }
 
-        public static void SetUserTheme(Color color)
+        public static void SetUserTheme(Color color, double opacity)
         {
-            contentColor = Color.FromArgb(Math.Min((color.R + 20), 255), Math.Min((color.G + 20), 255), Math.Min((color.B + 20), 255));
-            panelColor = Color.FromArgb(Math.Min(Math.Abs(color.R - 10), 255), Math.Min(Math.Abs(color.G - 10), 255), Math.Min(Math.Abs(color.B - 10), 255));
-            contentColor = Color.FromArgb(Math.Min((color.R + 20), 255), Math.Min((color.G + 20), 255), Math.Min((color.B + 20), 255));
-            buttonColor = Color.FromArgb(Math.Min((color.R + 40), 255), Math.Min((color.G + 40), 255), Math.Min((color.B + 40), 255));
-            buttonHoverColor = Color.FromArgb(Math.Min((color.R + 69), 255), Math.Min((color.G + 60), 255), Math.Min((color.B + 60), 255));
+            Settings.Default.Opacity = opacity / 100;
 
-            Settings.Default.ColorContent = contentColor;
-            Settings.Default.ColorPanel = panelColor;
-            Settings.Default.ColorMenu = contentColor;
-            Settings.Default.ColorForm = color;
-            Settings.Default.ColorButtonsDefault = buttonColor;
-            Settings.Default.ColorButtonsHover = buttonHoverColor;
+            Settings.Default.ColorContent =
+                $"#{Math.Min(color.R + 5, 255):X2}{Math.Min(color.G + 5, 255):X2}{Math.Min(color.B + 5, 255):X2}";
+
+            Settings.Default.ColorMenu =
+                $"#{Math.Min(color.R + 20, 255):X2}{Math.Min(color.G + 20, 255):X2}{Math.Min(color.B + 20, 255):X2}";
+
+            Settings.Default.ColorForm = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+
+            Settings.Default.ColorButtonsDefault =
+                $"#{Math.Min(color.R + 40, 255):X2}{Math.Min(color.G + 40, 255):X2}{Math.Min(color.B + 40, 255):X2}";
+
+            Settings.Default.ColorButtonsHover =
+                $"#{Math.Min(color.R + 69, 255):X2}{Math.Min(color.G + 60, 255):X2}{Math.Min(color.B + 60, 255):X2}";
+
             Settings.Default.Save();
         }
     }

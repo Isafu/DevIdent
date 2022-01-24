@@ -32,13 +32,20 @@ namespace DevIdent.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServicesForm));
             this.ServiceBox = new System.Windows.Forms.ListBox();
-            this.MenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MainMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenServicesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WorkWithServicesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.запуситьСлужбуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.остановитьСлужбуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.приостановитьСлужбуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.перезапуститьСлужбуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.WorkWithServiceMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.RunMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.StopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PauseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RestartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ServiceSettingsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AutoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AutoDelayedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ManualMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OffMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.MenuPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -46,7 +53,9 @@ namespace DevIdent.Forms
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.SearchBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.MenuStrip.SuspendLayout();
+            this.MainMenu.SuspendLayout();
+            this.WorkWithServiceMenu.SuspendLayout();
+            this.ServiceSettingsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
             this.MenuPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
@@ -57,25 +66,29 @@ namespace DevIdent.Forms
             // 
             this.ServiceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
             this.ServiceBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ServiceBox.ContextMenuStrip = this.MenuStrip;
+            this.ServiceBox.ContextMenuStrip = this.MainMenu;
             this.ServiceBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.ServiceBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ServiceBox.ForeColor = System.Drawing.Color.White;
             this.ServiceBox.ItemHeight = 15;
             this.ServiceBox.Location = new System.Drawing.Point(10, 1);
+            this.ServiceBox.Margin = new System.Windows.Forms.Padding(5);
             this.ServiceBox.Name = "ServiceBox";
             this.ServiceBox.Size = new System.Drawing.Size(490, 252);
             this.ServiceBox.TabIndex = 0;
-            this.ServiceBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
-            this.ServiceBox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.listBox1_MeasureItem);
+            this.ServiceBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ServiceBox_DrawItem);
+            this.ServiceBox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ServiceBox_MeasureItem);
             // 
-            // MenuStrip
+            // MainMenu
             // 
-            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenu.ImageScalingSize = new System.Drawing.Size(0, 0);
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenServicesMenuItem,
             this.WorkWithServicesMenuItem});
-            this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(230, 52);
+            this.MainMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.MainMenu.Name = "MenuStrip";
+            this.MainMenu.ShowImageMargin = false;
+            this.MainMenu.Size = new System.Drawing.Size(205, 52);
             // 
             // OpenServicesMenuItem
             // 
@@ -84,60 +97,142 @@ namespace DevIdent.Forms
             this.OpenServicesMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.OpenServicesMenuItem.ForeColor = System.Drawing.Color.White;
             this.OpenServicesMenuItem.Name = "OpenServicesMenuItem";
-            this.OpenServicesMenuItem.Size = new System.Drawing.Size(229, 24);
+            this.OpenServicesMenuItem.Size = new System.Drawing.Size(204, 24);
             this.OpenServicesMenuItem.Text = "Открыть службы";
+            this.OpenServicesMenuItem.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.OpenServicesMenuItem.Click += new System.EventHandler(this.OpenServicesMenuItem_Click);
             // 
             // WorkWithServicesMenuItem
             // 
             this.WorkWithServicesMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.WorkWithServicesMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.WorkWithServicesMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.запуситьСлужбуToolStripMenuItem,
-            this.остановитьСлужбуToolStripMenuItem,
-            this.приостановитьСлужбуToolStripMenuItem,
-            this.перезапуститьСлужбуToolStripMenuItem});
+            this.WorkWithServicesMenuItem.DropDown = this.WorkWithServiceMenu;
             this.WorkWithServicesMenuItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.WorkWithServicesMenuItem.ForeColor = System.Drawing.Color.White;
+            this.WorkWithServicesMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.WorkWithServicesMenuItem.Name = "WorkWithServicesMenuItem";
-            this.WorkWithServicesMenuItem.Size = new System.Drawing.Size(229, 24);
+            this.WorkWithServicesMenuItem.Size = new System.Drawing.Size(204, 24);
             this.WorkWithServicesMenuItem.Text = "Работа со службой";
+            this.WorkWithServicesMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.WorkWithServicesMenuItem.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            this.WorkWithServicesMenuItem.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
-            // запуситьСлужбуToolStripMenuItem
+            // WorkWithServiceMenu
             // 
-            this.запуситьСлужбуToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.запуситьСлужбуToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.запуситьСлужбуToolStripMenuItem.Name = "запуситьСлужбуToolStripMenuItem";
-            this.запуситьСлужбуToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.запуситьСлужбуToolStripMenuItem.Text = "Запусить службу";
-            this.запуситьСлужбуToolStripMenuItem.Click += new System.EventHandler(this.запуситьСлужбуToolStripMenuItem_Click);
+            this.WorkWithServiceMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.WorkWithServiceMenu.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.WorkWithServiceMenu.ImageScalingSize = new System.Drawing.Size(0, 0);
+            this.WorkWithServiceMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RunMenuItem,
+            this.StopMenuItem,
+            this.PauseMenuItem,
+            this.RestartMenuItem,
+            this.SettingsMenuItem});
+            this.WorkWithServiceMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.WorkWithServiceMenu.Name = "MenuStrip";
+            this.WorkWithServiceMenu.ShowImageMargin = false;
+            this.WorkWithServiceMenu.Size = new System.Drawing.Size(234, 146);
             // 
-            // остановитьСлужбуToolStripMenuItem
+            // RunMenuItem
             // 
-            this.остановитьСлужбуToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.остановитьСлужбуToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.остановитьСлужбуToolStripMenuItem.Name = "остановитьСлужбуToolStripMenuItem";
-            this.остановитьСлужбуToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.остановитьСлужбуToolStripMenuItem.Text = "Остановить службу";
-            this.остановитьСлужбуToolStripMenuItem.Click += new System.EventHandler(this.остановитьСлужбуToolStripMenuItem_Click);
+            this.RunMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.RunMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.RunMenuItem.ForeColor = System.Drawing.Color.White;
+            this.RunMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.RunMenuItem.Name = "RunMenuItem";
+            this.RunMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.RunMenuItem.Text = "Запусить службу";
+            this.RunMenuItem.Click += new System.EventHandler(this.RunMenuItem_Click);
             // 
-            // приостановитьСлужбуToolStripMenuItem
+            // StopMenuItem
             // 
-            this.приостановитьСлужбуToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.приостановитьСлужбуToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.приостановитьСлужбуToolStripMenuItem.Name = "приостановитьСлужбуToolStripMenuItem";
-            this.приостановитьСлужбуToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.приостановитьСлужбуToolStripMenuItem.Text = "Приостановить службу";
-            this.приостановитьСлужбуToolStripMenuItem.Click += new System.EventHandler(this.приостановитьСлужбуToolStripMenuItem_Click);
+            this.StopMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.StopMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.StopMenuItem.ForeColor = System.Drawing.Color.White;
+            this.StopMenuItem.Name = "StopMenuItem";
+            this.StopMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.StopMenuItem.Text = "Остановить службу";
+            this.StopMenuItem.Click += new System.EventHandler(this.StopMenuItem_Click);
             // 
-            // перезапуститьСлужбуToolStripMenuItem
+            // PauseMenuItem
             // 
-            this.перезапуститьСлужбуToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.перезапуститьСлужбуToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.перезапуститьСлужбуToolStripMenuItem.Name = "перезапуститьСлужбуToolStripMenuItem";
-            this.перезапуститьСлужбуToolStripMenuItem.Size = new System.Drawing.Size(258, 24);
-            this.перезапуститьСлужбуToolStripMenuItem.Text = "Перезапустить службу";
-            this.перезапуститьСлужбуToolStripMenuItem.Click += new System.EventHandler(this.перезапуститьСлужбуToolStripMenuItem_Click);
+            this.PauseMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.PauseMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.PauseMenuItem.ForeColor = System.Drawing.Color.White;
+            this.PauseMenuItem.Name = "PauseMenuItem";
+            this.PauseMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.PauseMenuItem.Text = "Приостановить службу";
+            this.PauseMenuItem.Click += new System.EventHandler(this.PauseMenuItem_Click);
+            // 
+            // RestartMenuItem
+            // 
+            this.RestartMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.RestartMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.RestartMenuItem.ForeColor = System.Drawing.Color.White;
+            this.RestartMenuItem.Name = "RestartMenuItem";
+            this.RestartMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.RestartMenuItem.Text = "Перезапустить службу";
+            this.RestartMenuItem.Click += new System.EventHandler(this.RestartMenuItem_Click);
+            // 
+            // SettingsMenuItem
+            // 
+            this.SettingsMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.SettingsMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SettingsMenuItem.DropDown = this.ServiceSettingsMenu;
+            this.SettingsMenuItem.ForeColor = System.Drawing.Color.White;
+            this.SettingsMenuItem.Name = "SettingsMenuItem";
+            this.SettingsMenuItem.Size = new System.Drawing.Size(233, 24);
+            this.SettingsMenuItem.Text = "Настройка запуска";
+            this.SettingsMenuItem.ToolTipText = "Для опытных пользователей";
+            // 
+            // ServiceSettingsMenu
+            // 
+            this.ServiceSettingsMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.ServiceSettingsMenu.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ServiceSettingsMenu.ImageScalingSize = new System.Drawing.Size(0, 0);
+            this.ServiceSettingsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AutoMenuItem,
+            this.AutoDelayedMenuItem,
+            this.ManualMenuItem,
+            this.OffMenuItem});
+            this.ServiceSettingsMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.ServiceSettingsMenu.Name = "MenuStrip";
+            this.ServiceSettingsMenu.ShowImageMargin = false;
+            this.ServiceSettingsMenu.Size = new System.Drawing.Size(351, 100);
+            // 
+            // AutoMenuItem
+            // 
+            this.AutoMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.AutoMenuItem.ForeColor = System.Drawing.Color.White;
+            this.AutoMenuItem.Name = "AutoMenuItem";
+            this.AutoMenuItem.Size = new System.Drawing.Size(350, 24);
+            this.AutoMenuItem.Text = "Автоматически";
+            this.AutoMenuItem.Click += new System.EventHandler(this.AutoMenuItem_Click);
+            // 
+            // AutoDelayedMenuItem
+            // 
+            this.AutoDelayedMenuItem.ForeColor = System.Drawing.Color.White;
+            this.AutoDelayedMenuItem.Name = "AutoDelayedMenuItem";
+            this.AutoDelayedMenuItem.Size = new System.Drawing.Size(350, 24);
+            this.AutoDelayedMenuItem.Text = "Автоматически (отложенный запуск)";
+            this.AutoDelayedMenuItem.Click += new System.EventHandler(this.AutoDelayedMenuItem_Click);
+            // 
+            // ManualMenuItem
+            // 
+            this.ManualMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
+            this.ManualMenuItem.ForeColor = System.Drawing.Color.White;
+            this.ManualMenuItem.Name = "ManualMenuItem";
+            this.ManualMenuItem.Size = new System.Drawing.Size(350, 24);
+            this.ManualMenuItem.Text = "Вручную";
+            this.ManualMenuItem.Click += new System.EventHandler(this.ManualMenuItem_Click);
+            // 
+            // OffMenuItem
+            // 
+            this.OffMenuItem.ForeColor = System.Drawing.Color.White;
+            this.OffMenuItem.Name = "OffMenuItem";
+            this.OffMenuItem.Size = new System.Drawing.Size(350, 24);
+            this.OffMenuItem.Text = "Отключена";
+            this.OffMenuItem.Click += new System.EventHandler(this.OffMenuItem_Click);
             // 
             // CloseBth
             // 
@@ -237,10 +332,11 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Services";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.ServicesForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServicesForm_MouseDown);
-            this.MenuStrip.ResumeLayout(false);
+            this.MainMenu.ResumeLayout(false);
+            this.WorkWithServiceMenu.ResumeLayout(false);
+            this.ServiceSettingsMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanel.PerformLayout();
@@ -261,13 +357,20 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label ServiceInfoLb;
         private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.TextBox SearchBox;
-        private System.Windows.Forms.ContextMenuStrip MenuStrip;
+        private System.Windows.Forms.ContextMenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenServicesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem WorkWithServicesMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem остановитьСлужбуToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem приостановитьСлужбуToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem перезапуститьСлужбуToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem запуситьСлужбуToolStripMenuItem;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ContextMenuStrip WorkWithServiceMenu;
+        private System.Windows.Forms.ToolStripMenuItem RunMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem StopMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PauseMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RestartMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
+        private System.Windows.Forms.ContextMenuStrip ServiceSettingsMenu;
+        private System.Windows.Forms.ToolStripMenuItem AutoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ManualMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OffMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AutoDelayedMenuItem;
     }
 }

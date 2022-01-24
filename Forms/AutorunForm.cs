@@ -5,6 +5,7 @@ using Microsoft.Win32.TaskScheduler;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -14,14 +15,25 @@ namespace DevIdent.Forms
     {
         public AutorunForm(MainForm owner)
         {
+
             Owner = owner;
             InitializeComponent();
             FormSettings();
             CloseBth.Click += (s, e) => { Close(); };
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            foreach (var picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
-                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
+                picture.MouseEnter += (s, e) =>
+                {
+                    picture.BackColor =
+                        ColorTranslator.FromHtml(
+                            "#" + Settings.Default.ColorButtonsHover.Replace("#", string.Empty));
+                };
+                picture.MouseLeave += (s, e) =>
+                {
+                    picture.BackColor =
+                        ColorTranslator.FromHtml("#" +
+                                                 Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
+                };
             }
         }
 
@@ -30,7 +42,7 @@ namespace DevIdent.Forms
         private void AutorunForm_MouseDown(object sender, MouseEventArgs e)
         {
             Capture = false;
-            Message m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
+            var m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
         }
 
@@ -38,60 +50,63 @@ namespace DevIdent.Forms
 
         public void FormSettings()
         {
-            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            try
             {
-                picture.ChangeColor(ColorTranslator.FromHtml("#"+ Settings.Default.ColorButtonsDefault.Name));
+                Opacity = Settings.Default.Opacity;
             }
+            catch
+            {
+            }
+
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
+            foreach (var picture in Controls.OfType<PictureBox>())
+                picture.ChangeColor(Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in MenuStrip.Items)
-            {
-                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            }
-            AutorunList.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
+            AutorunList.BackColor =
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
         }
 
         private void GetProgramsFromSchedul()
         {
-            TaskFolder tf = TaskService.Instance.RootFolder;
-            foreach (Task t in tf.Tasks)
-            {
+            var tf = TaskService.Instance.RootFolder;
+            foreach (var t in tf.Tasks)
                 try
                 {
-                    ListViewItem item = new ListViewItem(t.Name);
+                    var item = new ListViewItem(t.Name);
                     item.SubItems.Add("C:\\Windows\\System32\\Tasks");
                     item.SubItems.Add(t.Enabled ? "Да" : "Нет");
                     AutorunList.Items.Add(item);
                 }
-                catch { }
-            }
+                catch
+                {
+                }
         }
 
         private void GetProgramsFromRegistry()
         {
             RegistryHive[] hives = { RegistryHive.LocalMachine, RegistryHive.CurrentUser };
-            string[] autorunKeys = { @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run" };
+            string[] autorunKeys =
+            {
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+                @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
+            };
 
             foreach (var hive in hives)
-            {
                 using (var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Registry64))
                 {
                     foreach (var keyName in autorunKeys)
-                    {
                         using (var key = baseKey.OpenSubKey(keyName))
                         {
                             if (key != null)
-                            {
                                 foreach (var valueName in key.GetValueNames())
                                 {
-                                    ListViewItem item = new ListViewItem(valueName);
+                                    var item = new ListViewItem(valueName);
                                     item.SubItems.Add(key.GetValue(valueName).ToString());
                                     AutorunList.Items.Add(item);
                                 }
-                            }
                         }
-                    }
                 }
-            }
         }
 
         private void AutorunForm_Load(object sender, EventArgs e)
@@ -105,7 +120,6 @@ namespace DevIdent.Forms
             {
                 FileName = "explorer",
                 Arguments = "/n, /select, " + path
-
             });
         }
 
@@ -114,7 +128,7 @@ namespace DevIdent.Forms
             try
             {
                 if (AutorunList.SelectedIndices.Count == 0) return;
-                string path = AutorunList.SelectedItems[0].SubItems[0].Text;
+                var path = AutorunList.SelectedItems[0].SubItems[0].Text;
                 switch (AutorunList.SelectedItems[0].SubItems[1].Text)
                 {
                     case "C:\\Windows\\System32\\Tasks":
@@ -122,17 +136,11 @@ namespace DevIdent.Forms
                         break;
                     default:
                         if (path.Contains('-'))
-                        {
                             OpenExplorer(path.Remove(path.IndexOf('-')));
-                        }
                         else if (path.Contains('/'))
-                        {
                             OpenExplorer(path.Remove(path.IndexOf('/')));
-                        }
                         else
-                        {
                             OpenExplorer(path);
-                        }
 
                         break;
                 }
@@ -148,16 +156,12 @@ namespace DevIdent.Forms
             try
             {
                 if (AutorunList.SelectedIndices.Count == 0) return;
-                TaskFolder tf = TaskService.Instance.RootFolder;
+                var tf = TaskService.Instance.RootFolder;
                 tf.Tasks[AutorunList.SelectedIndices[0]].Enabled = !tf.Tasks[AutorunList.SelectedIndices[0]].Enabled;
-                if (tf.Tasks[AutorunList.SelectedIndices[0]].Enabled)
-                {
-                    AutorunList.SelectedItems[0].SubItems[2].Text = "Да";
-                }
-                else
-                {
-                    AutorunList.SelectedItems[0].SubItems[2].Text = "Нет";
-                }
+                AutorunList.SelectedItems[0].SubItems[2].Text = tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? "Да" : "Нет";
+                if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + AutorunList.SelectedItems[0].Text + 
+                    (tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? " добавлена в автозапуск " : " удалена из автозапуска") + Environment.NewLine);
             }
             catch (Exception ex)
             {

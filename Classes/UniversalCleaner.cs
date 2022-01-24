@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -24,6 +25,7 @@ namespace DevIdent.Classes
             {
                 try
                 {
+
                     DeleteFile(file.FullName);
                 }
                 catch
@@ -54,7 +56,7 @@ namespace DevIdent.Classes
             {
                 return 0;
             }
-            DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullName);
+            var directoryInfo = new DirectoryInfo(folder.FullName);
             DirectoryInfo[] directories = directoryInfo.GetDirectories();
             FileInfo[] fileInfo = directoryInfo.GetFiles();
             foreach (FileInfo file in fileInfo)
@@ -62,6 +64,7 @@ namespace DevIdent.Classes
                 try
                 {
                     DeleteFile(file.FullName);
+                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + file.FullName);
                     size += file.Length;
                 }
                 catch
@@ -78,6 +81,7 @@ namespace DevIdent.Classes
                 try
                 {
                     directoryInfo.Delete();
+                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + directoryInfo.FullName);
                 }
                 catch
                 {
@@ -101,6 +105,7 @@ namespace DevIdent.Classes
                         try
                         {
                             DeleteFile(file);
+                            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + file);
                             size += new FileInfo(file).Length;
                         }
                         catch
@@ -130,6 +135,7 @@ namespace DevIdent.Classes
                     try
                     {
                         DeleteFile(path);
+                        File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + path);
                         size += new FileInfo(path).Length;
                     }
                     catch
@@ -140,7 +146,6 @@ namespace DevIdent.Classes
                 {
                 }
             }
-
             return size;
         }
 

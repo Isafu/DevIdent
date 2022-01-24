@@ -14,6 +14,8 @@ namespace DevIdent.Classes
         public static readonly DirectoryInfo[] directoryOfChrome =
         {
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"),
+            new DirectoryInfo("C:\\Users\\" + User +
+                "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Storage\\ext\\"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\File System"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\GPUCache"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extension State"),

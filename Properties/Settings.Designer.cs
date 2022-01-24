@@ -12,7 +12,7 @@ namespace DevIdent.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,10 +25,10 @@ namespace DevIdent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorForm {
+        [global::System.Configuration.DefaultSettingValueAttribute("#00007d")]
+        public string ColorForm {
             get {
-                return ((global::System.Drawing.Color)(this["ColorForm"]));
+                return ((string)(this["ColorForm"]));
             }
             set {
                 this["ColorForm"] = value;
@@ -37,10 +37,10 @@ namespace DevIdent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorMenu {
+        [global::System.Configuration.DefaultSettingValueAttribute("#1d2230")]
+        public string ColorMenu {
             get {
-                return ((global::System.Drawing.Color)(this["ColorMenu"]));
+                return ((string)(this["ColorMenu"]));
             }
             set {
                 this["ColorMenu"] = value;
@@ -49,10 +49,10 @@ namespace DevIdent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorButtonsDefault {
+        [global::System.Configuration.DefaultSettingValueAttribute("#0000c8")]
+        public string ColorButtonsDefault {
             get {
-                return ((global::System.Drawing.Color)(this["ColorButtonsDefault"]));
+                return ((string)(this["ColorButtonsDefault"]));
             }
             set {
                 this["ColorButtonsDefault"] = value;
@@ -61,10 +61,22 @@ namespace DevIdent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorButtonsHover {
+        [global::System.Configuration.DefaultSettingValueAttribute("#171c2a")]
+        public string ColorContent {
             get {
-                return ((global::System.Drawing.Color)(this["ColorButtonsHover"]));
+                return ((string)(this["ColorContent"]));
+            }
+            set {
+                this["ColorContent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#0000fe")]
+        public string ColorButtonsHover {
+            get {
+                return ((string)(this["ColorButtonsHover"]));
             }
             set {
                 this["ColorButtonsHover"] = value;
@@ -73,25 +85,25 @@ namespace DevIdent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorPanel {
+        [global::System.Configuration.DefaultSettingValueAttribute("0.85")]
+        public double Opacity {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPanel"]));
+                return ((double)(this["Opacity"]));
             }
             set {
-                this["ColorPanel"] = value;
+                this["Opacity"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("255, 192, 192")]
-        public global::System.Drawing.Color ColorContent {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ResetParams {
             get {
-                return ((global::System.Drawing.Color)(this["ColorContent"]));
+                return ((int)(this["ResetParams"]));
             }
             set {
-                this["ColorContent"] = value;
+                this["ResetParams"] = value;
             }
         }
     }

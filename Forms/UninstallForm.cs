@@ -19,8 +19,31 @@ namespace DevIdent.Forms
 
         private readonly List<string> _registyPathes = new List<string>();
         private readonly List<string> _searchPathes = new List<string>();
-        private static readonly RegistryView registryView = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
+
+        private static readonly RegistryView registryView =
+            Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
+
         private RegistryKey _pathToProgramm;
+
+        #endregion
+
+        #region Получение RegistryHive
+
+        private RegistryHive GetHive(int index)
+        {
+            var hive = _registyPathes[index].Split('\\');
+            return hive[0] == "HKEY_CURRENT_USER" ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
+        }
+
+        #endregion
+
+        #region Получение ProgrammName
+
+        private string GetProgrammName(int index)
+        {
+            var subKey = _registyPathes[index].Split('\\');
+            return subKey[subKey.Length - 1];
+        }
 
         #endregion
 
@@ -35,6 +58,15 @@ namespace DevIdent.Forms
 
         #endregion
 
+        private void RefreshBtn_Click(object sender, EventArgs e)
+        {
+            _registyPathes.Clear();
+            _searchPathes.Clear();
+            UninstallBox.Items.Clear();
+            GetInstalledProgramms();
+            SearchBox.Text = "";
+        }
+
         #region Извлечение путей к деинсталлятору из реестра
 
         private void GetInstalledProgramms(RegistryHive registryHive, string registryPath)
@@ -42,10 +74,10 @@ namespace DevIdent.Forms
             try
             {
                 _pathToProgramm = RegistryKey.OpenBaseKey(registryHive, registryView).OpenSubKey(registryPath);
-                foreach (string keyName in _pathToProgramm.GetSubKeyNames())
+                foreach (var keyName in _pathToProgramm.GetSubKeyNames())
                 {
-                    RegistryKey subkey = _pathToProgramm.OpenSubKey(keyName);
-                    string displayName = (string)subkey.GetValue("DisplayName");
+                    var subkey = _pathToProgramm.OpenSubKey(keyName);
+                    var displayName = (string)subkey.GetValue("DisplayName");
                     if (string.IsNullOrEmpty((string)subkey.GetValue("DisplayName"))) continue;
                     if (string.IsNullOrEmpty((string)subkey.GetValue("UninstallString")))
                     {
@@ -66,12 +98,10 @@ namespace DevIdent.Forms
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Notify.ShowNotify(ex.Message, Resources.Close);
             }
         }
-
 
         #endregion
 
@@ -80,7 +110,8 @@ namespace DevIdent.Forms
         private void GetInstalledProgramms()
         {
             GetInstalledProgramms(RegistryHive.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
-            GetInstalledProgramms(RegistryHive.LocalMachine, @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
+            GetInstalledProgramms(RegistryHive.LocalMachine,
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
             GetInstalledProgramms(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
         }
 
@@ -93,37 +124,39 @@ namespace DevIdent.Forms
             if (Registry.GetValue(_registyPathes[index], "InstallLocation", "NULL").ToString() == "NULL" ||
                 !Directory.Exists(Registry.GetValue(_registyPathes[index], "InstallLocation", "NULL").ToString()))
             {
-                if (!Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString().StartsWith("MsiExec.exe"))
+                if (!Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString()
+                        .StartsWith("MsiExec.exe"))
                 {
-                    string path = Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString();
+                    var path = Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString();
                     path = path.Remove(path.LastIndexOf("\\"));
                     if (!Directory.Exists(path)) return "";
-                    else
+
+                    var fullfilesPath = new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories);
+                    long size = 0;
+                    try
                     {
-                        IEnumerable<FileInfo> fullfilesPath = new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories);
-                        long size = 0;
-                        try
-                        {
-                            size += fullfilesPath.Sum(fi => fi.Length);
-                            return "(Примерный размер: " + size / 1048576 + " MB)";
-                        }
-                        catch
-                        {
-                            return "";
-                        }
+                        size += fullfilesPath.Sum(fi => fi.Length);
+                        if (size / 1048576 > 1) return "(Примерный размер: " + size / 1048576 + " MB)";
+                        else return "(Примерный размер: < 1 MB)";
+                    }
+                    catch
+                    {
+                        return "";
                     }
                 }
-                else return "";
+
+                return "";
             }
-            else
+
             {
-                IEnumerable<FileInfo> fullfilesPath = new DirectoryInfo(Registry.GetValue(_registyPathes[index],
+                var fullfilesPath = new DirectoryInfo(Registry.GetValue(_registyPathes[index],
                     "InstallLocation", "").ToString()).EnumerateFiles("*.*", SearchOption.AllDirectories);
                 long size = 0;
                 try
                 {
                     size += fullfilesPath.Sum(fi => fi.Length);
-                    return "(Примерный размер: " + size / 1048576 + " MB)";
+                    if (size / 1048576 > 1) return "(Примерный размер: " + size / 1048576 + " MB)";
+                    else return "(Примерный размер: < 1 MB)";
                 }
                 catch
                 {
@@ -138,21 +171,23 @@ namespace DevIdent.Forms
 
         public void FormSettings()
         {
-            ContentPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
-            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            try
             {
-                button.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
+                Opacity = Settings.Default.Opacity;
             }
-            UninstallBox.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
-            foreach (ToolStripMenuItem item in MenuStrip.Items)
+            catch
             {
-                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             }
+
+            ContentPanel.ChangeColor(Settings.Default.ColorContent.Replace("#", string.Empty));
+            this.ChangeColor(Settings.Default.ColorForm.Replace("#", string.Empty));
+            foreach (var button in Controls.OfType<PictureBox>())
+                button.ChangeColor(Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
+            UninstallBox.ChangeColor(Settings.Default.ColorContent);
+            foreach (ToolStripMenuItem item in MainMenu.Items)
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in CreateInfoFileToolStripMenuItem.DropDownItems)
-            {
-                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            }
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
         }
 
         public UninstallForm(MainForm owner)
@@ -161,11 +196,12 @@ namespace DevIdent.Forms
             InitializeComponent();
             Click += (s, e) => { BringToFront(); };
             DoubleClick += (s, e) => { CenterToScreen(); };
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            foreach (var picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
-                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
+                picture.MouseEnter += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsHover); };
+                picture.MouseLeave += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsDefault); };
             }
+
             FormSettings();
         }
 
@@ -192,7 +228,7 @@ namespace DevIdent.Forms
         private void UninstallForm_MouseDown(object sender, MouseEventArgs e)
         {
             Capture = false;
-            Message m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
+            var m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
         }
 
@@ -207,7 +243,7 @@ namespace DevIdent.Forms
         private void UninstallBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             e.ItemHeight = (int)e.Graphics
-                .MeasureString(UninstallBox.Items[e.Index].ToString(), UninstallBox.Font, UninstallBox.Width).Height;
+                .MeasureString(UninstallBox.Items[e.Index].ToString(), UninstallBox.Font, UninstallBox.Width).Height + 3;
         }
 
         #endregion
@@ -216,39 +252,16 @@ namespace DevIdent.Forms
 
         private void UninstallBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (UninstallBox.Items.Count <= 0)
+            if (UninstallBox.Items.Count <= 0) return;
+            try
             {
-                return;
+                e.DrawBackground();
+                e.DrawFocusRectangle();
+                e.Graphics.DrawString(UninstallBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
+                    e.Bounds);
             }
-
-            e.DrawBackground();
-            e.DrawFocusRectangle();
-            e.Graphics.DrawString(UninstallBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
-                e.Bounds);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Удаление данных о приложении из реестра
-
-        #region Получение RegistryHive
-
-        private RegistryHive GetHive(int index)
-        {
-            string[] hive = _registyPathes[index].Split('\\');
-            return hive[0] == "HKEY_CURRENT_USER" ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
-        }
-
-        #endregion
-
-        #region Получение ProgrammName
-
-        private string GetProgrammName(int index)
-        {
-            string[] subKey = _registyPathes[index].Split('\\');
-            return subKey[subKey.Length - 1];
+            catch
+            { }
         }
 
         #endregion
@@ -259,13 +272,13 @@ namespace DevIdent.Forms
 
         private static void DeleteProgrammByHiddenUninstall(string hiddenUninstallPath)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
                 Arguments = "/c " + hiddenUninstallPath,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
-            Process process = new Process
+            var process = new Process
             {
                 StartInfo = startInfo
             };
@@ -274,20 +287,21 @@ namespace DevIdent.Forms
             process.WaitForExit();
         }
 
-        private void DeleteProgrammByUninstallString(string path, int index)
+        private void DeleteProgrammByUninstallString(string path, int index, string item)
         {
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                int indexOfExe = path.IndexOf(".exe");
+                string uninstallerPath = "";
+                var startInfo = new ProcessStartInfo();
+                var indexOfExe = path.IndexOf(".exe");
                 if (indexOfExe > 0 && path.Contains('-') || path.Contains('/'))
                 {
                     path = path.Replace(@"""", string.Empty);
-                    string uninstallerPath = path.Substring(0, indexOfExe + 4);
+                    uninstallerPath = path.Substring(0, indexOfExe + 4);
                     startInfo.FileName = uninstallerPath;
                     if (uninstallerPath.Length != path.Length)
                     {
-                        string args = path.Substring(uninstallerPath.Length);
+                        var args = path.Substring(uninstallerPath.Length);
                         if (!string.IsNullOrEmpty(args))
                         {
                             startInfo.UseShellExecute = false;
@@ -302,16 +316,18 @@ namespace DevIdent.Forms
                     startInfo.Arguments = "/c " + path;
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 }
-                Process process = new Process
+
+                var process = new Process
                 {
                     StartInfo = startInfo
                 };
                 process.EnableRaisingEvents = true;
                 process.Start();
                 process.WaitForExit();
-                if (process.ExitCode == 1614 && process.HasExited)
+                if (process.ExitCode == 1604)
                 {
                     RemoveFromListAndRegistry(index);
+                    LogDelete(item);
                 }
             }
             catch (Exception ex)
@@ -326,12 +342,11 @@ namespace DevIdent.Forms
 
         private void DeleteInfoFromRegistry(int index)
         {
-            string[] hive = _registyPathes[index].Split('\\');
+            var hive = _registyPathes[index].Split('\\');
             _key = RegistryKey.OpenBaseKey(GetHive(index), registryView);
 
             if (RegistryKey.OpenBaseKey(GetHive(index), RegistryView.Registry32)
-                .OpenSubKey(GetPathByDepth() + @"\" + hive[hive.Length - 1]) == null)
-            {
+                    .OpenSubKey(GetPathByDepth() + @"\" + hive[hive.Length - 1]) == null)
                 try
                 {
                     _key.DeleteSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" + @"\" +
@@ -340,9 +355,7 @@ namespace DevIdent.Forms
                 catch
                 {
                 }
-            }
             else
-            {
                 try
                 {
                     _key.DeleteSubKey(GetPathByDepth() + @"\" + GetProgrammName(index));
@@ -350,7 +363,6 @@ namespace DevIdent.Forms
                 catch
                 {
                 }
-            }
         }
 
         #endregion
@@ -363,28 +375,46 @@ namespace DevIdent.Forms
             _searchPathes.RemoveAt(indexOfProgramm);
         }
 
+        private void LogDelete(string item)
+        {
+            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + item + " удалена с компьютера" + Environment.NewLine);
+            Notify.ShowNotify(item + " удалена с компьютера", Resources.Close);
+        }
+
         private void Uninstall(int index)
         {
+            var programm = (string)UninstallBox.SelectedItem;
             if (Registry.GetValue(_registyPathes[index], "UninstallString", "NULL").ToString() != "NULL")
             {
-                DeleteProgrammByUninstallString(Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString(), index);
+                DeleteProgrammByUninstallString(
+                    Registry.GetValue(_registyPathes[index], "UninstallString", "").ToString(), index, programm);
                 return;
             }
+
             if (Registry.GetValue(_registyPathes[index], "InstallSource", "NULL").ToString() != "NULL")
             {
-                UniversalCleaner.DirectoryCleanerWithoutSize(new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallSource", "").ToString()));
+                UniversalCleaner.DirectoryCleanerWithoutSize(
+                    new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallSource", "").ToString()));
                 RemoveFromListAndRegistry(index);
+                LogDelete(programm);
                 return;
             }
+
             if (Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "NULL").ToString() != "NULL")
             {
-                DeleteProgrammByHiddenUninstall(Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "").ToString());
+                DeleteProgrammByHiddenUninstall(Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "")
+                    .ToString());
                 RemoveFromListAndRegistry(index);
+                LogDelete(programm);
                 return;
             }
+
             if (Registry.GetValue(_registyPathes[index], "InstallLocation", "NULL").ToString() != "NULL")
             {
-                UniversalCleaner.DirectoryCleanerWithoutSize(new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallLocation", "").ToString()));
+                UniversalCleaner.DirectoryCleanerWithoutSize(
+                    new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallLocation", "").ToString()));
+                LogDelete(programm);
                 RemoveFromListAndRegistry(index);
             }
         }
@@ -397,31 +427,31 @@ namespace DevIdent.Forms
 
         private void CreateTxtFile(object sender, DoWorkEventArgs e)
         {
-            File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")).Close();
-            using (StreamWriter myWriter = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.txt")))
+            File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
+                                     "\\Установленное ПО.txt")).Close();
+            using (var myWriter =
+                   new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
+                                                 "\\Установленное ПО.txt")))
             {
                 myWriter.WriteLine("   Список установленных программ:" + Environment.NewLine);
-                for (int i = 0; i < UninstallBox.Items.Count - 1; i++)
-                {
+                for (var i = 0; i < UninstallBox.Items.Count - 1; i++)
                     myWriter.WriteLine("-- " + UninstallBox.Items[i] + " " + FileSize(i));
-                }
             }
         }
 
         private void TxtFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify("Файл создан на рабочем столе", Resources.Close);
+            Notify.ShowNotify($"Файл \"Установленное ПО.txt\" создан на рабочем столе", Resources.Close);
         }
 
-        private void ФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TxtFileMenuItem_Click(object sender, EventArgs e)
         {
-            BackgroundWorker _txtWorker = new BackgroundWorker();
+            var _txtWorker = new BackgroundWorker();
             _txtWorker.DoWork += CreateTxtFile;
-            _txtWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(TxtFileCreated);
+            _txtWorker.RunWorkerCompleted += TxtFileCreated;
             _txtWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало создания файла", Resources.Close);
+            Notify.ShowNotify($"Начало создания \"Установленное ПО.txt\"", Resources.Close);
         }
-
 
         #endregion
 
@@ -431,83 +461,94 @@ namespace DevIdent.Forms
         {
             File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
                         "\\Установленное ПО.html").Close();
-            using (StreamWriter myWriter = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Установленное ПО.html"))
+            using (var myWriter = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +
+                                                   "\\Установленное ПО.html"))
             {
                 myWriter.WriteLine("<h1>Список установленных программ:</h1>");
-                for (int i = 0; i < UninstallBox.Items.Count - 1; i++)
-                {
+                for (var i = 0; i < UninstallBox.Items.Count - 1; i++)
                     myWriter.Write("<p>-- " + UninstallBox.Items[i] + " " + FileSize(i) + "</p>");
-                }
             }
         }
 
         private void HTMLFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify("Файл создан на рабочем столе", Resources.Close);
+            Notify.ShowNotify($"Файл \"Установленное ПО.html\" создан на рабочем столе", Resources.Close);
         }
 
-        private void HTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HTMLMenuItem_Click(object sender, EventArgs e)
         {
-            BackgroundWorker _htmlWorker = new BackgroundWorker();
+            var _htmlWorker = new BackgroundWorker();
             _htmlWorker.DoWork += CreateHTMLFile;
-            _htmlWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(HTMLFileCreated);
+            _htmlWorker.RunWorkerCompleted += HTMLFileCreated;
             _htmlWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало создания файла", Resources.Close);
+            Notify.ShowNotify($"Начало создания \"Установленное ПО.html\"", Resources.Close);
         }
 
         #endregion
 
         #region Удаление из реестра
 
-        private void удалитьИзРеестраStripMenuItem1_Click(object sender, EventArgs e)
+        private void УдалитьИзРеестраStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
+            var item = (string)UninstallBox.SelectedItem;
             RemoveFromListAndRegistry(_searchPathes.IndexOf((string)UninstallBox.SelectedItem));
+            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || " + item + " удалена из реестра" + Environment.NewLine);
+            Notify.ShowNotify(item + " удалена из реестра", Resources.Close);
         }
 
         #endregion
 
         #region Нажатие на Удалить
 
-        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void УдалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
-            Uninstall(_searchPathes.IndexOf((string)UninstallBox.SelectedItem));
+            var item = (string)UninstallBox.SelectedItem;
+            Uninstall(_searchPathes.IndexOf(item));
+            
         }
 
         #endregion
 
         #region Показать запись в реестре
 
-        private void записьВРеестреToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ЗаписьВРеестреToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
-            foreach (Process process in Process.GetProcessesByName("regedit"))
+            try
             {
-                process.Kill();
+                foreach (var process in Process.GetProcessesByName("regedit")) process.Kill();
+                Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Applets\Regedit")
+                    .SetValue("LastKey", _registyPathes[_searchPathes.IndexOf((string)UninstallBox.SelectedItem)]);
+                Process.Start("regedit");
             }
-            Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Applets\Regedit")
-                .SetValue("LastKey", _registyPathes[_searchPathes.IndexOf((string)UninstallBox.SelectedItem)]);
-            Process.Start("regedit");
+            catch
+            {
+                Notify.ShowNotify("Путь в реестре не найден :(", Resources.Close);
+            }
         }
 
         #endregion
 
         #region Открытие проводника
 
-        private void расположениеНаДискеToolStripMenuItem_Click(object sender, EventArgs e)
+        private void РасположениеНаДискеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             try
             {
-                int programm = _searchPathes.IndexOf((string)UninstallBox.SelectedItem);
+                var programm = _searchPathes.IndexOf((string)UninstallBox.SelectedItem);
                 if (Registry.GetValue(_registyPathes[programm], "InstallLocation", "NULL").ToString() == "NULL"
-                    || !Directory.Exists(Registry.GetValue(_registyPathes[programm], "InstallLocation", "NULL").ToString()))
+                    || !Directory.Exists(Registry.GetValue(_registyPathes[programm], "InstallLocation", "NULL")
+                        .ToString()))
                 {
                     if (Registry.GetValue(_registyPathes[programm], "UninstallString", "NULL").ToString() != "NULL"
-                        && !Registry.GetValue(_registyPathes[programm], "UninstallString", "NULL").ToString().StartsWith("MsiExec.exe"))
+                        && !Registry.GetValue(_registyPathes[programm], "UninstallString", "NULL").ToString()
+                            .StartsWith("MsiExec.exe"))
                     {
-                        string path = Registry.GetValue(_registyPathes[programm], "UninstallString", "").ToString();
+                        var path = Registry.GetValue(_registyPathes[programm], "UninstallString", "").ToString();
                         path = path.Remove(path.LastIndexOf("\\"));
                         Process.Start(new ProcessStartInfo
                         {
@@ -522,12 +563,16 @@ namespace DevIdent.Forms
                 }
                 else
                 {
-                    Process.Start(new ProcessStartInfo { FileName = "explorer", Arguments = "/n, " + Registry.GetValue(_registyPathes[programm], "InstallLocation", "") });
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "explorer",
+                        Arguments = "/n, " + Registry.GetValue(_registyPathes[programm], "InstallLocation", "")
+                    });
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Notify.ShowNotify(ex.Message, Resources.Close);
+                Notify.ShowNotify("Путь к программе не найден :(", Resources.Close);
             }
         }
 
@@ -535,14 +580,12 @@ namespace DevIdent.Forms
 
         #region Поиск в браузере
 
-        private void чтоЭтоЗаПрограммаToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ЧтоЭтоЗаПрограммаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (UninstallBox.SelectedIndex == -1)
-            {
-                return;
-            }
+            if (UninstallBox.SelectedIndex == -1) return;
             Process.Start(@"https://www.google.com/search?q=" +
-                _searchPathes[_searchPathes.IndexOf((string)UninstallBox.SelectedItem)].Replace("Приложение без деинсталлятора ", string.Empty) + " что это?");
+                          _searchPathes[_searchPathes.IndexOf((string)UninstallBox.SelectedItem)]
+                              .Replace("Приложение без деинсталлятора ", string.Empty) + " что это?");
         }
 
         #endregion
@@ -552,11 +595,16 @@ namespace DevIdent.Forms
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             UninstallBox.Items.Clear();
-            UninstallBox.Items.AddRange(_searchPathes.Where(item => item.ToLower().Contains(SearchBox.Text.ToLower())).ToArray());
+            UninstallBox.Items.AddRange(_searchPathes.Where(item => item.ToLower().Contains(SearchBox.Text.ToLower()))
+                .ToArray());
         }
 
+
+
+
         #endregion
 
         #endregion
+
     }
 }

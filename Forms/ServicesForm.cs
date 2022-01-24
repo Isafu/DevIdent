@@ -1,9 +1,11 @@
 ﻿using DevIdent.Classes;
 using DevIdent.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.ServiceProcess;
@@ -18,7 +20,8 @@ namespace DevIdent.Forms
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             ServiceBox.Items.Clear();
-            ServiceBox.Items.AddRange(serviceList.Where(item => item.ToLower().Contains(SearchBox.Text.ToLower())).ToArray());
+            ServiceBox.Items.AddRange(ServiceList.Where(item => item.ToLower().Contains(SearchBox.Text.ToLower()))
+                .ToArray());
         }
 
         #endregion
@@ -27,22 +30,28 @@ namespace DevIdent.Forms
 
         public void FormSettings()
         {
-            ContentPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
-            MenuPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Name);
-            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            foreach (PictureBox button in this.Controls.OfType<PictureBox>())
+            try
             {
-                button.ChangeColor(ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name));
+                Opacity = Settings.Default.Opacity;
             }
-            ServiceBox.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Name);
-            foreach (ToolStripMenuItem item in MenuStrip.Items)
+            catch
             {
-                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
             }
+
+            ContentPanel.BackColor =
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
+            MenuPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
+            BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
+            foreach (var button in Controls.OfType<PictureBox>())
+                button.ChangeColor("#" + Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
+            ServiceBox.BackColor =
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
+            foreach (ToolStripMenuItem item in MainMenu.Items)
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in WorkWithServicesMenuItem.DropDownItems)
-            {
-                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Name);
-            }
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
+            foreach (ToolStripMenuItem item in SettingsMenuItem.DropDownItems)
+                item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
         }
 
         public ServicesForm(MainForm owner)
@@ -50,14 +59,24 @@ namespace DevIdent.Forms
             Owner = owner;
             InitializeComponent();
             Width = 500;
+
             ServiceBox.DoubleClick += (s, e) => Width = 500;
             MenuPanel.Click += (s, e) => Width = 500;
             SearchBox.DoubleClick += (s, e) => SearchBox.Text = "";
-
-            foreach (PictureBox picture in Controls.OfType<PictureBox>())
+            foreach (var picture in Controls.OfType<PictureBox>())
             {
-                picture.MouseEnter += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsHover.Name); };
-                picture.MouseLeave += (s, e) => { picture.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorButtonsDefault.Name); };
+                picture.MouseEnter += (s, e) =>
+                {
+                    picture.BackColor =
+                        ColorTranslator.FromHtml(
+                            "#" + Settings.Default.ColorButtonsHover.Replace("#", string.Empty));
+                };
+                picture.MouseLeave += (s, e) =>
+                {
+                    picture.BackColor =
+                        ColorTranslator.FromHtml("#" +
+                                                 Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
+                };
             }
 
             ServiceBox.Click += (s, e) =>
@@ -73,7 +92,7 @@ namespace DevIdent.Forms
         private void ServicesForm_MouseDown(object sender, MouseEventArgs e)
         {
             Capture = false;
-            Message m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
+            var m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
         }
 
@@ -95,21 +114,19 @@ namespace DevIdent.Forms
         #region Получение активных служб
 
         private static readonly ServiceController[] RunningServices = ServiceController.GetServices();
-        private static readonly List<string> serviceList = new List<string>();
+        private static readonly List<string> ServiceList = new List<string>();
 
         private void GetActiveServices()
         {
-            foreach (ServiceController service in RunningServices)
-            {
+            foreach (var service in RunningServices)
                 try
                 {
                     ServiceBox.Items.Add(service.ServiceName + " / " + service.DisplayName);
-                    serviceList.Add(service.ServiceName + " / " + service.DisplayName);
+                    ServiceList.Add(service.ServiceName + " / " + service.DisplayName);
                 }
                 catch
                 {
                 }
-            }
         }
 
         #endregion Получение активных служб
@@ -134,17 +151,13 @@ namespace DevIdent.Forms
         {
             try
             {
-                ManagementObject wmiService = new ManagementObject("Win32_Service.Name='"
+                var wmiService = new ManagementObject("Win32_Service.Name='"
                                                       + GetName() + "'");
                 wmiService.Get();
                 if (string.IsNullOrEmpty((string)wmiService["Description"]))
-                {
                     ServiceInfoLb.Text = "Не удалось получить информацию о службе " + ServiceBox.SelectedItem;
-                }
                 else
-                {
                     ServiceInfoLb.Text = (string)wmiService["Description"];
-                }
             }
             catch
             {
@@ -160,22 +173,19 @@ namespace DevIdent.Forms
 
         #region Расчёт высоты
 
-        private void listBox1_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void ServiceBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             e.ItemHeight = (int)e.Graphics
-                .MeasureString(ServiceBox.Items[e.Index].ToString(), ServiceBox.Font, ServiceBox.Width).Height;
+                .MeasureString(ServiceBox.Items[e.Index].ToString(), ServiceBox.Font, ServiceBox.Width).Height + 3;
         }
 
         #endregion
 
         #region Отрисовка элементов
 
-        private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+        private void ServiceBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (ServiceBox.Items.Count <= 0)
-            {
-                return;
-            }
+            if (ServiceBox.Items.Count <= 0) return;
 
             e.DrawBackground();
             e.DrawFocusRectangle();
@@ -189,19 +199,55 @@ namespace DevIdent.Forms
 
         #region Работа с службами
 
+        private void ServiceSettings(int typeOfRun, string line)
+        {
+            if (ServiceBox.SelectedIndex == -1) return;
+            try
+            {
+                RegistryKey regkey = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\" + ServiceBox.SelectedItem.ToString().Split('/')[0].Trim());
+                regkey.SetValue("Start", typeOfRun, RegistryValueKind.DWord);
+                regkey.Close();
+                Notify.ShowNotify($"Для службы {ServiceBox.SelectedItem.ToString().Split('/')[0].Trim()} установлен тип запуска: {line}", Resources.Close);
+                if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
+                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Для службы "
+                    + ServiceBox.SelectedItem.ToString().Split('/')[0].Trim() + $" установлен тип запуска: {line}" + Environment.NewLine);
+            }
+            catch
+            {
+                Notify.ShowNotify("Не удалось применить настройку к службе", Resources.Close);
+            }
+        }
+
+        private void AutoMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSettings(2, "автоматический");
+        }
+
+        private void AutoDelayedMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSettings(1, "автоматический (отложенный запуск)");
+        }
+
+        private void ManualMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSettings(3, "вручную");
+        }
+
+        private void OffMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSettings(4, "отключена");
+        }
+
         private void OpenServicesMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("Services.msc");
         }
 
-        private void запуситьСлужбуToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RunMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceBox.SelectedIndex == -1)
-            {
-                return;
-            }
+            if (ServiceBox.SelectedIndex == -1) return;
 
-            ServiceController service = RunningServices[serviceList.IndexOf((string)ServiceBox.SelectedItem)];
+            var service = RunningServices[ServiceList.IndexOf((string)ServiceBox.SelectedItem)];
             try
             {
                 if (service.Status == ServiceControllerStatus.Running)
@@ -221,14 +267,11 @@ namespace DevIdent.Forms
             }
         }
 
-        private void остановитьСлужбуToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StopMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceBox.SelectedIndex == -1)
-            {
-                return;
-            }
+            if (ServiceBox.SelectedIndex == -1) return;
 
-            ServiceController service = RunningServices[serviceList.IndexOf((string)ServiceBox.SelectedItem)];
+            var service = RunningServices[ServiceList.IndexOf((string)ServiceBox.SelectedItem)];
             try
             {
                 if (service.CanStop)
@@ -248,14 +291,11 @@ namespace DevIdent.Forms
             }
         }
 
-        private void приостановитьСлужбуToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PauseMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceBox.SelectedIndex == -1)
-            {
-                return;
-            }
+            if (ServiceBox.SelectedIndex == -1) return;
 
-            ServiceController service = RunningServices[serviceList.IndexOf((string)ServiceBox.SelectedItem)];
+            var service = RunningServices[ServiceList.IndexOf((string)ServiceBox.SelectedItem)];
             try
             {
                 if (service.CanPauseAndContinue)
@@ -275,14 +315,11 @@ namespace DevIdent.Forms
             }
         }
 
-        private void перезапуститьСлужбуToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RestartMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServiceBox.SelectedIndex == -1)
-            {
-                return;
-            }
+            if (ServiceBox.SelectedIndex == -1) return;
 
-            ServiceController service = RunningServices[serviceList.IndexOf((string)ServiceBox.SelectedItem)];
+            var service = RunningServices[ServiceList.IndexOf((string)ServiceBox.SelectedItem)];
             try
             {
                 if (service.Status != ServiceControllerStatus.Stopped && service.CanStop)
@@ -309,5 +346,6 @@ namespace DevIdent.Forms
         }
 
         #endregion
+
     }
 }

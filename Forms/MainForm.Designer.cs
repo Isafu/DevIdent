@@ -57,24 +57,29 @@ namespace DevIdent.Forms
             this.InfoLb6 = new System.Windows.Forms.Label();
             this.InfoLb7 = new System.Windows.Forms.Label();
             this.InfoLb8 = new System.Windows.Forms.Label();
-            this.colorEditor1 = new Cyotek.Windows.Forms.ColorEditor();
             this.SetTheme = new System.Windows.Forms.Label();
             this.SetDefaultTheme = new System.Windows.Forms.Label();
             this.ThemePanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.ColorEditor = new Cyotek.Windows.Forms.ColorEditor();
+            this.CurrentOpacityValueLb = new System.Windows.Forms.Label();
+            this.CurrentOpacityLb = new System.Windows.Forms.Label();
+            this.OpacityBar = new System.Windows.Forms.TrackBar();
+            this.CurrentColorBtn = new System.Windows.Forms.Button();
+            this.CurrentColorLb = new System.Windows.Forms.Label();
+            this.OpenThemeEditorBtn = new System.Windows.Forms.PictureBox();
             this.TurnBtn = new System.Windows.Forms.PictureBox();
-            this.SensorBtn = new System.Windows.Forms.PictureBox();
             this.CloseBth = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.InvPanel = new System.Windows.Forms.Panel();
+            this.CloseThemeEditorBtn = new System.Windows.Forms.PictureBox();
+            this.LogBtn = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.ThemePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpenThemeEditorBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CloseThemeEditorBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -430,21 +435,11 @@ namespace DevIdent.Forms
             this.InfoLb8.Size = new System.Drawing.Size(0, 15);
             this.InfoLb8.TabIndex = 9;
             // 
-            // colorEditor1
-            // 
-            this.colorEditor1.Color = System.Drawing.Color.Empty;
-            this.colorEditor1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.colorEditor1.Location = new System.Drawing.Point(5, 5);
-            this.colorEditor1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.colorEditor1.Name = "colorEditor1";
-            this.colorEditor1.Size = new System.Drawing.Size(288, 132);
-            this.colorEditor1.TabIndex = 16;
-            // 
             // SetTheme
             // 
             this.SetTheme.AutoSize = true;
             this.SetTheme.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SetTheme.Location = new System.Drawing.Point(5, 145);
+            this.SetTheme.Location = new System.Drawing.Point(5, 190);
             this.SetTheme.Name = "SetTheme";
             this.SetTheme.Size = new System.Drawing.Size(90, 19);
             this.SetTheme.TabIndex = 14;
@@ -455,7 +450,7 @@ namespace DevIdent.Forms
             // 
             this.SetDefaultTheme.AutoSize = true;
             this.SetDefaultTheme.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SetDefaultTheme.Location = new System.Drawing.Point(5, 175);
+            this.SetDefaultTheme.Location = new System.Drawing.Point(5, 220);
             this.SetDefaultTheme.Name = "SetDefaultTheme";
             this.SetDefaultTheme.Size = new System.Drawing.Size(261, 19);
             this.SetDefaultTheme.TabIndex = 17;
@@ -464,25 +459,95 @@ namespace DevIdent.Forms
             // 
             // ThemePanel
             // 
-            this.ThemePanel.Controls.Add(this.colorEditor1);
+            this.ThemePanel.Controls.Add(this.ColorEditor);
+            this.ThemePanel.Controls.Add(this.CurrentOpacityValueLb);
+            this.ThemePanel.Controls.Add(this.CurrentOpacityLb);
+            this.ThemePanel.Controls.Add(this.OpacityBar);
+            this.ThemePanel.Controls.Add(this.CurrentColorBtn);
+            this.ThemePanel.Controls.Add(this.CurrentColorLb);
             this.ThemePanel.Controls.Add(this.SetDefaultTheme);
             this.ThemePanel.Controls.Add(this.SetTheme);
             this.ThemePanel.Location = new System.Drawing.Point(650, 0);
             this.ThemePanel.Name = "ThemePanel";
-            this.ThemePanel.Size = new System.Drawing.Size(305, 205);
+            this.ThemePanel.Size = new System.Drawing.Size(302, 269);
             this.ThemePanel.TabIndex = 18;
             // 
-            // pictureBox1
+            // ColorEditor
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.pictureBox1.Image = global::DevIdent.Properties.Resources.Paint;
-            this.pictureBox1.Location = new System.Drawing.Point(510, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(35, 30);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.ColorEditor.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ColorEditor.Location = new System.Drawing.Point(5, 5);
+            this.ColorEditor.Name = "ColorEditor";
+            this.ColorEditor.Size = new System.Drawing.Size(290, 104);
+            this.ColorEditor.TabIndex = 25;
+            this.ColorEditor.ColorChanged += new System.EventHandler(this.ColorEditor_ColorChanged);
+            // 
+            // CurrentOpacityValueLb
+            // 
+            this.CurrentOpacityValueLb.AutoSize = true;
+            this.CurrentOpacityValueLb.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentOpacityValueLb.Location = new System.Drawing.Point(152, 173);
+            this.CurrentOpacityValueLb.Name = "CurrentOpacityValueLb";
+            this.CurrentOpacityValueLb.Size = new System.Drawing.Size(28, 15);
+            this.CurrentOpacityValueLb.TabIndex = 24;
+            this.CurrentOpacityValueLb.Text = "85%";
+            // 
+            // CurrentOpacityLb
+            // 
+            this.CurrentOpacityLb.AutoSize = true;
+            this.CurrentOpacityLb.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentOpacityLb.Location = new System.Drawing.Point(5, 145);
+            this.CurrentOpacityLb.Name = "CurrentOpacityLb";
+            this.CurrentOpacityLb.Size = new System.Drawing.Size(126, 19);
+            this.CurrentOpacityLb.TabIndex = 23;
+            this.CurrentOpacityLb.Text = "Прозрачность:";
+            // 
+            // OpacityBar
+            // 
+            this.OpacityBar.AutoSize = false;
+            this.OpacityBar.Location = new System.Drawing.Point(147, 145);
+            this.OpacityBar.Maximum = 100;
+            this.OpacityBar.Minimum = 85;
+            this.OpacityBar.Name = "OpacityBar";
+            this.OpacityBar.Size = new System.Drawing.Size(155, 25);
+            this.OpacityBar.SmallChange = 5;
+            this.OpacityBar.TabIndex = 21;
+            this.OpacityBar.TickFrequency = 5;
+            this.OpacityBar.Value = 85;
+            this.OpacityBar.Scroll += new System.EventHandler(this.OpacityBar_Scroll);
+            // 
+            // CurrentColorBtn
+            // 
+            this.CurrentColorBtn.Enabled = false;
+            this.CurrentColorBtn.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.CurrentColorBtn.FlatAppearance.BorderSize = 2;
+            this.CurrentColorBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CurrentColorBtn.Location = new System.Drawing.Point(155, 115);
+            this.CurrentColorBtn.Name = "CurrentColorBtn";
+            this.CurrentColorBtn.Size = new System.Drawing.Size(140, 25);
+            this.CurrentColorBtn.TabIndex = 22;
+            this.CurrentColorBtn.UseVisualStyleBackColor = true;
+            // 
+            // CurrentColorLb
+            // 
+            this.CurrentColorLb.AutoSize = true;
+            this.CurrentColorLb.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentColorLb.Location = new System.Drawing.Point(5, 115);
+            this.CurrentColorLb.Name = "CurrentColorLb";
+            this.CurrentColorLb.Size = new System.Drawing.Size(144, 19);
+            this.CurrentColorLb.TabIndex = 21;
+            this.CurrentColorLb.Text = "Выбранный цвет:";
+            // 
+            // OpenThemeEditorBtn
+            // 
+            this.OpenThemeEditorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.OpenThemeEditorBtn.Image = global::DevIdent.Properties.Resources.Paint;
+            this.OpenThemeEditorBtn.Location = new System.Drawing.Point(545, 0);
+            this.OpenThemeEditorBtn.Name = "OpenThemeEditorBtn";
+            this.OpenThemeEditorBtn.Size = new System.Drawing.Size(35, 30);
+            this.OpenThemeEditorBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.OpenThemeEditorBtn.TabIndex = 19;
+            this.OpenThemeEditorBtn.TabStop = false;
+            this.OpenThemeEditorBtn.Click += new System.EventHandler(this.OpenThemeEditorBtn_Click);
             // 
             // TurnBtn
             // 
@@ -496,18 +561,6 @@ namespace DevIdent.Forms
             this.TurnBtn.TabStop = false;
             this.TurnBtn.Click += new System.EventHandler(this.TurnBtn_Click);
             // 
-            // SensorBtn
-            // 
-            this.SensorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.SensorBtn.Image = ((System.Drawing.Image)(resources.GetObject("SensorBtn.Image")));
-            this.SensorBtn.Location = new System.Drawing.Point(545, 0);
-            this.SensorBtn.Name = "SensorBtn";
-            this.SensorBtn.Size = new System.Drawing.Size(35, 30);
-            this.SensorBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SensorBtn.TabIndex = 8;
-            this.SensorBtn.TabStop = false;
-            this.SensorBtn.Click += new System.EventHandler(this.SensorBtn_Click);
-            // 
             // CloseBth
             // 
             this.CloseBth.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
@@ -520,25 +573,38 @@ namespace DevIdent.Forms
             this.CloseBth.TabStop = false;
             this.CloseBth.Click += new System.EventHandler(this.CloseBth_Click);
             // 
-            // pictureBox2
+            // CloseThemeEditorBtn
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.pictureBox2.Image = global::DevIdent.Properties.Resources.Back;
-            this.pictureBox2.Location = new System.Drawing.Point(650, 205);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(302, 30);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox2.TabIndex = 20;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.CloseThemeEditorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.CloseThemeEditorBtn.Image = global::DevIdent.Properties.Resources.Back;
+            this.CloseThemeEditorBtn.Location = new System.Drawing.Point(650, 470);
+            this.CloseThemeEditorBtn.Name = "CloseThemeEditorBtn";
+            this.CloseThemeEditorBtn.Size = new System.Drawing.Size(302, 30);
+            this.CloseThemeEditorBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.CloseThemeEditorBtn.TabIndex = 20;
+            this.CloseThemeEditorBtn.TabStop = false;
+            this.CloseThemeEditorBtn.Click += new System.EventHandler(this.CloseThemeEditorBtn_Click);
             // 
-            // InvPanel
+            // LogBtn
             // 
-            this.InvPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(150)))), ((int)(((byte)(120)))));
-            this.InvPanel.Location = new System.Drawing.Point(650, 235);
-            this.InvPanel.Name = "InvPanel";
-            this.InvPanel.Size = new System.Drawing.Size(302, 265);
-            this.InvPanel.TabIndex = 21;
+            this.LogBtn.AutoSize = true;
+            this.LogBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LogBtn.Location = new System.Drawing.Point(655, 277);
+            this.LogBtn.Name = "LogBtn";
+            this.LogBtn.Size = new System.Drawing.Size(162, 19);
+            this.LogBtn.TabIndex = 21;
+            this.LogBtn.Text = "Открыть .log файл";
+            this.LogBtn.Click += new System.EventHandler(this.LogBtn_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(656, 307);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(162, 19);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Открыть .log файл";
             // 
             // MainForm
             // 
@@ -547,14 +613,14 @@ namespace DevIdent.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(650, 500);
             this.ControlBox = false;
-            this.Controls.Add(this.InvPanel);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.LogBtn);
+            this.Controls.Add(this.ContentPanel);
+            this.Controls.Add(this.CloseThemeEditorBtn);
+            this.Controls.Add(this.OpenThemeEditorBtn);
             this.Controls.Add(this.ThemePanel);
             this.Controls.Add(this.TurnBtn);
-            this.Controls.Add(this.SensorBtn);
             this.Controls.Add(this.MenuPanel);
-            this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.CloseBth);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -569,7 +635,6 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DevIdent";
-            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(150)))), ((int)(((byte)(120)))));
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
@@ -579,11 +644,11 @@ namespace DevIdent.Forms
             this.ContentPanel.PerformLayout();
             this.ThemePanel.ResumeLayout(false);
             this.ThemePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpenThemeEditorBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SensorBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CloseThemeEditorBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -606,7 +671,6 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label InfoLb8;
         private System.Windows.Forms.Label VideoInfoBtn;
         private System.Windows.Forms.Label RAMInfoBtn;
-        private System.Windows.Forms.PictureBox SensorBtn;
         private System.Windows.Forms.Label InfoLb9;
         private System.Windows.Forms.Label MotherBoardBtn;
         private System.Windows.Forms.Label BiosBtn;
@@ -620,13 +684,19 @@ namespace DevIdent.Forms
         public System.Windows.Forms.Label SysClearBtn;
         public System.Windows.Forms.Label UninstallBtn;
         public System.Windows.Forms.Label AutorunBtn;
-        private Cyotek.Windows.Forms.ColorEditor colorEditor1;
         private System.Windows.Forms.Label SetTheme;
         private System.Windows.Forms.Label SetDefaultTheme;
         private System.Windows.Forms.Panel ThemePanel;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Panel InvPanel;
+        private System.Windows.Forms.PictureBox OpenThemeEditorBtn;
+        private System.Windows.Forms.PictureBox CloseThemeEditorBtn;
+        private System.Windows.Forms.Label CurrentColorLb;
+        private System.Windows.Forms.Button CurrentColorBtn;
+        private System.Windows.Forms.Label CurrentOpacityLb;
+        private System.Windows.Forms.Label CurrentOpacityValueLb;
+        public System.Windows.Forms.TrackBar OpacityBar;
+        private Cyotek.Windows.Forms.ColorEditor ColorEditor;
+        private System.Windows.Forms.Label LogBtn;
+        private System.Windows.Forms.Label label2;
     }
 }
 

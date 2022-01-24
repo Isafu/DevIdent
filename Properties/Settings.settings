@@ -2,23 +2,26 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DevIdent.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ColorForm" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="ColorForm" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#00007d</Value>
     </Setting>
-    <Setting Name="ColorMenu" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="ColorMenu" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#1d2230</Value>
     </Setting>
-    <Setting Name="ColorButtonsDefault" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="ColorButtonsDefault" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#0000c8</Value>
     </Setting>
-    <Setting Name="ColorButtonsHover" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="ColorContent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#171c2a</Value>
     </Setting>
-    <Setting Name="ColorPanel" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="ColorButtonsHover" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#0000fe</Value>
     </Setting>
-    <Setting Name="ColorContent" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 192, 192</Value>
+    <Setting Name="Opacity" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.85</Value>
+    </Setting>
+    <Setting Name="ResetParams" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

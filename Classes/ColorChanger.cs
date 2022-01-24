@@ -7,14 +7,9 @@ namespace DevIdent.Classes
     {
         #region Изменение цвета
 
-        public static void ChangeColor(Control control, byte r, byte g, byte b)
+        public static void ChangeColor(this Control control, string color)
         {
-            control.BackColor = Color.FromArgb(r, g, b);
-        }
-
-        public static void ChangeColor(this Control control, Color color)
-        {
-            control.BackColor = color;
+            control.BackColor = ColorTranslator.FromHtml("#" + color.Replace("#", string.Empty));
         }
 
         #endregion
