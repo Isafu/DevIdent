@@ -8,7 +8,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DevIdent.Forms
@@ -63,6 +65,15 @@ namespace DevIdent.Forms
             ServiceBox.DoubleClick += (s, e) => Width = 500;
             MenuPanel.Click += (s, e) => Width = 500;
             SearchBox.DoubleClick += (s, e) => SearchBox.Text = "";
+            ServiceInfoLb.Click += (s, e) =>
+            {
+                if (ServiceInfoLb.Text.StartsWith("Слишком длинное описание службы,"))
+                {
+                    var wmiService = new ManagementObject("Win32_Service.Name='"
+                                                      + GetName() + "'");
+                    Notepad((string)wmiService["Description"]);
+                }
+            };
             foreach (var picture in Controls.OfType<PictureBox>())
             {
                 picture.MouseEnter += (s, e) =>
@@ -85,6 +96,11 @@ namespace DevIdent.Forms
                 Width = 800;
             };
             FormSettings();
+
+            ManagementEventWatcher watcher = new ManagementEventWatcher(@"SELECT * FROM RegistryTreeChangeEvent WHERE Hive='HKEY_LOCAL_MACHINE' AND RootPath='SYSTEM'");
+            watcher.EventArrived += new EventArrivedEventHandler(Watcher_Changed);
+            watcher.Start();
+
         }
 
         #region Перемещение формы
@@ -113,20 +129,41 @@ namespace DevIdent.Forms
 
         #region Получение активных служб
 
-        private static readonly ServiceController[] RunningServices = ServiceController.GetServices();
+        private static ServiceController[] RunningServices = ServiceController.GetServices();
         private static readonly List<string> ServiceList = new List<string>();
+
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
+        }
+
+        string prevSearch;
 
         private void GetActiveServices()
         {
+            prevSearch = SearchBox.Text;
+            Array.Clear(RunningServices, 0, RunningServices.Length);
+            RunningServices = ServiceController.GetServices();
+            ServiceBox.Items.Clear();
+            ServiceList.Clear();
             foreach (var service in RunningServices)
+            {
                 try
                 {
-                    ServiceBox.Items.Add(service.ServiceName + " / " + service.DisplayName);
-                    ServiceList.Add(service.ServiceName + " / " + service.DisplayName);
+                    ServiceBox.Items.Add(service.ServiceName + " / " + service.DisplayName + " / Тип запуска: " + GetServiceSettings(service.ServiceName));
+                    ServiceList.Add(service.ServiceName + " / " + service.DisplayName + " / Тип запуска: " + GetServiceSettings(service.ServiceName));
                 }
                 catch
                 {
                 }
+            }
+            SearchBox.Text = "";
         }
 
         #endregion Получение активных служб
@@ -138,6 +175,27 @@ namespace DevIdent.Forms
             GetActiveServices();
         }
 
+        private void Watcher_Changed(object sender, EventArrivedEventArgs e)
+        {
+            new Thread(() =>
+            {
+                try
+                {
+                    Invoke((Action)(() =>
+                   {
+
+                       GetActiveServices();
+                       SearchBox.Text = prevSearch;
+
+                   }));
+                }
+                catch
+                {
+
+                }
+            }).Start();
+        }
+
         #endregion
 
         #region Получение инфы о выбранном элементе
@@ -145,6 +203,43 @@ namespace DevIdent.Forms
         private string GetName()
         {
             return ServiceBox.SelectedItem.ToString().Split('/')[0].Trim();
+        }
+
+        [DllImport("user32.dll", EntryPoint = "FindWindowEx")]
+        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
+
+        public void Notepad(string line)
+        {
+            var notepad = Process.Start("notepad.exe");
+            notepad.WaitForInputIdle();
+            SendMessage(FindWindowEx(notepad.MainWindowHandle, new IntPtr(0), "Edit", null), 0x000C, 0, line);
+        }
+
+        private string GetServiceSettings(string serviceName)
+        {
+            try
+            {
+                if (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + serviceName).GetValue("Start") == null)
+                {
+
+                }
+                switch (Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + serviceName).GetValue("Start"))
+                {
+                    case 1: return "автоматический (отложенный запуск)";
+                    case 2: return "автоматический";
+                    case 3: return "вручную";
+                    case 4: return "отключена";
+                }
+                return "";
+            }
+            catch
+            {
+                return "";
+            }
+
         }
 
         private void GetInfoAboutSelectedService()
@@ -158,6 +253,10 @@ namespace DevIdent.Forms
                     ServiceInfoLb.Text = "Не удалось получить информацию о службе " + ServiceBox.SelectedItem;
                 else
                     ServiceInfoLb.Text = (string)wmiService["Description"];
+                if (ServiceInfoLb.Height > Height)
+                {
+                    ServiceInfoLb.Text = "Слишком длинное описание службы, кликни если хочешь почитать подробнее о службе";
+                }
             }
             catch
             {
@@ -186,11 +285,17 @@ namespace DevIdent.Forms
         private void ServiceBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (ServiceBox.Items.Count <= 0) return;
+            try
+            {
+                e.DrawBackground();
+                e.DrawFocusRectangle();
+                e.Graphics.DrawString(ServiceBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
+                    e.Bounds);
+            }
+            catch
+            {
 
-            e.DrawBackground();
-            e.DrawFocusRectangle();
-            e.Graphics.DrawString(ServiceBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
-                e.Bounds);
+            }
         }
 
         #endregion
@@ -208,6 +313,9 @@ namespace DevIdent.Forms
                 regkey.SetValue("Start", typeOfRun, RegistryValueKind.DWord);
                 regkey.Close();
                 Notify.ShowNotify($"Для службы {ServiceBox.SelectedItem.ToString().Split('/')[0].Trim()} установлен тип запуска: {line}", Resources.Close);
+                string value = ServiceBox.SelectedItem.ToString();
+                ServiceBox.Items[ServiceBox.Items.IndexOf(ServiceBox.SelectedItem)] = value.Replace(value.Split('/')[2], $" Тип запуска: {line}");
+                ServiceList[ServiceList.IndexOf(value)] = value.Replace(value.Split('/')[2], $" Тип запуска: {line}");
                 if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
                 File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Для службы "
                     + ServiceBox.SelectedItem.ToString().Split('/')[0].Trim() + $" установлен тип запуска: {line}" + Environment.NewLine);

@@ -35,7 +35,7 @@ namespace DevIdent.Classes
             }
             foreach (DirectoryInfo directory in directories)
             {
-                DirectoryCleaner(directory);
+                DirectoryCleanerWithoutSize(directory);
             }
             if (directoryInfo.GetDirectories().Length == 0 && directoryInfo.GetFiles().Length == 0)
             {
@@ -56,7 +56,7 @@ namespace DevIdent.Classes
             {
                 return 0;
             }
-            var directoryInfo = new DirectoryInfo(folder.FullName);
+            DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullName);
             DirectoryInfo[] directories = directoryInfo.GetDirectories();
             FileInfo[] fileInfo = directoryInfo.GetFiles();
             foreach (FileInfo file in fileInfo)

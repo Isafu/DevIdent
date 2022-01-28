@@ -130,8 +130,9 @@ namespace DevIdent.Forms
             this.SettingsMenuItem});
             this.WorkWithServiceMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.WorkWithServiceMenu.Name = "MenuStrip";
+            this.WorkWithServiceMenu.OwnerItem = this.WorkWithServicesMenuItem;
             this.WorkWithServiceMenu.ShowImageMargin = false;
-            this.WorkWithServiceMenu.Size = new System.Drawing.Size(234, 146);
+            this.WorkWithServiceMenu.Size = new System.Drawing.Size(234, 124);
             // 
             // RunMenuItem
             // 
@@ -197,6 +198,7 @@ namespace DevIdent.Forms
             this.OffMenuItem});
             this.ServiceSettingsMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.ServiceSettingsMenu.Name = "MenuStrip";
+            this.ServiceSettingsMenu.OwnerItem = this.SettingsMenuItem;
             this.ServiceSettingsMenu.ShowImageMargin = false;
             this.ServiceSettingsMenu.Size = new System.Drawing.Size(351, 100);
             // 
@@ -332,6 +334,7 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Services";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ServicesForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServicesForm_MouseDown);
             this.MainMenu.ResumeLayout(false);

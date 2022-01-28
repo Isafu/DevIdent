@@ -160,7 +160,7 @@ namespace DevIdent.Forms
                 tf.Tasks[AutorunList.SelectedIndices[0]].Enabled = !tf.Tasks[AutorunList.SelectedIndices[0]].Enabled;
                 AutorunList.SelectedItems[0].SubItems[2].Text = tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? "Да" : "Нет";
                 if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + AutorunList.SelectedItems[0].Text + 
+                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + AutorunList.SelectedItems[0].Text +
                     (tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? " добавлена в автозапуск " : " удалена из автозапуска") + Environment.NewLine);
             }
             catch (Exception ex)

@@ -507,7 +507,7 @@ namespace DevIdent.Forms
             if (UninstallBox.SelectedIndex == -1) return;
             var item = (string)UninstallBox.SelectedItem;
             Uninstall(_searchPathes.IndexOf(item));
-            
+
         }
 
         #endregion

@@ -415,10 +415,10 @@ namespace DevIdent.Forms
         {
             UniversalCleaner.sysSize = 0;
             long length = 0;
-            foreach (DirectoryInfo t in SystemCleaner.directoryPathes)
+            for (int i = 0; i < SystemCleaner.directoryPathes.Length; i++)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(t);
+                length += UniversalCleaner.DirectoryCleaner(SystemCleaner.directoryPathes[i]);
             }
             UniversalCleaner.size = 0;
             length += UniversalCleaner.FileCleaner(SystemCleaner.filePathes);
