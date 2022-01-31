@@ -8,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows.Forms;
@@ -67,11 +66,11 @@ namespace DevIdent.Forms
             SearchBox.DoubleClick += (s, e) => SearchBox.Text = "";
             ServiceInfoLb.Click += (s, e) =>
             {
-                if (ServiceInfoLb.Text.StartsWith("Слишком длинное описание службы,"))
+                if (ServiceInfoLb.Text.StartsWith("Слишком длинное описание службы, кликните по тексту, чтобы прочитать полное описание"))
                 {
                     var wmiService = new ManagementObject("Win32_Service.Name='"
                                                       + GetName() + "'");
-                    Notepad((string)wmiService["Description"]);
+                    NotepadMessager.SendMessage((string)wmiService["Description"]);
                 }
             };
             foreach (var picture in Controls.OfType<PictureBox>())
@@ -103,6 +102,31 @@ namespace DevIdent.Forms
 
         }
 
+        #region Чекаем изменения в реестре в реальном времени
+
+        private void Watcher_Changed(object sender, EventArrivedEventArgs e)
+        {
+            new Thread(() =>
+            {
+                try
+                {
+                    Invoke((Action)(() =>
+                    {
+
+                        GetActiveServices();
+                        SearchBox.Text = prevSearch;
+
+                    }));
+                }
+                catch
+                {
+
+                }
+            }).Start();
+        }
+
+        #endregion
+
         #region Перемещение формы
 
         private void ServicesForm_MouseDown(object sender, MouseEventArgs e)
@@ -131,17 +155,6 @@ namespace DevIdent.Forms
 
         private static ServiceController[] RunningServices = ServiceController.GetServices();
         private static readonly List<string> ServiceList = new List<string>();
-
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var handleParam = base.CreateParams;
-                handleParam.ExStyle |= 0x02000000;
-                return handleParam;
-            }
-        }
 
         string prevSearch;
 
@@ -175,25 +188,14 @@ namespace DevIdent.Forms
             GetActiveServices();
         }
 
-        private void Watcher_Changed(object sender, EventArrivedEventArgs e)
+        protected override CreateParams CreateParams
         {
-            new Thread(() =>
+            get
             {
-                try
-                {
-                    Invoke((Action)(() =>
-                   {
-
-                       GetActiveServices();
-                       SearchBox.Text = prevSearch;
-
-                   }));
-                }
-                catch
-                {
-
-                }
-            }).Start();
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
         }
 
         #endregion
@@ -203,19 +205,6 @@ namespace DevIdent.Forms
         private string GetName()
         {
             return ServiceBox.SelectedItem.ToString().Split('/')[0].Trim();
-        }
-
-        [DllImport("user32.dll", EntryPoint = "FindWindowEx")]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-
-        [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
-
-        public void Notepad(string line)
-        {
-            var notepad = Process.Start("notepad.exe");
-            notepad.WaitForInputIdle();
-            SendMessage(FindWindowEx(notepad.MainWindowHandle, new IntPtr(0), "Edit", null), 0x000C, 0, line);
         }
 
         private string GetServiceSettings(string serviceName)
@@ -255,7 +244,7 @@ namespace DevIdent.Forms
                     ServiceInfoLb.Text = (string)wmiService["Description"];
                 if (ServiceInfoLb.Height > Height)
                 {
-                    ServiceInfoLb.Text = "Слишком длинное описание службы, кликни если хочешь почитать подробнее о службе";
+                    ServiceInfoLb.Text = "Слишком длинное описание службы, кликните по тексту для доп. информации";
                 }
             }
             catch

@@ -71,7 +71,7 @@ namespace DevIdent.Forms
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.CloseThemeEditorBtn = new System.Windows.Forms.PictureBox();
             this.LogBtn = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.NetworkBtn = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             this.ThemePanel.SuspendLayout();
@@ -99,6 +99,7 @@ namespace DevIdent.Forms
             // MenuPanel
             // 
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(47)))));
+            this.MenuPanel.Controls.Add(this.NetworkBtn);
             this.MenuPanel.Controls.Add(this.AutorunBtn);
             this.MenuPanel.Controls.Add(this.UninstallBtn);
             this.MenuPanel.Controls.Add(this.ServicesBtn);
@@ -123,7 +124,7 @@ namespace DevIdent.Forms
             this.AutorunBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AutorunBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AutorunBtn.ForeColor = System.Drawing.Color.White;
-            this.AutorunBtn.Location = new System.Drawing.Point(10, 340);
+            this.AutorunBtn.Location = new System.Drawing.Point(10, 370);
             this.AutorunBtn.Name = "AutorunBtn";
             this.AutorunBtn.Size = new System.Drawing.Size(99, 19);
             this.AutorunBtn.TabIndex = 17;
@@ -137,7 +138,7 @@ namespace DevIdent.Forms
             this.UninstallBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UninstallBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.UninstallBtn.ForeColor = System.Drawing.Color.White;
-            this.UninstallBtn.Location = new System.Drawing.Point(10, 310);
+            this.UninstallBtn.Location = new System.Drawing.Point(10, 340);
             this.UninstallBtn.Name = "UninstallBtn";
             this.UninstallBtn.Size = new System.Drawing.Size(108, 19);
             this.UninstallBtn.TabIndex = 16;
@@ -151,7 +152,7 @@ namespace DevIdent.Forms
             this.ServicesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ServicesBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ServicesBtn.ForeColor = System.Drawing.Color.White;
-            this.ServicesBtn.Location = new System.Drawing.Point(10, 220);
+            this.ServicesBtn.Location = new System.Drawing.Point(10, 250);
             this.ServicesBtn.Name = "ServicesBtn";
             this.ServicesBtn.Size = new System.Drawing.Size(63, 19);
             this.ServicesBtn.TabIndex = 15;
@@ -165,7 +166,7 @@ namespace DevIdent.Forms
             this.SysClearBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SysClearBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SysClearBtn.ForeColor = System.Drawing.Color.White;
-            this.SysClearBtn.Location = new System.Drawing.Point(10, 250);
+            this.SysClearBtn.Location = new System.Drawing.Point(10, 280);
             this.SysClearBtn.Name = "SysClearBtn";
             this.SysClearBtn.Size = new System.Drawing.Size(144, 19);
             this.SysClearBtn.TabIndex = 14;
@@ -179,7 +180,7 @@ namespace DevIdent.Forms
             this.BrowserBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowserBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BrowserBtn.ForeColor = System.Drawing.Color.White;
-            this.BrowserBtn.Location = new System.Drawing.Point(10, 280);
+            this.BrowserBtn.Location = new System.Drawing.Point(10, 310);
             this.BrowserBtn.Name = "BrowserBtn";
             this.BrowserBtn.Size = new System.Drawing.Size(162, 19);
             this.BrowserBtn.TabIndex = 13;
@@ -596,15 +597,19 @@ namespace DevIdent.Forms
             this.LogBtn.Text = "Открыть .log файл";
             this.LogBtn.Click += new System.EventHandler(this.LogBtn_Click);
             // 
-            // label2
+            // NetworkBtn
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(656, 307);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(162, 19);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "Открыть .log файл";
+            this.NetworkBtn.AutoSize = true;
+            this.NetworkBtn.BackColor = System.Drawing.Color.Transparent;
+            this.NetworkBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NetworkBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.NetworkBtn.ForeColor = System.Drawing.Color.White;
+            this.NetworkBtn.Location = new System.Drawing.Point(10, 220);
+            this.NetworkBtn.Name = "NetworkBtn";
+            this.NetworkBtn.Size = new System.Drawing.Size(45, 19);
+            this.NetworkBtn.TabIndex = 18;
+            this.NetworkBtn.Text = "Сеть";
+            this.NetworkBtn.Click += new System.EventHandler(this.NetworkBtn_Click);
             // 
             // MainForm
             // 
@@ -613,7 +618,6 @@ namespace DevIdent.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(650, 500);
             this.ControlBox = false;
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.LogBtn);
             this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.CloseThemeEditorBtn);
@@ -696,7 +700,7 @@ namespace DevIdent.Forms
         public System.Windows.Forms.TrackBar OpacityBar;
         private Cyotek.Windows.Forms.ColorEditor ColorEditor;
         private System.Windows.Forms.Label LogBtn;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label NetworkBtn;
     }
 }
 

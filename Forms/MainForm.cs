@@ -1,7 +1,6 @@
 ﻿using DevIdent.Classes;
 using DevIdent.Properties;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -55,6 +54,18 @@ namespace DevIdent.Forms
             }
 
             Click += (s, e) => { BringToFront(); };
+
+            InfoLb1.Click += (s, e) =>
+            {
+                if (InfoLb1.Text.Contains("Кликните по тексту, чтобы получить доп. информацию о сети"))
+                {
+                    Network.GetAdvancedNetworkInformation();
+                }
+                else if (InfoLb1.Text.Contains("Слишком большое кол-во адаптеров, кликните для доп. информации"))
+                {
+                    Network.GetAdvancedNetworkInformation();
+                }
+            };
         }
 
         #endregion
@@ -83,7 +94,7 @@ namespace DevIdent.Forms
                 () => RAM.GetRamInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory")),
                 () => MotherBoard.GetMotherBoardInfo(new ManagementObjectSearcher("root\\CIMV2",
                     "SELECT * FROM Win32_BaseBoard")),
-                () => GetDiskInfo()
+                () => Network.GetNetworkInformation()
             );
             SysInfoLabel_Click(sender, e);
             BringToFront();
@@ -111,7 +122,7 @@ namespace DevIdent.Forms
 
         #region Настройка формы
 
-        #region Убрать мерцание
+        #region Убрать мерцаниеы
 
         protected override CreateParams CreateParams
         {
@@ -127,7 +138,6 @@ namespace DevIdent.Forms
 
         private void FormSettings()
         {
-            //Settings.Default.Reset();
             CurrentOpacityValueLb.Text = Settings.Default.Opacity * 100 + "%";
             OpacityBar.Value = (int)(Settings.Default.Opacity * 100);
             Opacity = Settings.Default.Opacity;
@@ -214,7 +224,7 @@ namespace DevIdent.Forms
 
         #endregion Перемещение формы
 
-        #endregion Настройка формы
+        #endregion
 
         #region Закрытие программы
 
@@ -231,9 +241,9 @@ namespace DevIdent.Forms
 
         #region Обработчик нажатия
 
-        private void ClickOnComponent(int countOfLines, string[] array)
+        private void ClickOnComponent(string[] array)
         {
-            for (var i = 1; i < countOfLines; i++) ContentPanel.Controls["InfoLb" + i].Text = array[i - 1];
+            for (var i = 1; i < array.Length + 1; i++) ContentPanel.Controls["InfoLb" + i].Text = array[i - 1];
         }
 
         #endregion
@@ -244,10 +254,10 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 8, true);
             LabelVisible(8, 12, false);
-            ClickOnComponent(8, OS.sysInfoList);
+            ClickOnComponent(OS.sysInfoList);
         }
 
-        #endregion Система
+        #endregion
 
         #region БИОС
 
@@ -255,10 +265,10 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 7, true);
             LabelVisible(7, 12, false);
-            ClickOnComponent(7, BIOS.biosInfoList);
+            ClickOnComponent(BIOS.biosInfoList);
         }
 
-        #endregion БИОС
+        #endregion
 
         #region Материнская плата
 
@@ -266,10 +276,10 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 6, true);
             LabelVisible(6, 12, false);
-            ClickOnComponent(6, MotherBoard.motherBoardInfoList);
+            ClickOnComponent(MotherBoard.motherBoardInfoList);
         }
 
-        #endregion Материнская плата
+        #endregion
 
         #region Процессор
 
@@ -277,7 +287,7 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 7, true);
             LabelVisible(8, 9, false);
-            ClickOnComponent(8, Processor.cpuInfoList);
+            ClickOnComponent(Processor.cpuInfoList);
         }
 
         #endregion
@@ -288,7 +298,7 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 7, true);
             LabelVisible(8, 12, false);
-            ClickOnComponent(8, VideoController.videoInfoList);
+            ClickOnComponent(VideoController.videoInfoList);
         }
 
         #endregion
@@ -299,56 +309,37 @@ namespace DevIdent.Forms
         {
             LabelVisible(1, 6, true);
             LabelVisible(7, 12, false);
-            ClickOnComponent(7, RAM.ramInfoList);
+            ClickOnComponent(RAM.ramInfoList);
         }
 
-        #endregion ОЗУ
+        #endregion
 
         #region Винчестер
 
-        public static readonly List<string> driveInfoList = new List<string>();
-        public static bool check = false;
-        public static DriveInfo[] drives = DriveInfo.GetDrives();
-
-        private static void GetDiskInfo()
-        {
-            driveInfoList.Clear();
-            drives = DriveInfo.GetDrives();
-            var i = 0;
-            try
-            {
-                foreach (var drive in drives)
-                {
-                    try
-                    {
-                        driveInfoList.Add("Диск " + drives[i].Name + ", общий объем: " +
-                                          drives[i].TotalSize / 1073741824
-                                          + " ГБ" + ", доступный объем: " + drives[i].AvailableFreeSpace / 1073741824 +
-                                          " ГБ" + Environment.NewLine + "Файловая система: " + drives[i].DriveFormat);
-                    }
-                    catch
-                    {
-                        driveInfoList.Add("Не удалось получить инфомацию о диске " + drives[i].Name);
-                    }
-
-                    i++;
-                }
-            }
-
-            catch
-            {
-            }
-        }
-
         private void DiskInfoBtn_Click(object sender, EventArgs e)
         {
-            GetDiskInfo();
-            LabelVisible(1, driveInfoList.Count + 1, true);
-            LabelVisible(driveInfoList.Count + 1, 12, false);
-            ClickOnComponent(driveInfoList.Count + 1, driveInfoList.ToArray());
+            Drives.GetDiskInfo();
+            LabelVisible(1, Drives.drivesInfo.Length + 1, true);
+            LabelVisible(Drives.drivesInfo.Length + 1, 12, false);
+            ClickOnComponent(Drives.drivesInfo);
         }
 
-        #endregion Винчестер
+        #endregion
+
+        #region Сеть
+
+        private void NetworkBtn_Click(object sender, EventArgs e)
+        {
+            LabelVisible(1, 4, true);
+            LabelVisible(4, 12, false);
+            ClickOnComponent(Network.networkInfoList);
+            //if (InfoLb1.Height > Height)
+            //{
+            //    InfoLb1.Text = "Слишком большое кол-во адаптеров, кликните для доп. информации";
+            //}
+        }
+
+        #endregion
 
         #endregion
 
@@ -527,5 +518,7 @@ namespace DevIdent.Forms
                 Notify.ShowNotify("Файл не существует", Resources.Close);
             }
         }
+
+
     }
 }

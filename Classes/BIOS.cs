@@ -15,7 +15,6 @@ namespace DevIdent.Classes
             {
                 return;
             }
-
             int i = 0;
             foreach (ManagementBaseObject o in searcher.Get())
             {

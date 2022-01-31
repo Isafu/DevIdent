@@ -334,7 +334,6 @@ namespace DevIdent.Forms
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Services";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.ServicesForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServicesForm_MouseDown);
             this.MainMenu.ResumeLayout(false);
