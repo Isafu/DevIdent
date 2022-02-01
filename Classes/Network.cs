@@ -44,12 +44,12 @@ namespace DevIdent
             }
             catch
             {
-                ip = " нет соединения с удаленным сервисом";
+                ip = "нет соединения с удаленным сервисом";
             }
-            var adapters = NetworkInterface.GetAllNetworkInterfaces();
             string[] adapterInfo = new string[12];
             string line = "";
-            foreach (var adapter in adapters)
+            line = "IP-адрес: " + ip + "\n\n";
+            foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
             {
                 adapterInfo[0] = string.IsNullOrEmpty(adapter.Name) ? "--" : "Название подключения: " + adapter.Name;
                 adapterInfo[1] = string.IsNullOrEmpty(adapter.Description) ? "--" : "Описание: " + adapter.Description;
@@ -62,15 +62,14 @@ namespace DevIdent
                 adapterInfo[7] = adapter.GetIPProperties().IsDnsEnabled ? "DNS статус: включен" : "DNS статус: выключен";
                 adapterInfo[8] = string.IsNullOrEmpty(string.Join(", ", adapter.GetIPProperties().DnsAddresses)) ? "--"
                     : "DNS-адреса серверов: " + string.Join(", ", adapter.GetIPProperties().DnsAddresses);
-                adapterInfo[9] = adapter.GetIPProperties().IsDynamicDnsEnabled ? "Статус динамического DNS : включен" : "Статус динамического DNS : выключен";
+                adapterInfo[9] = adapter.GetIPProperties().IsDynamicDnsEnabled ? "Статус динамического DNS: включен" : "Статус динамического DNS: выключен";
                 adapterInfo[10] = adapter.IsReceiveOnly ? "Интерфейс настроен только на получение трафика" : "--";
-                adapterInfo[11] = string.IsNullOrEmpty(Convert.ToString(adapter.Speed)) 
+                adapterInfo[11] = string.IsNullOrEmpty(Convert.ToString(adapter.Speed))
                     ? "--" : "Скорость интерфейса: " + Math.Round(adapter.Speed * 0.000001, 1) + " Мб/С";
                 string[] newAdapterInfo = adapterInfo.Where(x => !x.StartsWith("--")).ToArray();
                 line += string.Join(Environment.NewLine, newAdapterInfo);
                 line += "\n\n";
             }
-
             NotepadMessager.SendMessage(line);
         }
     }

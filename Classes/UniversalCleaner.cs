@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -25,7 +24,6 @@ namespace DevIdent.Classes
             {
                 try
                 {
-
                     DeleteFile(file.FullName);
                 }
                 catch
@@ -58,14 +56,16 @@ namespace DevIdent.Classes
             }
             DirectoryInfo directoryInfo = new DirectoryInfo(folder.FullName);
             DirectoryInfo[] directories = directoryInfo.GetDirectories();
-            FileInfo[] fileInfo = directoryInfo.GetFiles();
-            foreach (FileInfo file in fileInfo)
+            FileInfo[] filesInfo = directoryInfo.GetFiles();
+            foreach (FileInfo file in filesInfo)
             {
                 try
                 {
+                    FileInfo fileInfo = new FileInfo(file.FullName);
+                    long fileSize = fileInfo.Length;
                     DeleteFile(file.FullName);
-                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + file.FullName);
-                    size += file.Length;
+                    size += fileSize;
+                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
                 }
                 catch
                 {
@@ -90,61 +90,57 @@ namespace DevIdent.Classes
             return size;
         }
 
-        public static long FileCleaner(Hashtable hashtable)
+        public static long FileCleaner(Tuple<string, string> table)
         {
-            foreach (DictionaryEntry keyValue in hashtable)
+            if (!Directory.Exists(table.Item1))
             {
-                if (!Directory.Exists((string)keyValue.Key))
-                {
-                    return 0;
-                }
-                try
-                {
-                    foreach (string file in Directory.GetFiles((string)keyValue.Key, (string)keyValue.Value))
-                    {
-                        try
-                        {
-                            DeleteFile(file);
-                            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + file);
-                            size += new FileInfo(file).Length;
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-                catch
-                {
-                }
+                return 0;
             }
-
-            return size;
-        }
-
-        public static long FileCleaner(string[] pathes)
-        {
-            foreach (string path in pathes)
+            try
             {
-                if (!File.Exists(path))
-                {
-                    return 0;
-                }
-
-                try
+                foreach (string file in Directory.GetFiles(table.Item1, table.Item2))
                 {
                     try
                     {
-                        DeleteFile(path);
-                        File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + path);
-                        size += new FileInfo(path).Length;
+                        FileInfo fileInfo = new FileInfo(file);
+                        long fileSize = fileInfo.Length;
+                        DeleteFile(file);
+                        size += fileSize;
+                        File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
                     }
                     catch
                     {
                     }
                 }
+            }
+            catch
+            {
+            }
+            return size;
+        }
+
+        public static long FileCleaner(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return 0;
+            }
+            try
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(path);
+                    long fileSize = fileInfo.Length;
+                    DeleteFile(path);
+                    size += fileSize;
+                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
+                }
                 catch
                 {
                 }
+            }
+            catch
+            {
             }
             return size;
         }

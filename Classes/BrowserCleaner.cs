@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DevIdent.Classes
 {
-    public struct Browser
+    public struct BrowserCleaner
     {
         private static readonly string User = Environment.UserName;
 
@@ -14,8 +14,8 @@ namespace DevIdent.Classes
         public static readonly DirectoryInfo[] directoryOfChrome =
         {
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"),
-            new DirectoryInfo("C:\\Users\\" + User +
-                "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Storage\\ext\\"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache\\Cache_Data"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Storage\\ext"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\File System"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\GPUCache"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extension State"),
@@ -39,32 +39,28 @@ namespace DevIdent.Classes
             "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Safe Browsing Cookies-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\DownloadMetadata",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History",
+            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History Provider Cache",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cookies",
+            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network Action Predictor",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cookies-journal",
-            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Visited Links",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data For Account",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Media History",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Web Data",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Web Data-journal",
-            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network Action Predictor",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Top Sites",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Favicons-journal",
-            "C:\\Users\\" + User +
-            "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data For Account-journal",
+            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data For Account-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Media History-journal",
-            "C:\\Users\\" + User +
-            "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network Action Predictor-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Reporting and NEL-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Top Sites-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\QuotaManager-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Safe Browsing Cookies-journal",
             "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Shortcuts-journal",
-            "C:\\Users\\" + User +
-            "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\heavy_ad_intervention_opt_out.db-journal"
+            "C:\\Users\\" + User + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\heavy_ad_intervention_opt_out.db-journal"
         };
 
         #endregion Файлы хром
@@ -79,6 +75,7 @@ namespace DevIdent.Classes
         {
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\ShaderCache\\GPUCache"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Opera Software\\Opera GX Stable\\Cache"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\databases"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Sessions"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Session Storage"),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\IndexedDB"),

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DevIdent.Classes
@@ -21,22 +21,29 @@ namespace DevIdent.Classes
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\CrashDumps"),
             new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Recent)),
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\WER\\ReportArchive"),
-            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer")
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\CLR_v4.0\\UsageLogs"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\CLR_v4.0_32\\UsageLogs"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\CLR_v2.0\\UsageLogs"),
+            new DirectoryInfo("C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft\\CLR_v4.0"),
+            new DirectoryInfo("C:\\Windows\\Logs\\WindowsUpdate"),
+            new DirectoryInfo("C:\\Windows\\Logs\\SIH"),
+            new DirectoryInfo("C:\\Users\\Isafu-\\AppData\\Local\\ElevatedDiagnostics"),
         };
 
-        public static readonly Hashtable filePathes = new Hashtable
+        public static readonly List<Tuple<string, string>> filePathes = new List<Tuple<string, string>>
         {
-            {"C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer", "thumbcache_*.db"},
-            {"C:\\Windows", "*.log"},
-            {"C:\\Windows", "MEMORY.DMP"},
-            {"C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Resource", "*"},
-            {"C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Quick", "*"},
-            {"C:\\Users\\" + User + "\\AppData\\Local\\Microsoft", "*"},
-            {"C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\WebCache", "*.log"},
-            {"C:\\Windows\\Microsoft.NET", "*.log"},
-            {"C:\\Users\\" + User + "\\AppData\\Local\\Microsoft", "CLR_*"},
-            {"C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft", "CLR_*"},
-            {"C:\\Windows\\SysWOW64\\config\\systemprofile\\AppData\\Local\\Microsoft", "CLR_*"}
+            new Tuple<string,string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer", "thumbcache_*.db"),
+            new Tuple<string,string>("C:\\Windows", "*.log"),
+            new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Resource", "*"),
+            new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Quick", "*"),
+            new Tuple<string, string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\WebCache", "*.log"),
+            new Tuple<string, string>("C:\\Windows\\Microsoft.NET", "*.log"),
+            new Tuple<string, string>("C:\\Windows\\", "MEMORY.DMP"),
+            new Tuple<string, string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft", "CLR_*"),
+            new Tuple<string, string>("C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft", "CLR_*"),
+            new Tuple<string, string>("C:\\Windows\\SysWOW64\\config\\systemprofile\\AppData\\Local\\Microsoft", "CLR_*"),
+            new Tuple<string, string>("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319", "*.log" )
         };
 
     }

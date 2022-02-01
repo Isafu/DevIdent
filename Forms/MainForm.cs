@@ -330,13 +330,13 @@ namespace DevIdent.Forms
 
         private void NetworkBtn_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 4, true);
-            LabelVisible(4, 12, false);
+            LabelVisible(1, 2, true);
+            LabelVisible(2, 12, false);
             ClickOnComponent(Network.networkInfoList);
-            //if (InfoLb1.Height > Height)
-            //{
-            //    InfoLb1.Text = "Слишком большое кол-во адаптеров, кликните для доп. информации";
-            //}
+            if (InfoLb1.Height > Height)
+            {
+                InfoLb1.Text = "Слишком большое кол-во адаптеров, кликните для доп. информации";
+            }
         }
 
         #endregion
@@ -373,27 +373,42 @@ namespace DevIdent.Forms
         {
             UniversalCleaner.browserSize = 0;
             long length = 0;
-            foreach (var t in Browser.directoryOfChrome)
+
+            for (int i = 0; i < BrowserCleaner.directoryOfChrome.Length; i++)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(t);
+                length += UniversalCleaner.DirectoryCleaner(BrowserCleaner.directoryOfChrome[i]);
             }
-            foreach (var t in Browser.directoryOfGx)
+
+            for (int i = 0; i < BrowserCleaner.directoryOfOpera.Length; i++)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(t);
+                length += UniversalCleaner.DirectoryCleaner(BrowserCleaner.directoryOfOpera[i]);
             }
-            foreach (var t in Browser.directoryOfOpera)
+
+            for (int i = 0; i < BrowserCleaner.directoryOfGx.Length; i++)
             {
                 UniversalCleaner.size = 0;
-                length += UniversalCleaner.DirectoryCleaner(t);
+                length += UniversalCleaner.DirectoryCleaner(BrowserCleaner.directoryOfGx[i]);
             }
-            UniversalCleaner.size = 0;
-            length += UniversalCleaner.FileCleaner(Browser.operaGxCachePathes);
-            UniversalCleaner.size = 0;
-            length += UniversalCleaner.FileCleaner(Browser.chromeCachePathes);
-            UniversalCleaner.size = 0;
-            length += UniversalCleaner.FileCleaner(Browser.operaCachePathes);
+
+            for (int i = 0; i < BrowserCleaner.operaGxCachePathes.Length; i++)
+            {
+                UniversalCleaner.size = 0;
+                length += UniversalCleaner.FileCleaner(BrowserCleaner.operaGxCachePathes[i]);
+            }
+
+            for (int i = 0; i < BrowserCleaner.chromeCachePathes.Length; i++)
+            {
+                UniversalCleaner.size = 0;
+                length += UniversalCleaner.FileCleaner(BrowserCleaner.chromeCachePathes[i]);
+            }
+
+            for (int i = 0; i < BrowserCleaner.operaCachePathes.Length; i++)
+            {
+                UniversalCleaner.size = 0;
+                length += UniversalCleaner.FileCleaner(BrowserCleaner.operaCachePathes[i]);
+            }
             UniversalCleaner.browserSize = length;
             UniversalCleaner.size = 0;
         }
@@ -411,8 +426,11 @@ namespace DevIdent.Forms
                 UniversalCleaner.size = 0;
                 length += UniversalCleaner.DirectoryCleaner(SystemCleaner.directoryPathes[i]);
             }
-            UniversalCleaner.size = 0;
-            length += UniversalCleaner.FileCleaner(SystemCleaner.filePathes);
+            for (int i = 0; i < SystemCleaner.filePathes.Count; i++)
+            {
+                UniversalCleaner.size = 0;
+                length += UniversalCleaner.FileCleaner(SystemCleaner.filePathes[6]);
+            }
             UniversalCleaner.size = 0;
             UniversalCleaner.sysSize = length;
         }
