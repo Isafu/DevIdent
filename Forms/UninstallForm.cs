@@ -324,15 +324,20 @@ namespace DevIdent.Forms
                 process.EnableRaisingEvents = true;
                 process.Start();
                 process.WaitForExit();
-                if (process.ExitCode == 1604)
+                if (process.ExitCode == 1614)
                 {
-                    RemoveFromListAndRegistry(index);
+                    RemoveFromList(index);
+                    DeleteInfoFromRegistry(index);
                     LogDelete(item);
                 }
+                else if (process.ExitCode == 0 && process.HasExited)
+                {
+                    RemoveFromList(index);
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                Notify.ShowNotify(ex.Message, Resources.Close);
+                return;
             }
         }
 
@@ -367,9 +372,8 @@ namespace DevIdent.Forms
 
         #endregion
 
-        private void RemoveFromListAndRegistry(int indexOfProgramm)
+        private void RemoveFromList(int indexOfProgramm)
         {
-            DeleteInfoFromRegistry(indexOfProgramm);
             UninstallBox.Items.RemoveAt(UninstallBox.SelectedIndex);
             _registyPathes.RemoveAt(indexOfProgramm);
             _searchPathes.RemoveAt(indexOfProgramm);
@@ -392,30 +396,37 @@ namespace DevIdent.Forms
                 return;
             }
 
-            if (Registry.GetValue(_registyPathes[index], "InstallSource", "NULL").ToString() != "NULL")
+            else if (Registry.GetValue(_registyPathes[index], "InstallSource", "NULL").ToString() != "NULL")
             {
                 UniversalCleaner.DirectoryCleanerWithoutSize(
                     new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallSource", "").ToString()));
-                RemoveFromListAndRegistry(index);
+                RemoveFromList(index);
+                DeleteInfoFromRegistry(index);
                 LogDelete(programm);
                 return;
             }
 
-            if (Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "NULL").ToString() != "NULL")
+            else if (Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "NULL").ToString() != "NULL")
             {
                 DeleteProgrammByHiddenUninstall(Registry.GetValue(_registyPathes[index], "UninstallString_Hidden", "")
                     .ToString());
-                RemoveFromListAndRegistry(index);
+                RemoveFromList(index);
+                DeleteInfoFromRegistry(index);
                 LogDelete(programm);
                 return;
             }
 
-            if (Registry.GetValue(_registyPathes[index], "InstallLocation", "NULL").ToString() != "NULL")
+            else if (Registry.GetValue(_registyPathes[index], "InstallLocation", "NULL").ToString() != "NULL")
             {
                 UniversalCleaner.DirectoryCleanerWithoutSize(
                     new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallLocation", "").ToString()));
+                Notify.ShowNotify("Программа удалена", Resources.Close);
                 LogDelete(programm);
-                RemoveFromListAndRegistry(index);
+                RemoveFromList(index);
+            }
+            else
+            {
+                Notify.ShowNotify("Не удалось удалить программу", Resources.Close);
             }
         }
 
@@ -492,7 +503,8 @@ namespace DevIdent.Forms
         {
             if (UninstallBox.SelectedIndex == -1) return;
             var item = (string)UninstallBox.SelectedItem;
-            RemoveFromListAndRegistry(_searchPathes.IndexOf((string)UninstallBox.SelectedItem));
+            RemoveFromList(_searchPathes.IndexOf(item));
+            DeleteInfoFromRegistry(_searchPathes.IndexOf(item));
             if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
             File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || " + item + " удалена из реестра" + Environment.NewLine);
             Notify.ShowNotify(item + " удалена из реестра", Resources.Close);

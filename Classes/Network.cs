@@ -8,7 +8,7 @@ namespace DevIdent
 {
     public static class Network
     {
-        public static readonly string[] networkInfoList = { "" };
+        public static string[] networkInfoList = new string[] { "" };
 
         public static void GetNetworkInformation()
         {
@@ -16,7 +16,7 @@ namespace DevIdent
             {
                 return;
             }
-            string ip = "";
+            string ip;
             try
             {
                 ip = IPAddress.Parse(new WebClient().DownloadString("https://ipinfo.io/ip")).ToString();
@@ -26,13 +26,13 @@ namespace DevIdent
                 ip = " нет соединения с удаленным сервисом";
             }
             var adapters = NetworkInterface.GetAllNetworkInterfaces();
-            networkInfoList[0] = "Все доступные сетевые подключения: " +
-                Environment.NewLine + Environment.NewLine + string.Join(Environment.NewLine, adapters
-                .Select(x => "Название подключения: " + x.Name + Environment.NewLine
-                + "Байт отправлено: " + x.GetIPv4Statistics().BytesSent + " || Байт получено: "
-                + x.GetIPv4Statistics().BytesReceived + Environment.NewLine))
-                + Environment.NewLine + "IP-адрес: "
-                + ip + Environment.NewLine + Environment.NewLine + "Кликните по тексту, чтобы получить доп. информацию о сети" + Environment.NewLine;
+            Array.Resize(ref networkInfoList, adapters.Length + 2);
+            networkInfoList[0] = "Кликните по тексту, чтобы получить доп. информацию о сети";
+            for (int i = 1, j = 0; i < networkInfoList.Length && j < adapters.Length; i++, j++)
+            {
+                networkInfoList[i] = "Название подключения: " + adapters[j].Name;
+            }
+            networkInfoList[networkInfoList.Length - 1] = "IP-адрес: " + ip;
         }
 
         public static void GetAdvancedNetworkInformation()

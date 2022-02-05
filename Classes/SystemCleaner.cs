@@ -27,6 +27,10 @@ namespace DevIdent.Classes
             new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\CLR_v2.0\\UsageLogs"),
             new DirectoryInfo("C:\\Windows\\System32\\config\\systemprofile\\AppData\\Local\\Microsoft\\CLR_v4.0"),
             new DirectoryInfo("C:\\Windows\\Logs\\WindowsUpdate"),
+            new DirectoryInfo("C:\\ProgramData\\Microsoft\\Network\\Downloader"),
+            new DirectoryInfo("C:\\Windows\\Prefetch"),
+            new DirectoryInfo("C:\\Windows\\Logs"),
+            new DirectoryInfo("C:\\Windows\\servicing\\LCU"),
             new DirectoryInfo("C:\\Windows\\Logs\\SIH"),
             new DirectoryInfo("C:\\Users\\Isafu-\\AppData\\Local\\ElevatedDiagnostics"),
         };
@@ -34,7 +38,6 @@ namespace DevIdent.Classes
         public static readonly List<Tuple<string, string>> filePathes = new List<Tuple<string, string>>
         {
             new Tuple<string,string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer", "thumbcache_*.db"),
-            new Tuple<string,string>("C:\\Windows", "*.log"),
             new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Resource", "*"),
             new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Quick", "*"),
             new Tuple<string, string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\WebCache", "*.log"),

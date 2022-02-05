@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using System;
+using System.Management;
 
 namespace DevIdent.Classes
 {
@@ -6,17 +7,21 @@ namespace DevIdent.Classes
     {
         #region Получение информации
 
-        public static readonly string[] motherBoardInfoList = { "", "", "", "", "" };
+        public static string[] motherBoardInfoList = { "", "", "", "", "" };
 
-        public static void GetMotherBoardInfo(ManagementObjectSearcher searcher)
+        public static void GetMotherBoardInfo()
         {
             if (motherBoardInfoList[0]?.Length != 0)
             {
                 return;
             }
-
             int i = 0;
-            foreach (ManagementBaseObject o in searcher.Get())
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard").Get();
+            if (searcher.Count > 1)
+            {
+                Array.Resize(ref motherBoardInfoList, motherBoardInfoList.Length * searcher.Count);
+            }
+            foreach (ManagementBaseObject o in searcher)
             {
                 ManagementObject queryObj = (ManagementObject)o;
                 try
@@ -54,7 +59,7 @@ namespace DevIdent.Classes
 
                 try
                 {
-                    if (queryObj["SerialNumber"].ToString().Length < 6)
+                    if (queryObj["SerialNumber"].ToString().Length > 6)
                     {
                         motherBoardInfoList[i] = "Серийный номер: " + queryObj["SerialNumber"];
                         ++i;
@@ -74,10 +79,12 @@ namespace DevIdent.Classes
                 try
                 {
                     motherBoardInfoList[i] = "Подключение" + queryObj["PrimaryBusType"];
+                    ++i;
                 }
                 catch
                 {
                     motherBoardInfoList[i] = "Не удалось получить информацию о подключении";
+                    ++i;
                 }
             }
         }

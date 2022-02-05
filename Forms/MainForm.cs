@@ -1,12 +1,12 @@
 ﻿using DevIdent.Classes;
 using DevIdent.Properties;
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,18 +54,6 @@ namespace DevIdent.Forms
             }
 
             Click += (s, e) => { BringToFront(); };
-
-            InfoLb1.Click += (s, e) =>
-            {
-                if (InfoLb1.Text.Contains("Кликните по тексту, чтобы получить доп. информацию о сети"))
-                {
-                    Network.GetAdvancedNetworkInformation();
-                }
-                else if (InfoLb1.Text.Contains("Слишком большое кол-во адаптеров, кликните для доп. информации"))
-                {
-                    Network.GetAdvancedNetworkInformation();
-                }
-            };
         }
 
         #endregion
@@ -85,15 +73,12 @@ namespace DevIdent.Forms
                 Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Close);
             }
             Parallel.Invoke(
-                () => Processor.GetCpuinfo(new ManagementObjectSearcher("root\\CIMV2",
-                    "SELECT * FROM Win32_Processor")),
+                () => Processor.GetCpuinfo(),
                 () => OS.GetSysInfo(),
-                () => BIOS.GetBIOSInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BIOS")),
-                () => VideoController.GetVideoInfo(new ManagementObjectSearcher("root\\CIMV2",
-                    "SELECT * FROM Win32_VideoController")),
-                () => RAM.GetRamInfo(new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory")),
-                () => MotherBoard.GetMotherBoardInfo(new ManagementObjectSearcher("root\\CIMV2",
-                    "SELECT * FROM Win32_BaseBoard")),
+                () => BIOS.GetBIOSInfo(),
+                () => VideoController.GetVideoInfo(),
+                () => RAM.GetRamInfo(),
+                () => MotherBoard.GetMotherBoardInfo(),
                 () => Network.GetNetworkInformation()
             );
             SysInfoLabel_Click(sender, e);
@@ -103,13 +88,6 @@ namespace DevIdent.Forms
         #endregion
 
         #endregion
-
-        #region Скрытие и появление Label
-
-        private void LabelVisible(int start, int end, bool visible)
-        {
-            for (var i = start; i < end + 1; i++) ContentPanel.Controls["InfoLb" + i].Visible = visible;
-        }
 
         #region Трей
 
@@ -235,15 +213,44 @@ namespace DevIdent.Forms
 
         #endregion Закрытие программы
 
-        #endregion
-
         #region Компоненты
 
         #region Обработчик нажатия
 
+        private void FirstLabel_Click(object sender, EventArgs e)
+        {
+            if (((Label)sender).Height > Height)
+            {
+                ((Label)sender).Text = "Слишком большое кол-во адаптеров, кликните для доп. информации";
+            }
+            else if (((Label)sender).Text.Contains("Кликните по тексту, чтобы получить доп. информацию о сети"))
+            {
+                Network.GetAdvancedNetworkInformation();
+            }
+            else if (((Label)sender).Text.Contains("Слишком большое кол-во адаптеров, кликните для доп. информации"))
+            {
+                Network.GetAdvancedNetworkInformation();
+            }
+        }
+
         private void ClickOnComponent(string[] array)
         {
-            for (var i = 1; i < array.Length + 1; i++) ContentPanel.Controls["InfoLb" + i].Text = array[i - 1];
+            ContentPanel.Controls.Clear();
+            for (var i = 0; i < array.Length; i++)
+            {
+                Label label = new Label
+                {
+                    Name = "InfoLb" + i,
+                    Location = new Point(10, 10 + ((i) * 30)),
+                    Font = new Font("Consolas", 9),
+                    FlatStyle = FlatStyle.Flat,
+                    AutoSize = true,
+                    Text = array[i]
+
+                };
+                ContentPanel.Controls.Add(label);
+            }
+            ContentPanel.Controls[0].Click += FirstLabel_Click;
         }
 
         #endregion
@@ -252,8 +259,6 @@ namespace DevIdent.Forms
 
         private void SysInfoLabel_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 8, true);
-            LabelVisible(8, 12, false);
             ClickOnComponent(OS.sysInfoList);
         }
 
@@ -263,8 +268,6 @@ namespace DevIdent.Forms
 
         private void BiosBtn_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 7, true);
-            LabelVisible(7, 12, false);
             ClickOnComponent(BIOS.biosInfoList);
         }
 
@@ -274,8 +277,6 @@ namespace DevIdent.Forms
 
         private void MotherBoardBtn_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 6, true);
-            LabelVisible(6, 12, false);
             ClickOnComponent(MotherBoard.motherBoardInfoList);
         }
 
@@ -285,8 +286,6 @@ namespace DevIdent.Forms
 
         private void CPUInfoLabel_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 7, true);
-            LabelVisible(8, 9, false);
             ClickOnComponent(Processor.cpuInfoList);
         }
 
@@ -296,8 +295,6 @@ namespace DevIdent.Forms
 
         private void VideoInfoLabel_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 7, true);
-            LabelVisible(8, 12, false);
             ClickOnComponent(VideoController.videoInfoList);
         }
 
@@ -307,8 +304,6 @@ namespace DevIdent.Forms
 
         private void RAMInfoLb_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 6, true);
-            LabelVisible(7, 12, false);
             ClickOnComponent(RAM.ramInfoList);
         }
 
@@ -319,8 +314,6 @@ namespace DevIdent.Forms
         private void DiskInfoBtn_Click(object sender, EventArgs e)
         {
             Drives.GetDiskInfo();
-            LabelVisible(1, Drives.drivesInfo.Length + 1, true);
-            LabelVisible(Drives.drivesInfo.Length + 1, 12, false);
             ClickOnComponent(Drives.drivesInfo);
         }
 
@@ -330,13 +323,135 @@ namespace DevIdent.Forms
 
         private void NetworkBtn_Click(object sender, EventArgs e)
         {
-            LabelVisible(1, 2, true);
-            LabelVisible(2, 12, false);
             ClickOnComponent(Network.networkInfoList);
-            if (InfoLb1.Height > Height)
+        }
+
+        #endregion
+
+        #region Настройка винды
+
+        private void WinSettinsBtn_Click(object sender, EventArgs e)
+        {
+            ContentPanel.Controls.Clear();
+            for (int i = 0; i < 11; i++)
             {
-                InfoLb1.Text = "Слишком большое кол-во адаптеров, кликните для доп. информации";
+                int check = 0;
+                CheckBox box = new CheckBox();
+                for (int j = 0; j < WindowsSettings.registyInfo[i].Count; j++)
+                {
+                    switch (WindowsSettings.registyInfo[i][j].Item1)
+                    {
+
+                        case "CurrentUser":
+                            if (Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2) != null)
+                            {
+                                if (Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null 
+                                    && Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3).Equals(WindowsSettings.registyInfo[i][j].Item4))
+                                {
+                                    check++;
+                                }
+                            }
+                            break;
+
+                        case "LocalMachine":
+                            if (Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2) != null)
+                            {
+                                if (Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null 
+                                    && Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3).Equals(WindowsSettings.registyInfo[i][j].Item4))
+                                {
+                                    check++;
+                                }
+                            }
+                            break;
+                    }
+                }
+                if (check == WindowsSettings.registyInfo[i].Count)
+                {
+                    box.Font = new Font("Consolas", 9, FontStyle.Strikeout);
+                    box.Checked = true;
+                }
+                else
+                {
+                    box.Font = new Font("Consolas", 9);
+                }
+                box.Location = new Point(35, 10 + i * 30);
+                box.Name = "CheckBox" + (i + 1);
+                box.FlatStyle = FlatStyle.Flat;
+                box.Text = WindowsSettings.settingInfo[i].Item1;
+                box.MouseEnter += HelpInfo;
+                box.MouseLeave += DeleteInfo;
+                box.AutoSize = true;
+                PictureBox picture = new PictureBox
+                {
+                    Location = new Point(10, 10 + i * 30),
+                    Size = new Size(15, 15),
+                    Name = "Picture" + (i + 1),
+                    Image = Resources.Remove
+                };
+                picture.Click += RemoveSetting_Click;
+                ToolTip toolTip = new ToolTip();
+                toolTip.SetToolTip(picture, "Нажатие восстанавливает значение по умолчанию");
+                ContentPanel.Controls.Add(picture);
+                ContentPanel.Controls.Add(box);
             }
+            Label acceptLb = new Label
+            {
+                Name = "AcceptSettingsLb",
+                Location = new Point(10, 340),
+                Font = new Font("Consolas", 12),
+                AutoSize = true,
+                Text = "Применить настройки"
+            };
+            acceptLb.Click += AcceptLb_Click;
+            ContentPanel.Controls.Add(acceptLb);
+
+            Label label = new Label
+            {
+                Name = "HelpLb",
+                Location = new Point(10, 370),
+                Font = new Font("Consolas", 10),
+                Size = new Size(465, 100)
+            };
+            ContentPanel.Controls.Add(label);
+        }
+
+        private void AcceptLb_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 11; i++)
+            {
+                var checkBox = ContentPanel.Controls.OfType<CheckBox>().SingleOrDefault(t => t.Name == "CheckBox" + (i + 1));
+                if (checkBox.Checked)
+                {
+                    WindowsSettings.methods[i].Invoke(null, new object[] { true });
+                    checkBox.Font = new Font("Consolas", 9, FontStyle.Strikeout);
+                }
+            }
+        }
+
+        private void RemoveSetting_Click(object sender, EventArgs e)
+        {
+            int index = int.Parse(((PictureBox)sender).Name.Replace("Picture", string.Empty)) - 1;
+            WindowsSettings.methods[index].Invoke(null, new object[] { false });
+            var checkBox = ContentPanel.Controls.OfType<CheckBox>().SingleOrDefault(t => t.Name == "CheckBox" + (index + 1));
+            checkBox.Font = new Font("Consolas", 9);
+            checkBox.Checked = false;
+        }
+
+        private void HelpInfo(object sender, EventArgs e)
+        {
+            int index = int.Parse(((CheckBox)sender).Name.Replace("CheckBox", string.Empty)) - 1;
+            Label lb = Controls.Find("HelpLb", true).FirstOrDefault() as Label;
+            lb.Text = WindowsSettings.settingInfo[index].Item2;
+        }
+
+        private void DeleteInfo(object sender, EventArgs e)
+        {
+            Label lb = Controls.Find("HelpLb", true).FirstOrDefault() as Label;
+            lb.Text = "";
         }
 
         #endregion

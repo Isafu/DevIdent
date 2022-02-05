@@ -40,7 +40,6 @@ namespace DevIdent.Classes
                 try
                 {
                     directoryInfo.Delete();
-                    Notify.ShowNotify("Директория удалена", Properties.Resources.Close);
                 }
                 catch
                 {
@@ -65,7 +64,6 @@ namespace DevIdent.Classes
                     long fileSize = fileInfo.Length;
                     DeleteFile(file.FullName);
                     size += fileSize;
-                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
                 }
                 catch
                 {

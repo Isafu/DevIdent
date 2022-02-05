@@ -9,9 +9,9 @@ namespace DevIdent.Classes
 
         #region Получение информации
 
-        public static readonly string[] cpuInfoList = { "", "", "", "", "", "", "" };
+        public static string[] cpuInfoList = { "", "", "", "", "", "", "" };
 
-        public static void GetCpuinfo(ManagementObjectSearcher searcher)
+        public static void GetCpuinfo()
         {
             if (cpuInfoList[0]?.Length != 0)
             {
@@ -19,7 +19,12 @@ namespace DevIdent.Classes
             }
 
             int i = 0;
-            foreach (ManagementBaseObject o in searcher.Get())
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor").Get();
+            if (searcher.Count > 1)
+            {
+                Array.Resize(ref cpuInfoList, cpuInfoList.Length * searcher.Count);
+            }
+            foreach (ManagementBaseObject o in searcher)
             {
                 ManagementObject queryObj = (ManagementObject)o;
                 try
@@ -92,10 +97,12 @@ namespace DevIdent.Classes
                 try
                 {
                     cpuInfoList[i] = "Тактовая частота: " + queryObj["MaxClockSpeed"];
+                    ++i;
                 }
                 catch
                 {
                     cpuInfoList[i] = "Не удалось получить тактовую частоту";
+                    ++i;
                 }
             }
         }

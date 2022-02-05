@@ -11,18 +11,22 @@ namespace DevIdent.Classes
 
         #region Получение информации
 
-        public static readonly string[] videoInfoList = { "", "", "", "", "", "", "" };
+        public static string[] videoInfoList = { "", "", "", "", "", "", "" };
 
-        public static void GetVideoInfo(ManagementObjectSearcher searcher)
+        public static void GetVideoInfo()
         {
             if (videoInfoList[0]?.Length != 0)
             {
                 return;
             }
-
-            foreach (ManagementBaseObject o in searcher.Get())
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController").Get();
+            if (searcher.Count > 1)
             {
-                int i = 0;
+                Array.Resize(ref videoInfoList, videoInfoList.Length * searcher.Count);
+            }
+            int i = 0;
+            foreach (ManagementBaseObject o in searcher)
+            {
                 ManagementObject queryObj = (ManagementObject)o;
                 try
                 {
@@ -95,10 +99,12 @@ namespace DevIdent.Classes
                 try
                 {
                     videoInfoList[i] = "Тип видеопамяти: " + GetTypeOfMemory();
+                    ++i;
                 }
                 catch
                 {
                     videoInfoList[i] = "Не удалось получить тип видеопамяти";
+                    ++i;
                 }
             }
         }

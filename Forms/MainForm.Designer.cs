@@ -32,6 +32,8 @@ namespace DevIdent.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.TitleLabel = new System.Windows.Forms.Label();
             this.MenuPanel = new System.Windows.Forms.Panel();
+            this.WinSettinsBtn = new System.Windows.Forms.Label();
+            this.NetworkBtn = new System.Windows.Forms.Label();
             this.AutorunBtn = new System.Windows.Forms.Label();
             this.UninstallBtn = new System.Windows.Forms.Label();
             this.ServicesBtn = new System.Windows.Forms.Label();
@@ -44,19 +46,6 @@ namespace DevIdent.Forms
             this.VideoInfoBtn = new System.Windows.Forms.Label();
             this.CPUInfoBtn = new System.Windows.Forms.Label();
             this.SysInfoBtn = new System.Windows.Forms.Label();
-            this.ContentPanel = new System.Windows.Forms.Panel();
-            this.InfoLb12 = new System.Windows.Forms.Label();
-            this.InfoLb11 = new System.Windows.Forms.Label();
-            this.InfoLb10 = new System.Windows.Forms.Label();
-            this.InfoLb9 = new System.Windows.Forms.Label();
-            this.InfoLb1 = new System.Windows.Forms.Label();
-            this.InfoLb2 = new System.Windows.Forms.Label();
-            this.InfoLb3 = new System.Windows.Forms.Label();
-            this.InfoLb4 = new System.Windows.Forms.Label();
-            this.InfoLb5 = new System.Windows.Forms.Label();
-            this.InfoLb6 = new System.Windows.Forms.Label();
-            this.InfoLb7 = new System.Windows.Forms.Label();
-            this.InfoLb8 = new System.Windows.Forms.Label();
             this.SetTheme = new System.Windows.Forms.Label();
             this.SetDefaultTheme = new System.Windows.Forms.Label();
             this.ThemePanel = new System.Windows.Forms.Panel();
@@ -71,9 +60,8 @@ namespace DevIdent.Forms
             this.CloseBth = new System.Windows.Forms.PictureBox();
             this.CloseThemeEditorBtn = new System.Windows.Forms.PictureBox();
             this.LogBtn = new System.Windows.Forms.Label();
-            this.NetworkBtn = new System.Windows.Forms.Label();
+            this.ContentPanel = new System.Windows.Forms.Panel();
             this.MenuPanel.SuspendLayout();
-            this.ContentPanel.SuspendLayout();
             this.ThemePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OpenThemeEditorBtn)).BeginInit();
@@ -99,6 +87,7 @@ namespace DevIdent.Forms
             // MenuPanel
             // 
             this.MenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(47)))));
+            this.MenuPanel.Controls.Add(this.WinSettinsBtn);
             this.MenuPanel.Controls.Add(this.NetworkBtn);
             this.MenuPanel.Controls.Add(this.AutorunBtn);
             this.MenuPanel.Controls.Add(this.UninstallBtn);
@@ -116,6 +105,34 @@ namespace DevIdent.Forms
             this.MenuPanel.Name = "MenuPanel";
             this.MenuPanel.Size = new System.Drawing.Size(175, 470);
             this.MenuPanel.TabIndex = 6;
+            // 
+            // WinSettinsBtn
+            // 
+            this.WinSettinsBtn.AutoSize = true;
+            this.WinSettinsBtn.BackColor = System.Drawing.Color.Transparent;
+            this.WinSettinsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WinSettinsBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.WinSettinsBtn.ForeColor = System.Drawing.Color.White;
+            this.WinSettinsBtn.Location = new System.Drawing.Point(10, 400);
+            this.WinSettinsBtn.Name = "WinSettinsBtn";
+            this.WinSettinsBtn.Size = new System.Drawing.Size(162, 19);
+            this.WinSettinsBtn.TabIndex = 19;
+            this.WinSettinsBtn.Text = "Настройка Windows";
+            this.WinSettinsBtn.Click += new System.EventHandler(this.WinSettinsBtn_Click);
+            // 
+            // NetworkBtn
+            // 
+            this.NetworkBtn.AutoSize = true;
+            this.NetworkBtn.BackColor = System.Drawing.Color.Transparent;
+            this.NetworkBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NetworkBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.NetworkBtn.ForeColor = System.Drawing.Color.White;
+            this.NetworkBtn.Location = new System.Drawing.Point(10, 220);
+            this.NetworkBtn.Name = "NetworkBtn";
+            this.NetworkBtn.Size = new System.Drawing.Size(45, 19);
+            this.NetworkBtn.TabIndex = 18;
+            this.NetworkBtn.Text = "Сеть";
+            this.NetworkBtn.Click += new System.EventHandler(this.NetworkBtn_Click);
             // 
             // AutorunBtn
             // 
@@ -284,158 +301,6 @@ namespace DevIdent.Forms
             this.SysInfoBtn.Text = "О системе";
             this.SysInfoBtn.Click += new System.EventHandler(this.SysInfoLabel_Click);
             // 
-            // ContentPanel
-            // 
-            this.ContentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
-            this.ContentPanel.Controls.Add(this.InfoLb12);
-            this.ContentPanel.Controls.Add(this.InfoLb11);
-            this.ContentPanel.Controls.Add(this.InfoLb10);
-            this.ContentPanel.Controls.Add(this.InfoLb9);
-            this.ContentPanel.Controls.Add(this.InfoLb1);
-            this.ContentPanel.Controls.Add(this.InfoLb2);
-            this.ContentPanel.Controls.Add(this.InfoLb3);
-            this.ContentPanel.Controls.Add(this.InfoLb4);
-            this.ContentPanel.Controls.Add(this.InfoLb5);
-            this.ContentPanel.Controls.Add(this.InfoLb6);
-            this.ContentPanel.Controls.Add(this.InfoLb7);
-            this.ContentPanel.Controls.Add(this.InfoLb8);
-            this.ContentPanel.Location = new System.Drawing.Point(175, 30);
-            this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Size = new System.Drawing.Size(475, 470);
-            this.ContentPanel.TabIndex = 7;
-            // 
-            // InfoLb12
-            // 
-            this.InfoLb12.AutoSize = true;
-            this.InfoLb12.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb12.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb12.Location = new System.Drawing.Point(10, 340);
-            this.InfoLb12.Name = "InfoLb12";
-            this.InfoLb12.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb12.TabIndex = 13;
-            // 
-            // InfoLb11
-            // 
-            this.InfoLb11.AutoSize = true;
-            this.InfoLb11.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb11.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb11.Location = new System.Drawing.Point(10, 310);
-            this.InfoLb11.Name = "InfoLb11";
-            this.InfoLb11.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb11.TabIndex = 12;
-            // 
-            // InfoLb10
-            // 
-            this.InfoLb10.AutoSize = true;
-            this.InfoLb10.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb10.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb10.Location = new System.Drawing.Point(10, 280);
-            this.InfoLb10.Name = "InfoLb10";
-            this.InfoLb10.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb10.TabIndex = 11;
-            // 
-            // InfoLb9
-            // 
-            this.InfoLb9.AutoSize = true;
-            this.InfoLb9.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb9.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb9.Location = new System.Drawing.Point(10, 250);
-            this.InfoLb9.Name = "InfoLb9";
-            this.InfoLb9.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb9.TabIndex = 10;
-            // 
-            // InfoLb1
-            // 
-            this.InfoLb1.AutoSize = true;
-            this.InfoLb1.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb1.Location = new System.Drawing.Point(10, 10);
-            this.InfoLb1.Name = "InfoLb1";
-            this.InfoLb1.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb1.TabIndex = 0;
-            // 
-            // InfoLb2
-            // 
-            this.InfoLb2.AutoSize = true;
-            this.InfoLb2.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb2.Location = new System.Drawing.Point(10, 40);
-            this.InfoLb2.Name = "InfoLb2";
-            this.InfoLb2.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb2.TabIndex = 6;
-            // 
-            // InfoLb3
-            // 
-            this.InfoLb3.AutoSize = true;
-            this.InfoLb3.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb3.Location = new System.Drawing.Point(10, 70);
-            this.InfoLb3.Name = "InfoLb3";
-            this.InfoLb3.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb3.TabIndex = 2;
-            // 
-            // InfoLb4
-            // 
-            this.InfoLb4.AutoSize = true;
-            this.InfoLb4.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb4.Location = new System.Drawing.Point(10, 100);
-            this.InfoLb4.Name = "InfoLb4";
-            this.InfoLb4.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb4.TabIndex = 7;
-            // 
-            // InfoLb5
-            // 
-            this.InfoLb5.AutoSize = true;
-            this.InfoLb5.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb5.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb5.Location = new System.Drawing.Point(10, 130);
-            this.InfoLb5.Name = "InfoLb5";
-            this.InfoLb5.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb5.TabIndex = 4;
-            // 
-            // InfoLb6
-            // 
-            this.InfoLb6.AutoSize = true;
-            this.InfoLb6.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb6.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb6.Location = new System.Drawing.Point(10, 160);
-            this.InfoLb6.Name = "InfoLb6";
-            this.InfoLb6.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb6.TabIndex = 5;
-            // 
-            // InfoLb7
-            // 
-            this.InfoLb7.AutoSize = true;
-            this.InfoLb7.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb7.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb7.Location = new System.Drawing.Point(10, 190);
-            this.InfoLb7.Name = "InfoLb7";
-            this.InfoLb7.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb7.TabIndex = 8;
-            // 
-            // InfoLb8
-            // 
-            this.InfoLb8.AutoSize = true;
-            this.InfoLb8.BackColor = System.Drawing.Color.Transparent;
-            this.InfoLb8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InfoLb8.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoLb8.Location = new System.Drawing.Point(10, 220);
-            this.InfoLb8.Name = "InfoLb8";
-            this.InfoLb8.Size = new System.Drawing.Size(0, 15);
-            this.InfoLb8.TabIndex = 9;
-            // 
             // SetTheme
             // 
             this.SetTheme.AutoSize = true;
@@ -597,19 +462,14 @@ namespace DevIdent.Forms
             this.LogBtn.Text = "Открыть .log файл";
             this.LogBtn.Click += new System.EventHandler(this.LogBtn_Click);
             // 
-            // NetworkBtn
+            // ContentPanel
             // 
-            this.NetworkBtn.AutoSize = true;
-            this.NetworkBtn.BackColor = System.Drawing.Color.Transparent;
-            this.NetworkBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.NetworkBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.NetworkBtn.ForeColor = System.Drawing.Color.White;
-            this.NetworkBtn.Location = new System.Drawing.Point(10, 220);
-            this.NetworkBtn.Name = "NetworkBtn";
-            this.NetworkBtn.Size = new System.Drawing.Size(45, 19);
-            this.NetworkBtn.TabIndex = 18;
-            this.NetworkBtn.Text = "Сеть";
-            this.NetworkBtn.Click += new System.EventHandler(this.NetworkBtn_Click);
+            this.ContentPanel.AutoScroll = true;
+            this.ContentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(28)))), ((int)(((byte)(42)))));
+            this.ContentPanel.Location = new System.Drawing.Point(175, 30);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(475, 470);
+            this.ContentPanel.TabIndex = 7;
             // 
             // MainForm
             // 
@@ -644,8 +504,6 @@ namespace DevIdent.Forms
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanel.PerformLayout();
-            this.ContentPanel.ResumeLayout(false);
-            this.ContentPanel.PerformLayout();
             this.ThemePanel.ResumeLayout(false);
             this.ThemePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).EndInit();
@@ -664,25 +522,12 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Panel MenuPanel;
         private System.Windows.Forms.Label SysInfoBtn;
         private System.Windows.Forms.Label CPUInfoBtn;
-        private System.Windows.Forms.Panel ContentPanel;
-        private System.Windows.Forms.Label InfoLb1;
-        private System.Windows.Forms.Label InfoLb2;
-        private System.Windows.Forms.Label InfoLb3;
-        private System.Windows.Forms.Label InfoLb4;
-        private System.Windows.Forms.Label InfoLb5;
-        private System.Windows.Forms.Label InfoLb6;
-        private System.Windows.Forms.Label InfoLb7;
-        private System.Windows.Forms.Label InfoLb8;
         private System.Windows.Forms.Label VideoInfoBtn;
         private System.Windows.Forms.Label RAMInfoBtn;
-        private System.Windows.Forms.Label InfoLb9;
         private System.Windows.Forms.Label MotherBoardBtn;
         private System.Windows.Forms.Label BiosBtn;
         private System.Windows.Forms.Label DiskInfoBtn;
         private System.Windows.Forms.Label BrowserBtn;
-        private System.Windows.Forms.Label InfoLb12;
-        private System.Windows.Forms.Label InfoLb11;
-        private System.Windows.Forms.Label InfoLb10;
         private System.Windows.Forms.PictureBox TurnBtn;
         public System.Windows.Forms.Label ServicesBtn;
         public System.Windows.Forms.Label SysClearBtn;
@@ -701,6 +546,8 @@ namespace DevIdent.Forms
         private Cyotek.Windows.Forms.ColorEditor ColorEditor;
         private System.Windows.Forms.Label LogBtn;
         private System.Windows.Forms.Label NetworkBtn;
+        private System.Windows.Forms.Panel ContentPanel;
+        public System.Windows.Forms.Label WinSettinsBtn;
     }
 }
 

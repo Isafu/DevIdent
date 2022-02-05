@@ -7,16 +7,21 @@ namespace DevIdent.Classes
     {
         #region Получение информации
 
-        public static readonly string[] biosInfoList = { "", "", "", "", "", "" };
+        public static string[] biosInfoList = { "", "", "", "", "", "" };
 
-        public static void GetBIOSInfo(ManagementObjectSearcher searcher)
+        public static void GetBIOSInfo()
         {
             if (biosInfoList[0]?.Length != 0)
             {
                 return;
             }
             int i = 0;
-            foreach (ManagementBaseObject o in searcher.Get())
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BIOS").Get();
+            if (searcher.Count > 1)
+            {
+                Array.Resize(ref biosInfoList, biosInfoList.Length * searcher.Count);
+            }
+            foreach (ManagementBaseObject o in searcher)
             {
                 ManagementObject queryObj = (ManagementObject)o;
                 try
@@ -80,19 +85,23 @@ namespace DevIdent.Classes
                     if (queryObj["SerialNumber"].ToString() == "Default string")
                     {
                         biosInfoList[i] = "Не удалось получить серийный номер";
+                        ++i;
                     }
                     else if (queryObj["SerialNumber"].ToString().Length > 5)
                     {
                         biosInfoList[i] = "Серийный номер: " + queryObj["SerialNumber"];
+                        ++i;
                     }
                     else
                     {
                         biosInfoList[i] = "Не удалось получить серийный номер";
+                        ++i;
                     }
                 }
                 catch
                 {
                     biosInfoList[i] = "Не удалось получить серийный номер";
+                    ++i;
                 }
             }
         }

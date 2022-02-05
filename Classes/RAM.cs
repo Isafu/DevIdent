@@ -29,21 +29,6 @@ namespace DevIdent.Classes
 
         #endregion Количество оперативной памяти
 
-        #region Количество свободной памяти
-
-        public static ulong GetBusyRamCapacity()
-        {
-            foreach (var o in RamSearcherFromOs.Get())
-            {
-                var queryObj = (ManagementObject)o;
-                return _totalMemoryCapacity - (ulong)queryObj["FreePhysicalMemory"] / 1024;
-            }
-
-            return 0;
-        }
-
-        #endregion Количество свободной памяти
-
         #region Тип памяти ОЗУ
 
         private static string GetTypeOfRamMemory()
@@ -221,13 +206,13 @@ namespace DevIdent.Classes
 
         #region Получение информации
 
-        public static readonly string[] ramInfoList = { "", "", "", "", "", "" };
+        public static string[] ramInfoList = { "", "", "", "", "", "" };
 
-        public static void GetRamInfo(ManagementObjectSearcher searcher)
+        public static void GetRamInfo()
         {
             if (ramInfoList[0]?.Length != 0) return;
-
-            foreach (var o in searcher.Get())
+            var searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PhysicalMemory").Get();
+            foreach (var o in searcher)
             {
                 var i = 0;
                 var queryObj = (ManagementObject)o;
@@ -291,6 +276,7 @@ namespace DevIdent.Classes
                 {
                     ramInfoList[i] = "Максимальный вольтаж: " + double.Parse(queryObj["MaxVoltage"].ToString()) / 1000 +
                                      " В";
+                    ++i;
                 }
                 catch
                 {
