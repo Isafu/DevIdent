@@ -107,6 +107,7 @@
   <ItemGroup>
     <Compile Include="Classes\BIOS.cs" />
     <Compile Include="Classes\BrowserCleaner.cs" />
+    <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\WindowsSettings.cs" />
     <Compile Include="Classes\ColorChanger.cs" />
     <Compile Include="Classes\Drives.cs" />
@@ -196,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="Resources\Information.png" />
     <None Include="Resources\Blank.ico" />
     <None Include="Resources\Remove.png" />
     <None Include="Resources\refresh.png" />

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Management;
 using System.ServiceProcess;
@@ -40,13 +39,13 @@ namespace DevIdent.Forms
             }
 
             ContentPanel.BackColor =
-                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Replace("#", string.Empty));
             MenuPanel.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (var button in Controls.OfType<PictureBox>())
                 button.ChangeColor("#" + Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
             ServiceBox.BackColor =
-                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in MainMenu.Items)
                 item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in WorkWithServicesMenuItem.DropDownItems)
@@ -54,6 +53,20 @@ namespace DevIdent.Forms
             foreach (ToolStripMenuItem item in SettingsMenuItem.DropDownItems)
                 item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
         }
+
+        #region Убрать мерцаниеы
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
+        }
+
+        #endregion
 
         public ServicesForm(MainForm owner)
         {
@@ -188,16 +201,6 @@ namespace DevIdent.Forms
             GetActiveServices();
         }
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var handleParam = base.CreateParams;
-                handleParam.ExStyle |= 0x02000000;
-                return handleParam;
-            }
-        }
-
         #endregion
 
         #region Получение инфы о выбранном элементе
@@ -301,17 +304,16 @@ namespace DevIdent.Forms
                 RegistryKey regkey = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\" + ServiceBox.SelectedItem.ToString().Split('/')[0].Trim());
                 regkey.SetValue("Start", typeOfRun, RegistryValueKind.DWord);
                 regkey.Close();
-                Notify.ShowNotify($"Для службы {ServiceBox.SelectedItem.ToString().Split('/')[0].Trim()} установлен тип запуска: {line}", Resources.Close);
+                Notify.ShowNotify($"Для службы {ServiceBox.SelectedItem.ToString().Split('/')[0].Trim()} установлен тип запуска: {line}", Resources.Information);
                 string value = ServiceBox.SelectedItem.ToString();
                 ServiceBox.Items[ServiceBox.Items.IndexOf(ServiceBox.SelectedItem)] = value.Replace(value.Split('/')[2], $" Тип запуска: {line}");
                 ServiceList[ServiceList.IndexOf(value)] = value.Replace(value.Split('/')[2], $" Тип запуска: {line}");
-                if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Для службы "
+                Logger.Log(Environment.NewLine + DateTime.Now + " || Для службы "
                     + ServiceBox.SelectedItem.ToString().Split('/')[0].Trim() + $" установлен тип запуска: {line}" + Environment.NewLine);
             }
             catch
             {
-                Notify.ShowNotify("Не удалось применить настройку к службе", Resources.Close);
+                Notify.ShowNotify("Не удалось применить настройку к службе", Resources.Information);
             }
         }
 
@@ -349,18 +351,18 @@ namespace DevIdent.Forms
             {
                 if (service.Status == ServiceControllerStatus.Running)
                 {
-                    Notify.ShowNotify("Служба " + GetName() + " уже запущена ", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " уже запущена ", Resources.Information);
                 }
                 else
                 {
                     service.Start();
                     service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " запущена ", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " запущена ", Resources.Information);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось запустить службу " + GetName(), Resources.Close);
+                Notify.ShowNotify("Не удалось запустить службу " + GetName(), Resources.Information);
             }
         }
 
@@ -375,16 +377,16 @@ namespace DevIdent.Forms
                 {
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " остановлена", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " остановлена", Resources.Information);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Close);
+                    Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Information);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Close);
+                Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Information);
             }
         }
 
@@ -399,16 +401,16 @@ namespace DevIdent.Forms
                 {
                     service.Pause();
                     service.WaitForStatus(ServiceControllerStatus.Paused, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " на паузе", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " на паузе", Resources.Information);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Close);
+                    Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Information);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Close);
+                Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Information);
             }
         }
 
@@ -425,20 +427,20 @@ namespace DevIdent.Forms
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
                     service.Start();
                     service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " перезапущена", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " перезапущена", Resources.Information);
                 }
                 else if (service.Status == ServiceControllerStatus.Stopped)
                 {
-                    Notify.ShowNotify("Служба " + GetName() + " не запущена", Resources.Close);
+                    Notify.ShowNotify("Служба " + GetName() + " не запущена", Resources.Information);
                 }
                 else
                 {
-                    Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Close);
+                    Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Information);
                 }
             }
             catch
             {
-                Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Close);
+                Notify.ShowNotify("Не удалось перезапустить службу " + GetName(), Resources.Information);
             }
         }
 

@@ -58,6 +58,8 @@ namespace DevIdent.Forms
 
         #endregion
 
+        #region Обновление
+
         private void RefreshBtn_Click(object sender, EventArgs e)
         {
             _registyPathes.Clear();
@@ -66,6 +68,8 @@ namespace DevIdent.Forms
             GetInstalledProgramms();
             SearchBox.Text = "";
         }
+
+        #endregion
 
         #region Извлечение путей к деинсталлятору из реестра
 
@@ -179,16 +183,30 @@ namespace DevIdent.Forms
             {
             }
 
-            ContentPanel.ChangeColor(Settings.Default.ColorContent.Replace("#", string.Empty));
+            ContentPanel.ChangeColor(Settings.Default.ColorMenu.Replace("#", string.Empty));
             this.ChangeColor(Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (var button in Controls.OfType<PictureBox>())
                 button.ChangeColor(Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
-            UninstallBox.ChangeColor(Settings.Default.ColorContent);
+            UninstallBox.ChangeColor(Settings.Default.ColorMenu);
             foreach (ToolStripMenuItem item in MainMenu.Items)
                 item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             foreach (ToolStripMenuItem item in CreateInfoFileToolStripMenuItem.DropDownItems)
                 item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
         }
+
+        #region Убрать мерцаниеы
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
+        }
+
+        #endregion
 
         public UninstallForm(MainForm owner)
         {
@@ -381,9 +399,8 @@ namespace DevIdent.Forms
 
         private void LogDelete(string item)
         {
-            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + item + " удалена с компьютера" + Environment.NewLine);
-            Notify.ShowNotify(item + " удалена с компьютера", Resources.Close);
+            Logger.Log(Environment.NewLine + DateTime.Now + " || Программа " + item + " удалена с компьютера" + Environment.NewLine);
+            Notify.ShowNotify(item + " удалена с компьютера", Resources.Information);
         }
 
         private void Uninstall(int index)
@@ -420,13 +437,13 @@ namespace DevIdent.Forms
             {
                 UniversalCleaner.DirectoryCleanerWithoutSize(
                     new DirectoryInfo(Registry.GetValue(_registyPathes[index], "InstallLocation", "").ToString()));
-                Notify.ShowNotify("Программа удалена", Resources.Close);
+                Notify.ShowNotify("Программа удалена", Resources.Information);
                 LogDelete(programm);
                 RemoveFromList(index);
             }
             else
             {
-                Notify.ShowNotify("Не удалось удалить программу", Resources.Close);
+                Notify.ShowNotify("Не удалось удалить программу", Resources.Information);
             }
         }
 
@@ -452,7 +469,7 @@ namespace DevIdent.Forms
 
         private void TxtFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify($"Файл \"Установленное ПО.txt\" создан на рабочем столе", Resources.Close);
+            Notify.ShowNotify($"Файл \"Установленное ПО.txt\" создан на рабочем столе", Resources.Information);
         }
 
         private void TxtFileMenuItem_Click(object sender, EventArgs e)
@@ -461,7 +478,7 @@ namespace DevIdent.Forms
             _txtWorker.DoWork += CreateTxtFile;
             _txtWorker.RunWorkerCompleted += TxtFileCreated;
             _txtWorker.RunWorkerAsync();
-            Notify.ShowNotify($"Начало создания \"Установленное ПО.txt\"", Resources.Close);
+            Notify.ShowNotify($"Начало создания \"Установленное ПО.txt\"", Resources.Information);
         }
 
         #endregion
@@ -483,7 +500,7 @@ namespace DevIdent.Forms
 
         private void HTMLFileCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            Notify.ShowNotify($"Файл \"Установленное ПО.html\" создан на рабочем столе", Resources.Close);
+            Notify.ShowNotify($"Файл \"Установленное ПО.html\" создан на рабочем столе", Resources.Information);
         }
 
         private void HTMLMenuItem_Click(object sender, EventArgs e)
@@ -492,7 +509,7 @@ namespace DevIdent.Forms
             _htmlWorker.DoWork += CreateHTMLFile;
             _htmlWorker.RunWorkerCompleted += HTMLFileCreated;
             _htmlWorker.RunWorkerAsync();
-            Notify.ShowNotify($"Начало создания \"Установленное ПО.html\"", Resources.Close);
+            Notify.ShowNotify($"Начало создания \"Установленное ПО.html\"", Resources.Information);
         }
 
         #endregion
@@ -505,9 +522,8 @@ namespace DevIdent.Forms
             var item = (string)UninstallBox.SelectedItem;
             RemoveFromList(_searchPathes.IndexOf(item));
             DeleteInfoFromRegistry(_searchPathes.IndexOf(item));
-            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || " + item + " удалена из реестра" + Environment.NewLine);
-            Notify.ShowNotify(item + " удалена из реестра", Resources.Close);
+            Logger.Log(Environment.NewLine + DateTime.Now + " || " + item + " удалена из реестра" + Environment.NewLine);
+            Notify.ShowNotify(item + " удалена из реестра", Resources.Information);
         }
 
         #endregion
@@ -538,7 +554,7 @@ namespace DevIdent.Forms
             }
             catch
             {
-                Notify.ShowNotify("Путь в реестре не найден :(", Resources.Close);
+                Notify.ShowNotify("Путь в реестре не найден :(", Resources.Information);
             }
         }
 
@@ -570,7 +586,7 @@ namespace DevIdent.Forms
                     }
                     else
                     {
-                        Notify.ShowNotify("Путь к программе не найден :(", Resources.Close);
+                        Notify.ShowNotify("Путь к программе не найден :(", Resources.Information);
                     }
                 }
                 else
@@ -584,7 +600,7 @@ namespace DevIdent.Forms
             }
             catch
             {
-                Notify.ShowNotify("Путь к программе не найден :(", Resources.Close);
+                Notify.ShowNotify("Путь к программе не найден :(", Resources.Information);
             }
         }
 

@@ -83,6 +83,16 @@ namespace DevIdent.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Information {
+            get {
+                object obj = ResourceManager.GetObject("Information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Minimize {
             get {
                 object obj = ResourceManager.GetObject("Minimize", resourceCulture);

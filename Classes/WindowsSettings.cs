@@ -26,7 +26,8 @@ namespace DevIdent.Classes
             new Tuple<string, string>("Отключить телеметрию","Отключает фирменный сбор данных от Microsoft Corporation."),
             new Tuple<string, string>("Отключить сбор данных об установленных приложениях",
                 "Microsoft собирает информацию об приложениях, когда вы их используете или устанавливаете. (Не работает на Windows 7)"),
-            new Tuple<string, string>("Отключить информацию о местоположении", "Microsoft собирает информацию о вашем местоположении."),
+            new Tuple<string, string>("Отключить сбор информации о местоположении", "Microsoft собирает информацию о вашем местоположении," +
+                " если вам это не нужно подтверждаем этот пункт."),
             new Tuple<string, string>("Отображать все иконки в трее", "Включает отображение всех иконок трея в развернутом виде."),
             new Tuple<string, string>("Удалить стрелочки с ярлыков", "Убирает стрелки с ярлыков на рабочем столе и тд."),
         };
@@ -121,7 +122,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при попытке отключить гибернацию", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при попытке отключить гибернацию", Resources.Information);
             }
         }
 
@@ -135,7 +136,7 @@ namespace DevIdent.Classes
             {
                 if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
                 {
-                    Notify.ShowNotify("Невозможно убрать задержку запуска на Windows 7", Resources.Close);
+                    Notify.ShowNotify("Невозможно убрать задержку запуска на Windows 7", Resources.Information);
                     return;
                 }
                 if (enabled)
@@ -149,7 +150,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при попытке убрать задержку запуска", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при попытке убрать задержку запуска", Resources.Information);
             }
         }
 
@@ -172,7 +173,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при попытке отключить автозапуск съемных носителей", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при попытке отключить автозапуск съемных носителей", Resources.Information);
             }
         }
 
@@ -195,7 +196,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при попытке увеличить кэш файловой системы", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при попытке увеличить кэш файловой системы", Resources.Information);
             }
         }
 
@@ -220,7 +221,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении предупреждений при запуске .ехе", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении предупреждений при запуске .ехе", Resources.Information);
             }
         }
 
@@ -253,7 +254,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении синхронизации", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении синхронизации", Resources.Information);
             }
         }
 
@@ -281,15 +282,22 @@ namespace DevIdent.Classes
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener").SetValue("Start", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack").SetValue("Start", "");
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice").SetValue("Start", "");
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments").SetValue("SaveZoneInformation ", "");
+                    if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
+                    {
+                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 1);
+                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", "");
+                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", "");
+                        return;
+                    }
+                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 1);
+                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", "");
+                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", "");
+                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments", true).SetValue("SaveZoneInformation ", "");
                 }
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении телеметрии", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении телеметрии", Resources.Information);
             }
         }
 
@@ -303,7 +311,7 @@ namespace DevIdent.Classes
             {
                 if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
                 {
-                    Notify.ShowNotify("Невозможно отключить сбор данных о приложениях на Windows 7", Resources.Close);
+                    Notify.ShowNotify("Невозможно отключить сбор данных о приложениях на Windows 7", Resources.Information);
                     return;
                 }
                 if (enabled)
@@ -317,7 +325,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении сбора данных об установленных программах", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении сбора данных об установленных программах", Resources.Information);
             }
         }
 
@@ -344,7 +352,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении отслеживания местоположения", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении отслеживания местоположения", Resources.Information);
             }
         }
 
@@ -368,13 +376,13 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении сбора данных об установленных программах", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при отключении сбора данных об установленных программах", Resources.Information);
             }
         }
 
         #endregion
 
-        #region Отключить центр уведомлений
+        #region Убрать стрелки с иконок
 
         public static void Checker11(bool enabled)
         {
@@ -382,14 +390,14 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", true)
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons")
                         .SetValue("29", "%systemroot%\\RemoveArrow.ico,0");
                     using (FileStream stream = new FileStream("C:\\Windows\\RemoveArrow.ico", FileMode.Create))
                         Resources.RemoveArrow.Save(stream);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", true).SetValue("29", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons").SetValue("29", "");
                     if (File.Exists("C:\\Windows\\RemoveArrow.ico"))
                     {
                         File.Delete("C:\\Windows\\RemoveArrow.ico");
@@ -398,7 +406,7 @@ namespace DevIdent.Classes
             }
             catch
             {
-                Notify.ShowNotify("Непредвиденная ошибка при отключении сбора данных об установленных программах", Resources.Close);
+                Notify.ShowNotify("Непредвиденная ошибка при попытке убрать стрелки с иконок", Resources.Information);
             }
         }
 

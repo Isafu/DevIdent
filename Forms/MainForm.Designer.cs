@@ -61,6 +61,7 @@ namespace DevIdent.Forms
             this.CloseThemeEditorBtn = new System.Windows.Forms.PictureBox();
             this.LogBtn = new System.Windows.Forms.Label();
             this.ContentPanel = new System.Windows.Forms.Panel();
+            this.LogEnabled = new System.Windows.Forms.CheckBox();
             this.MenuPanel.SuspendLayout();
             this.ThemePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
@@ -455,7 +456,7 @@ namespace DevIdent.Forms
             // 
             this.LogBtn.AutoSize = true;
             this.LogBtn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LogBtn.Location = new System.Drawing.Point(655, 277);
+            this.LogBtn.Location = new System.Drawing.Point(655, 275);
             this.LogBtn.Name = "LogBtn";
             this.LogBtn.Size = new System.Drawing.Size(162, 19);
             this.LogBtn.TabIndex = 21;
@@ -471,6 +472,17 @@ namespace DevIdent.Forms
             this.ContentPanel.Size = new System.Drawing.Size(475, 470);
             this.ContentPanel.TabIndex = 7;
             // 
+            // LogEnabled
+            // 
+            this.LogEnabled.AutoSize = true;
+            this.LogEnabled.Font = new System.Drawing.Font("Consolas", 12F);
+            this.LogEnabled.Location = new System.Drawing.Point(659, 305);
+            this.LogEnabled.Name = "LogEnabled";
+            this.LogEnabled.Size = new System.Drawing.Size(217, 23);
+            this.LogEnabled.TabIndex = 22;
+            this.LogEnabled.Text = "Включить логирование?";
+            this.LogEnabled.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -478,6 +490,7 @@ namespace DevIdent.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(650, 500);
             this.ControlBox = false;
+            this.Controls.Add(this.LogEnabled);
             this.Controls.Add(this.LogBtn);
             this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.CloseThemeEditorBtn);
@@ -548,6 +561,7 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Label NetworkBtn;
         private System.Windows.Forms.Panel ContentPanel;
         public System.Windows.Forms.Label WinSettinsBtn;
+        private System.Windows.Forms.CheckBox LogEnabled;
     }
 }
 

@@ -79,7 +79,7 @@ namespace DevIdent.Classes
                 try
                 {
                     directoryInfo.Delete();
-                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + directoryInfo.FullName);
+                    Logger.Log(Environment.NewLine + directoryInfo);
                 }
                 catch
                 {
@@ -104,7 +104,6 @@ namespace DevIdent.Classes
                         long fileSize = fileInfo.Length;
                         DeleteFile(file);
                         size += fileSize;
-                        File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
                     }
                     catch
                     {
@@ -131,7 +130,32 @@ namespace DevIdent.Classes
                     long fileSize = fileInfo.Length;
                     DeleteFile(path);
                     size += fileSize;
-                    File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + fileInfo.FullName);
+                }
+                catch
+                {
+                }
+            }
+            catch
+            {
+            }
+            return size;
+        }
+
+        public static long FileCleanerWithLogger(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return 0;
+            }
+            try
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(path);
+                    long fileSize = fileInfo.Length;
+                    DeleteFile(path);
+                    size += fileSize;
+                    Logger.Log(Environment.NewLine + fileInfo.FullName);
                 }
                 catch
                 {

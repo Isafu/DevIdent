@@ -52,6 +52,8 @@ namespace DevIdent.Forms
                 picture.MouseEnter += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsHover); };
                 picture.MouseLeave += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsDefault); };
             }
+            LogEnabled.Checked = Settings.Default.LogStatus;
+            LogEnabled.CheckedChanged += (s, e) => { Settings.Default.LogStatus = LogEnabled.Checked; Settings.Default.Save(); };
 
             Click += (s, e) => { BringToFront(); };
         }
@@ -70,7 +72,7 @@ namespace DevIdent.Forms
                 MenuPanel.Controls.Remove(ServicesBtn);
                 MenuPanel.Controls.Remove(AutorunBtn);
                 MenuPanel.Controls.Remove(BrowserBtn);
-                Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Close);
+                Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Information);
             }
             Parallel.Invoke(
                 () => Processor.GetCpuinfo(),
@@ -346,7 +348,7 @@ namespace DevIdent.Forms
                             if (Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2) != null)
                             {
                                 if (Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
-                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null 
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null
                                     && Registry.CurrentUser.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
                                     .GetValue(WindowsSettings.registyInfo[i][j].Item3).Equals(WindowsSettings.registyInfo[i][j].Item4))
                                 {
@@ -359,7 +361,7 @@ namespace DevIdent.Forms
                             if (Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2) != null)
                             {
                                 if (Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
-                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null 
+                                    .GetValue(WindowsSettings.registyInfo[i][j].Item3) != null
                                     && Registry.LocalMachine.OpenSubKey(WindowsSettings.registyInfo[i][j].Item2, true)
                                     .GetValue(WindowsSettings.registyInfo[i][j].Item3).Equals(WindowsSettings.registyInfo[i][j].Item4))
                                 {
@@ -421,14 +423,20 @@ namespace DevIdent.Forms
 
         private void AcceptLb_Click(object sender, EventArgs e)
         {
+            int count = 0;
             for (int i = 0; i < 11; i++)
             {
                 var checkBox = ContentPanel.Controls.OfType<CheckBox>().SingleOrDefault(t => t.Name == "CheckBox" + (i + 1));
-                if (checkBox.Checked)
+                if (checkBox.Checked && !checkBox.Font.Strikeout)
                 {
                     WindowsSettings.methods[i].Invoke(null, new object[] { true });
                     checkBox.Font = new Font("Consolas", 9, FontStyle.Strikeout);
+                    count++;
                 }
+            }
+            if (count >= 5)
+            {
+                Notify.ShowNotify("Для применения настроек необходимо выполнить перезагрузку", Resources.Information);
             }
         }
 
@@ -467,25 +475,25 @@ namespace DevIdent.Forms
             Notify.ShowNotify(UniversalCleaner.browserSize / 1048576 > 1024
                 ? "Браузеры: очищено " + UniversalCleaner.browserSize / 1073741824
                                        + " ГБ"
-                : "Браузеры: очищено " + UniversalCleaner.browserSize / 1048576 + " МБ", Resources.Close);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки браузеров, размер удаленных данных: "
+                : "Браузеры: очищено " + UniversalCleaner.browserSize / 1048576 + " МБ", Resources.Information);
+            Logger.Log(Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки браузеров, размер удаленных данных: "
                 + (UniversalCleaner.browserSize / 1048576 > 1024 ? UniversalCleaner.browserSize / 1073741824
                 + " ГБ" : UniversalCleaner.browserSize / 1048576 + " МБ") + Environment.NewLine);
         }
 
         private void BrowserBtn_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + "  || Начало очистки браузеров" + Environment.NewLine);
+            Logger.Log(Environment.NewLine + DateTime.Now + "  || Начало очистки браузеров" + Environment.NewLine);
             var _browserWorker = new BackgroundWorker();
             _browserWorker.DoWork += CleanBrowser;
             _browserWorker.RunWorkerCompleted += BrowserWorkerCompleted;
             _browserWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.Close);
+            Notify.ShowNotify("Начало очистки браузеров, подождите", Resources.Information);
         }
 
         private void CleanBrowser(object sender, DoWorkEventArgs e)
         {
+
             UniversalCleaner.browserSize = 0;
             long length = 0;
 
@@ -552,13 +560,12 @@ namespace DevIdent.Forms
 
         public void SysClearBtn_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + "  || Начало очистки системы" + Environment.NewLine);
+            Logger.Log(Environment.NewLine + DateTime.Now + "  || Начало очистки системы" + Environment.NewLine);
             var _sysWorker = new BackgroundWorker();
             _sysWorker.DoWork += CleanSystem;
             _sysWorker.RunWorkerCompleted += SysWorkerCompleted;
             _sysWorker.RunWorkerAsync();
-            Notify.ShowNotify("Начало очистки системы, подождите", Resources.Close);
+            Notify.ShowNotify("Начало очистки системы, подождите", Resources.Information);
         }
 
         private void SysWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -566,8 +573,8 @@ namespace DevIdent.Forms
             Notify.ShowNotify(UniversalCleaner.sysSize / 1048576 > 1024
                 ? "Система: очищено " + UniversalCleaner.sysSize / 1073741824
                                       + " ГБ"
-                : "Система: очищено " + UniversalCleaner.sysSize / 1048576 + " МБ", Resources.Close);
-            File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки системы, размер удаленных данных: "
+                : "Система: очищено " + UniversalCleaner.sysSize / 1048576 + " МБ", Resources.Information);
+            Logger.Log(Environment.NewLine + Environment.NewLine + DateTime.Now + "  || Конец очистки системы, размер удаленных данных: "
                 + (UniversalCleaner.sysSize / 1048576 > 1024 ? UniversalCleaner.sysSize / 1073741824
                 + " ГБ" : UniversalCleaner.sysSize / 1048576 + " МБ") + Environment.NewLine);
         }
@@ -640,6 +647,8 @@ namespace DevIdent.Forms
 
         #endregion
 
+        #region Нажатие на лог
+
         private void LogBtn_Click(object sender, EventArgs e)
         {
             if (File.Exists(@"C:\DevLog.txt"))
@@ -648,10 +657,11 @@ namespace DevIdent.Forms
             }
             else
             {
-                Notify.ShowNotify("Файл не существует", Resources.Close);
+                Notify.ShowNotify("Файл не существует", Resources.Information);
             }
         }
 
+        #endregion
 
     }
 }

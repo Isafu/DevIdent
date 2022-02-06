@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DevIdent.Forms
@@ -35,6 +36,30 @@ namespace DevIdent.Forms
                                                  Settings.Default.ColorButtonsDefault.Replace("#", string.Empty));
                 };
             }
+            FileSystemWatcher watcher = new FileSystemWatcher(@"C:\Windows\System32\Tasks")
+            {
+                EnableRaisingEvents = true,
+                SynchronizingObject = this
+            };
+            watcher.Changed += Watcher_Changed;
+            watcher.Created += Watcher_Changed;
+            watcher.Deleted += Watcher_Changed;
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            new Thread(() =>
+            {
+                System.Action action = () =>
+                {
+                    AutorunList.Items.Clear();
+                    GetProgramsFromSchedul();
+                    GetProgramsFromRegistry();
+                };
+                if (InvokeRequired)
+                    Invoke(action);
+                else action();
+            }).Start();
         }
 
         #region Перемещение формы
@@ -44,6 +69,20 @@ namespace DevIdent.Forms
             Capture = false;
             var m = Message.Create(Handle, 0xa1, new IntPtr(2), IntPtr.Zero);
             WndProc(ref m);
+        }
+
+        #endregion
+
+        #region Убрать мерцаниеы
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;
+                return handleParam;
+            }
         }
 
         #endregion
@@ -64,7 +103,7 @@ namespace DevIdent.Forms
             foreach (ToolStripMenuItem item in MenuStrip.Items)
                 item.BackColor = ColorTranslator.FromHtml("#" + Settings.Default.ColorForm.Replace("#", string.Empty));
             AutorunList.BackColor =
-                ColorTranslator.FromHtml("#" + Settings.Default.ColorContent.Replace("#", string.Empty));
+                ColorTranslator.FromHtml("#" + Settings.Default.ColorMenu.Replace("#", string.Empty));
         }
 
         private void GetProgramsFromSchedul()
@@ -88,30 +127,54 @@ namespace DevIdent.Forms
             RegistryHive[] hives = { RegistryHive.LocalMachine, RegistryHive.CurrentUser };
             string[] autorunKeys =
             {
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run",
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-                @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
+                 @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run\Disabled",
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\Disabled"
             };
 
             foreach (var hive in hives)
-                using (var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Registry64))
+            {
+                using (var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Default))
                 {
-                    foreach (var keyName in autorunKeys)
-                        using (var key = baseKey.OpenSubKey(keyName))
+                    try
+                    {
+                        foreach (var keyName in autorunKeys)
                         {
-                            if (key != null)
-                                foreach (var valueName in key.GetValueNames())
+                            using (var key = baseKey.OpenSubKey(keyName))
+                            {
+                                if (key != null)
                                 {
-                                    var item = new ListViewItem(valueName);
-                                    item.SubItems.Add(key.GetValue(valueName).ToString());
-                                    AutorunList.Items.Add(item);
+                                    foreach (var valueName in key.GetValueNames())
+                                    {
+                                        var item = new ListViewItem(valueName);
+                                        item.SubItems.Add(key.ToString());
+                                        if (keyName.ToString().EndsWith("Disabled"))
+                                        {
+                                            item.SubItems.Add("Нет");
+                                        }
+                                        else
+                                        {
+                                            item.SubItems.Add("Да");
+                                        }
+                                        AutorunList.Items.Add(item);
+                                    }
                                 }
+                            }
                         }
+                    }
+                    catch
+                    {
+
+                    }
                 }
+            }
         }
 
         private void AutorunForm_Load(object sender, EventArgs e)
         {
             GetProgramsFromSchedul();
+            GetProgramsFromRegistry();
         }
 
         public void OpenExplorer(string path)
@@ -135,37 +198,103 @@ namespace DevIdent.Forms
                         OpenExplorer(AutorunList.SelectedItems[0].SubItems[1].Text + "\\" + path);
                         break;
                     default:
-                        if (path.Contains('-'))
-                            OpenExplorer(path.Remove(path.IndexOf('-')));
-                        else if (path.Contains('/'))
-                            OpenExplorer(path.Remove(path.IndexOf('/')));
-                        else
-                            OpenExplorer(path);
-
+                        foreach (var process in Process.GetProcessesByName("regedit")) process.Kill();
+                        Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Applets\Regedit")
+                            .SetValue("LastKey", AutorunList.SelectedItems[0].SubItems[1].Text);
+                        Process.Start("regedit");
                         break;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Notify.ShowNotify(ex.Message, Resources.Close);
+                Notify.ShowNotify("Путь не найден", Resources.Information);
             }
         }
+
+        #region Отключить и включить в реестре
+
+        private void EnableInRegistry(string registryPath, string name)
+        {
+            string path = registryPath;
+            if (path.Split('\\')[0] == "HKEY_CURRENT_USER")
+            {
+                if (Registry.CurrentUser.OpenSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty).Replace("\\Disabled", string.Empty)).GetValue(name) != null)
+                {
+                    string value = Registry.CurrentUser.OpenSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty))
+                        .GetValue(name).ToString();
+                    Registry.CurrentUser.CreateSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty) + "\\Disabled")
+                        .SetValue(name, value);
+                    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty), true))
+                    {
+                        key.DeleteValue(name);
+                    }
+                    AutorunList.SelectedItems[0].SubItems[1].Text = path + "\\Disabled";
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Нет";
+                }
+                else
+                {
+                    string value = Registry.CurrentUser.OpenSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty)).GetValue(name).ToString();
+                    Registry.CurrentUser.CreateSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty).Replace("\\Disabled", string.Empty)).SetValue(name, value);
+                    using (RegistryKey key = Registry.CurrentUser.OpenSubKey(path.Replace("HKEY_CURRENT_USER\\", string.Empty), true))
+                    {
+                        key.DeleteValue(name);
+                    }
+                    AutorunList.SelectedItems[0].SubItems[1].Text = path.Replace("\\Disabled", string.Empty);
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Да";
+                }
+            }
+            else
+            {
+                if (Registry.LocalMachine.OpenSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty).Replace("\\Disabled", string.Empty)).GetValue(name) != null)
+                {
+                    string value = Registry.LocalMachine.OpenSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty))
+                        .GetValue(name).ToString();
+                    Registry.LocalMachine.CreateSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty) + "\\Disabled")
+                        .SetValue(name, value);
+                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty), true))
+                    {
+                        key.DeleteValue(name);
+                    }
+                    AutorunList.SelectedItems[0].SubItems[1].Text = path + "\\Disabled";
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Нет";
+                }
+                else
+                {
+                    string value = Registry.LocalMachine.OpenSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty)).GetValue(name).ToString();
+                    Registry.LocalMachine.CreateSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty).Replace("\\Disabled", string.Empty)).SetValue(name, value);
+                    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(path.Replace("HKEY_LOCAL_MACHINE\\", string.Empty), true))
+                    {
+                        key.DeleteValue(name);
+                    }
+                    AutorunList.SelectedItems[0].SubItems[1].Text = path.Replace("\\Disabled", string.Empty);
+                    AutorunList.SelectedItems[0].SubItems[2].Text = "Да";
+                }
+            }
+        }
+
+        #endregion
 
         private void EnableDisableItem_Click(object sender, EventArgs e)
         {
             try
             {
                 if (AutorunList.SelectedIndices.Count == 0) return;
-                var tf = TaskService.Instance.RootFolder;
-                tf.Tasks[AutorunList.SelectedIndices[0]].Enabled = !tf.Tasks[AutorunList.SelectedIndices[0]].Enabled;
-                AutorunList.SelectedItems[0].SubItems[2].Text = tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? "Да" : "Нет";
-                if (!File.Exists(@"C:\DevLog.txt")) File.AppendAllText(@"C:\DevLog.txt", "Добро пожаловать " + Environment.NewLine);
-                File.AppendAllText(@"C:\DevLog.txt", Environment.NewLine + DateTime.Now + " || Программа " + AutorunList.SelectedItems[0].Text +
-                    (tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? " добавлена в автозапуск " : " удалена из автозапуска") + Environment.NewLine);
+                if (AutorunList.SelectedItems[0].SubItems[1].Text == "C:\\Windows\\System32\\Tasks")
+                {
+                    var tf = TaskService.Instance.RootFolder;
+                    tf.Tasks[AutorunList.SelectedIndices[0]].Enabled = !tf.Tasks[AutorunList.SelectedIndices[0]].Enabled;
+                    AutorunList.SelectedItems[0].SubItems[2].Text = tf.Tasks[AutorunList.SelectedIndices[0]].Enabled ? "Да" : "Нет";
+                }
+                else
+                {
+                    EnableInRegistry(AutorunList.SelectedItems[0].SubItems[1].Text, AutorunList.SelectedItems[0].SubItems[0].Text);
+                }
+                Logger.Log(Environment.NewLine + DateTime.Now + " || Программа " + AutorunList.SelectedItems[0].Text + (AutorunList.SelectedItems[0].SubItems[2].Text == "Да" ? " добавлена в автозапуск " : " удалена из автозапуска") + Environment.NewLine);
+
             }
-            catch (Exception ex)
+            catch
             {
-                Notify.ShowNotify(ex.Message, Resources.Close);
+                Notify.ShowNotify("Не удалось отключить программу", Resources.Information);
             }
         }
     }
