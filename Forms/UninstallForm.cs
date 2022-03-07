@@ -39,7 +39,7 @@ namespace DevIdent.Forms
 
         #region Получение ProgrammName
 
-        private string GetProgrammName(int index)
+        private string GetProgramName(int index)
         {
             var subKey = _registyPathes[index].Split('\\');
             return subKey[subKey.Length - 1];
@@ -352,10 +352,14 @@ namespace DevIdent.Forms
                 {
                     RemoveFromList(index);
                 }
+                else
+                {
+                    Notify.ShowNotify("Деинсталляция завершена с Exit Code: " + process.ExitCode, Resources.Information);
+                }
             }
             catch
             {
-                return;
+                Notify.ShowNotify("Непредвиденная ошибка программы", Resources.Error);
             }
         }
 
@@ -373,7 +377,7 @@ namespace DevIdent.Forms
                 try
                 {
                     _key.DeleteSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" + @"\" +
-                                      GetProgrammName(index));
+                                      GetProgramName(index));
                 }
                 catch
                 {
@@ -381,7 +385,7 @@ namespace DevIdent.Forms
             else
                 try
                 {
-                    _key.DeleteSubKey(GetPathByDepth() + @"\" + GetProgrammName(index));
+                    _key.DeleteSubKey(GetPathByDepth() + @"\" + GetProgramName(index));
                 }
                 catch
                 {
@@ -516,12 +520,12 @@ namespace DevIdent.Forms
 
         #region Удаление из реестра
 
-        private void УдалитьИзРеестраStripMenuItem1_Click(object sender, EventArgs e)
+        private void DeleteFromRegistryStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             var item = (string)UninstallBox.SelectedItem;
-            RemoveFromList(_searchPathes.IndexOf(item));
             DeleteInfoFromRegistry(_searchPathes.IndexOf(item));
+            RemoveFromList(_searchPathes.IndexOf(item));
             Logger.Log(Environment.NewLine + DateTime.Now + " || " + item + " удалена из реестра" + Environment.NewLine);
             Notify.ShowNotify(item + " удалена из реестра", Resources.Information);
         }
@@ -530,7 +534,7 @@ namespace DevIdent.Forms
 
         #region Нажатие на Удалить
 
-        private void УдалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             var item = (string)UninstallBox.SelectedItem;
@@ -542,7 +546,7 @@ namespace DevIdent.Forms
 
         #region Показать запись в реестре
 
-        private void ЗаписьВРеестреToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SearchInRegistryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             try
@@ -562,7 +566,7 @@ namespace DevIdent.Forms
 
         #region Открытие проводника
 
-        private void РасположениеНаДискеToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SearchOnDiskToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             try
@@ -608,7 +612,7 @@ namespace DevIdent.Forms
 
         #region Поиск в браузере
 
-        private void ЧтоЭтоЗаПрограммаToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SearchInChromeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (UninstallBox.SelectedIndex == -1) return;
             Process.Start(@"https://www.google.com/search?q=" +

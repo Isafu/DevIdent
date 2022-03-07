@@ -3,7 +3,7 @@ using System.Management;
 
 namespace DevIdent.Classes
 {
-    public class BIOS
+    public class BIOS : ComputerComponent
     {
         #region Получение информации
 

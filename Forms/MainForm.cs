@@ -40,13 +40,6 @@ namespace DevIdent.Forms
             ContentPanel.DoubleClick += (s, e) => CenterToScreen();
             MenuPanel.DoubleClick += (s, e) => CenterToScreen();
             TitleLabel.Click += (s, e) => Process.Start("https://github.com/Isafu");
-
-            foreach (var label in MenuPanel.Controls.OfType<Label>())
-                label.MouseEnter += (s, e) => { label.Font = new Font("Consolas", 12, FontStyle.Underline); };
-
-            foreach (var label in MenuPanel.Controls.OfType<Label>())
-                label.MouseLeave += (s, e) => { label.Font = new Font("Consolas", 12); };
-
             foreach (var picture in Controls.OfType<PictureBox>())
             {
                 picture.MouseEnter += (s, e) => { picture.ChangeColor(Settings.Default.ColorButtonsHover); };
@@ -54,8 +47,8 @@ namespace DevIdent.Forms
             }
             LogEnabled.Checked = Settings.Default.LogStatus;
             LogEnabled.CheckedChanged += (s, e) => { Settings.Default.LogStatus = LogEnabled.Checked; Settings.Default.Save(); };
-
             Click += (s, e) => { BringToFront(); };
+            InformationBtn.Click += (s, e) => { Process.Start("http://impero6e.beget.tech"); };
         }
 
         #endregion
@@ -72,6 +65,7 @@ namespace DevIdent.Forms
                 MenuPanel.Controls.Remove(ServicesBtn);
                 MenuPanel.Controls.Remove(AutorunBtn);
                 MenuPanel.Controls.Remove(BrowserBtn);
+                MenuPanel.Controls.Remove(WinSettinsBtn);
                 Notify.ShowNotify("Без прав администратора некоторые функции отключены", Resources.Information);
             }
             Parallel.Invoke(
@@ -215,6 +209,18 @@ namespace DevIdent.Forms
 
         #endregion Закрытие программы
 
+        #region Нажатие F1
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.F1)
+            {
+                Process.Start("http://impero6e.beget.tech");
+            }
+        }
+
+        #endregion
+
         #region Компоненты
 
         #region Обработчик нажатия
@@ -235,8 +241,13 @@ namespace DevIdent.Forms
             }
         }
 
-        private void ClickOnComponent(string[] array)
+        private void ClickOnComponent(string[] array, Label currentLb)
         {
+            foreach (Label label in MenuPanel.Controls.OfType<Label>())
+            {
+                label.Font = new Font("Consolas", 12);
+            }
+            currentLb.Font = new Font("Consolas", 12, FontStyle.Underline);
             ContentPanel.Controls.Clear();
             for (var i = 0; i < array.Length; i++)
             {
@@ -261,7 +272,7 @@ namespace DevIdent.Forms
 
         private void SysInfoLabel_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(OS.sysInfoList);
+            ClickOnComponent(OS.sysInfoList, SysInfoBtn);
         }
 
         #endregion
@@ -270,7 +281,7 @@ namespace DevIdent.Forms
 
         private void BiosBtn_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(BIOS.biosInfoList);
+            ClickOnComponent(BIOS.biosInfoList, BiosBtn);
         }
 
         #endregion
@@ -279,7 +290,7 @@ namespace DevIdent.Forms
 
         private void MotherBoardBtn_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(MotherBoard.motherBoardInfoList);
+            ClickOnComponent(MotherBoard.motherBoardInfoList, MotherBoardBtn);
         }
 
         #endregion
@@ -288,7 +299,7 @@ namespace DevIdent.Forms
 
         private void CPUInfoLabel_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(Processor.cpuInfoList);
+            ClickOnComponent(Processor.cpuInfoList, CPUInfoBtn);
         }
 
         #endregion
@@ -297,7 +308,7 @@ namespace DevIdent.Forms
 
         private void VideoInfoLabel_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(VideoController.videoInfoList);
+            ClickOnComponent(VideoController.videoInfoList, VideoInfoBtn);
         }
 
         #endregion
@@ -306,7 +317,7 @@ namespace DevIdent.Forms
 
         private void RAMInfoLb_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(RAM.ramInfoList);
+            ClickOnComponent(RAM.ramInfoList, RAMInfoBtn);
         }
 
         #endregion
@@ -316,7 +327,7 @@ namespace DevIdent.Forms
         private void DiskInfoBtn_Click(object sender, EventArgs e)
         {
             Drives.GetDiskInfo();
-            ClickOnComponent(Drives.drivesInfo);
+            ClickOnComponent(Drives.drivesInfo, DiskInfoBtn);
         }
 
         #endregion
@@ -325,15 +336,20 @@ namespace DevIdent.Forms
 
         private void NetworkBtn_Click(object sender, EventArgs e)
         {
-            ClickOnComponent(Network.networkInfoList);
+            ClickOnComponent(Network.networkInfoList, NetworkBtn);
         }
 
         #endregion
 
         #region Настройка винды
 
-        private void WinSettinsBtn_Click(object sender, EventArgs e)
+        private void WinSettingsBtn_Click(object sender, EventArgs e)
         {
+            foreach (Label lb in MenuPanel.Controls.OfType<Label>())
+            {
+                lb.Font = new Font("Consolas", 12);
+            }
+            WinSettinsBtn.Font = new Font("Consolas", 12, FontStyle.Underline);
             ContentPanel.Controls.Clear();
             for (int i = 0; i < 11; i++)
             {

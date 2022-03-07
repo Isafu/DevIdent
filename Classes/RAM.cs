@@ -3,7 +3,7 @@ using System.Management;
 
 namespace DevIdent.Classes
 {
-    public static class RAM
+    public class RAM : ComputerComponent
     {
         private static readonly ManagementObjectSearcher RamSearcherFromOs =
             new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_OperatingSystem");

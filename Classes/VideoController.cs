@@ -3,7 +3,7 @@ using System.Management;
 
 namespace DevIdent.Classes
 {
-    public class VideoController
+    public class VideoController : ComputerComponent
     {
 
         private static readonly ManagementObjectSearcher Searcher =

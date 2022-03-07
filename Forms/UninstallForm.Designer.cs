@@ -116,7 +116,7 @@ namespace DevIdent.Forms
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
             this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(267, 24);
             this.DeleteToolStripMenuItem.Text = "Удалить";
-            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.УдалитьToolStripMenuItem_Click);
+            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // DeleteFromRegistyStripMenuItem
             // 
@@ -127,7 +127,7 @@ namespace DevIdent.Forms
             this.DeleteFromRegistyStripMenuItem.Name = "DeleteFromRegistyStripMenuItem";
             this.DeleteFromRegistyStripMenuItem.Size = new System.Drawing.Size(267, 24);
             this.DeleteFromRegistyStripMenuItem.Text = "Удалить запись в реестре";
-            this.DeleteFromRegistyStripMenuItem.Click += new System.EventHandler(this.УдалитьИзРеестраStripMenuItem1_Click);
+            this.DeleteFromRegistyStripMenuItem.Click += new System.EventHandler(this.DeleteFromRegistryStripMenuItem_Click);
             // 
             // RegistyPathToolStripMenuItem
             // 
@@ -138,7 +138,7 @@ namespace DevIdent.Forms
             this.RegistyPathToolStripMenuItem.Name = "RegistyPathToolStripMenuItem";
             this.RegistyPathToolStripMenuItem.Size = new System.Drawing.Size(267, 24);
             this.RegistyPathToolStripMenuItem.Text = "Запись в реестре";
-            this.RegistyPathToolStripMenuItem.Click += new System.EventHandler(this.ЗаписьВРеестреToolStripMenuItem_Click);
+            this.RegistyPathToolStripMenuItem.Click += new System.EventHandler(this.SearchInRegistryToolStripMenuItem_Click);
             // 
             // DrivePathToolStripMenuItem
             // 
@@ -148,7 +148,7 @@ namespace DevIdent.Forms
             this.DrivePathToolStripMenuItem.Name = "DrivePathToolStripMenuItem";
             this.DrivePathToolStripMenuItem.Size = new System.Drawing.Size(267, 24);
             this.DrivePathToolStripMenuItem.Text = "Расположение на диске";
-            this.DrivePathToolStripMenuItem.Click += new System.EventHandler(this.РасположениеНаДискеToolStripMenuItem_Click);
+            this.DrivePathToolStripMenuItem.Click += new System.EventHandler(this.SearchOnDiskToolStripMenuItem_Click);
             // 
             // SearchInGoogleToolStripMenuItem
             // 
@@ -159,7 +159,7 @@ namespace DevIdent.Forms
             this.SearchInGoogleToolStripMenuItem.Name = "SearchInGoogleToolStripMenuItem";
             this.SearchInGoogleToolStripMenuItem.Size = new System.Drawing.Size(267, 24);
             this.SearchInGoogleToolStripMenuItem.Text = "Что это за программа?";
-            this.SearchInGoogleToolStripMenuItem.Click += new System.EventHandler(this.ЧтоЭтоЗаПрограммаToolStripMenuItem_Click);
+            this.SearchInGoogleToolStripMenuItem.Click += new System.EventHandler(this.SearchInChromeToolStripMenuItem_Click);
             // 
             // CreateInfoFileToolStripMenuItem
             // 
@@ -230,7 +230,7 @@ namespace DevIdent.Forms
             // RefreshBtn
             // 
             this.RefreshBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
-            this.RefreshBtn.Image = global::DevIdent.Properties.Resources.refresh;
+            this.RefreshBtn.Image = global::DevIdent.Properties.Resources.Refresh;
             this.RefreshBtn.Location = new System.Drawing.Point(269, 0);
             this.RefreshBtn.Name = "RefreshBtn";
             this.RefreshBtn.Size = new System.Drawing.Size(35, 30);
@@ -270,7 +270,7 @@ namespace DevIdent.Forms
             this.Name = "UninstallForm";
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Uninstall";
+            this.Text = "Удаление программ";
             this.Load += new System.EventHandler(this.UninstallForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UninstallForm_MouseDown);
             this.ContentPanel.ResumeLayout(false);

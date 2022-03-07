@@ -3,7 +3,7 @@ using System.Management;
 
 namespace DevIdent.Classes
 {
-    public class MotherBoard
+    public class MotherBoard : ComputerComponent
     {
         #region Получение информации
 

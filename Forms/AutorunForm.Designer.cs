@@ -155,7 +155,7 @@
             this.Name = "AutorunForm";
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AutorunForm";
+            this.Text = "Автозапуск";
             this.Load += new System.EventHandler(this.AutorunForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AutorunForm_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();

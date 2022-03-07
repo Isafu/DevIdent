@@ -62,6 +62,7 @@ namespace DevIdent.Forms
             this.LogBtn = new System.Windows.Forms.Label();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.LogEnabled = new System.Windows.Forms.CheckBox();
+            this.InformationBtn = new System.Windows.Forms.PictureBox();
             this.MenuPanel.SuspendLayout();
             this.ThemePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
@@ -69,6 +70,7 @@ namespace DevIdent.Forms
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseThemeEditorBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InformationBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -119,7 +121,7 @@ namespace DevIdent.Forms
             this.WinSettinsBtn.Size = new System.Drawing.Size(162, 19);
             this.WinSettinsBtn.TabIndex = 19;
             this.WinSettinsBtn.Text = "Настройка Windows";
-            this.WinSettinsBtn.Click += new System.EventHandler(this.WinSettinsBtn_Click);
+            this.WinSettinsBtn.Click += new System.EventHandler(this.WinSettingsBtn_Click);
             // 
             // NetworkBtn
             // 
@@ -483,6 +485,17 @@ namespace DevIdent.Forms
             this.LogEnabled.Text = "Включить логирование?";
             this.LogEnabled.UseVisualStyleBackColor = true;
             // 
+            // InformationBtn
+            // 
+            this.InformationBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(200)))));
+            this.InformationBtn.Image = global::DevIdent.Properties.Resources.Question;
+            this.InformationBtn.Location = new System.Drawing.Point(510, 0);
+            this.InformationBtn.Name = "InformationBtn";
+            this.InformationBtn.Size = new System.Drawing.Size(35, 30);
+            this.InformationBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.InformationBtn.TabIndex = 23;
+            this.InformationBtn.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -490,6 +503,7 @@ namespace DevIdent.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
             this.ClientSize = new System.Drawing.Size(650, 500);
             this.ControlBox = false;
+            this.Controls.Add(this.InformationBtn);
             this.Controls.Add(this.LogEnabled);
             this.Controls.Add(this.LogBtn);
             this.Controls.Add(this.ContentPanel);
@@ -505,6 +519,7 @@ namespace DevIdent.Forms
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(650, 500);
@@ -514,6 +529,7 @@ namespace DevIdent.Forms
             this.Text = "DevIdent";
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(150)))), ((int)(((byte)(120)))));
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanel.PerformLayout();
@@ -524,6 +540,7 @@ namespace DevIdent.Forms
             ((System.ComponentModel.ISupportInitialize)(this.TurnBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CloseThemeEditorBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.InformationBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -562,6 +579,7 @@ namespace DevIdent.Forms
         private System.Windows.Forms.Panel ContentPanel;
         public System.Windows.Forms.Label WinSettinsBtn;
         private System.Windows.Forms.CheckBox LogEnabled;
+        private System.Windows.Forms.PictureBox InformationBtn;
     }
 }
 

@@ -32,14 +32,14 @@ namespace DevIdent.Classes
             new DirectoryInfo("C:\\Windows\\Logs"),
             new DirectoryInfo("C:\\Windows\\servicing\\LCU"),
             new DirectoryInfo("C:\\Windows\\Logs\\SIH"),
-            new DirectoryInfo("C:\\Users\\Isafu-\\AppData\\Local\\ElevatedDiagnostics"),
+            new DirectoryInfo("C:\\Users\\" + User + "\\AppData\\Local\\ElevatedDiagnostics"),
+            new DirectoryInfo("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Resource"),
+            new DirectoryInfo("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Quick"),
         };
 
         public static readonly List<Tuple<string, string>> filePathes = new List<Tuple<string, string>>
         {
             new Tuple<string,string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\Explorer", "thumbcache_*.db"),
-            new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Resource", "*"),
-            new Tuple<string,string>("C:\\ProgramData\\Microsoft\\Windows Defender\\Scans\\History\\Results\\Quick", "*"),
             new Tuple<string, string>("C:\\Users\\" + User + "\\AppData\\Local\\Microsoft\\Windows\\WebCache", "*.log"),
             new Tuple<string, string>("C:\\Windows\\Microsoft.NET", "*.log"),
             new Tuple<string, string>("C:\\Windows\\", "MEMORY.DMP"),

@@ -140,32 +140,5 @@ namespace DevIdent.Classes
             }
             return size;
         }
-
-        public static long FileCleanerWithLogger(string path)
-        {
-            if (!File.Exists(path))
-            {
-                return 0;
-            }
-            try
-            {
-                try
-                {
-                    FileInfo fileInfo = new FileInfo(path);
-                    long fileSize = fileInfo.Length;
-                    DeleteFile(path);
-                    size += fileSize;
-                    Logger.Log(Environment.NewLine + fileInfo.FullName);
-                }
-                catch
-                {
-                }
-            }
-            catch
-            {
-            }
-            return size;
-        }
-
     }
 }

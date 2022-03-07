@@ -238,8 +238,7 @@ namespace DevIdent.Forms
         {
             try
             {
-                var wmiService = new ManagementObject("Win32_Service.Name='"
-                                                      + GetName() + "'");
+                var wmiService = new ManagementObject("Win32_Service.Name='" + GetName() + "'");
                 wmiService.Get();
                 if (string.IsNullOrEmpty((string)wmiService["Description"]))
                     ServiceInfoLb.Text = "Не удалось получить информацию о службе " + ServiceBox.SelectedItem;
@@ -387,30 +386,6 @@ namespace DevIdent.Forms
             catch
             {
                 Notify.ShowNotify("Не удалось остановить службу " + GetName(), Resources.Information);
-            }
-        }
-
-        private void PauseMenuItem_Click(object sender, EventArgs e)
-        {
-            if (ServiceBox.SelectedIndex == -1) return;
-
-            var service = RunningServices[ServiceList.IndexOf((string)ServiceBox.SelectedItem)];
-            try
-            {
-                if (service.CanPauseAndContinue)
-                {
-                    service.Pause();
-                    service.WaitForStatus(ServiceControllerStatus.Paused, TimeSpan.FromMinutes(1));
-                    Notify.ShowNotify("Служба " + GetName() + " на паузе", Resources.Information);
-                }
-                else
-                {
-                    Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Information);
-                }
-            }
-            catch
-            {
-                Notify.ShowNotify("Не удалось приостановить службу " + GetName(), Resources.Information);
             }
         }
 

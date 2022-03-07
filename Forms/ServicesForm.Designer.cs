@@ -38,7 +38,6 @@ namespace DevIdent.Forms
             this.WorkWithServiceMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RunMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PauseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RestartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ServiceSettingsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -125,14 +124,12 @@ namespace DevIdent.Forms
             this.WorkWithServiceMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RunMenuItem,
             this.StopMenuItem,
-            this.PauseMenuItem,
             this.RestartMenuItem,
             this.SettingsMenuItem});
             this.WorkWithServiceMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.WorkWithServiceMenu.Name = "MenuStrip";
-            this.WorkWithServiceMenu.OwnerItem = this.WorkWithServicesMenuItem;
             this.WorkWithServiceMenu.ShowImageMargin = false;
-            this.WorkWithServiceMenu.Size = new System.Drawing.Size(234, 124);
+            this.WorkWithServiceMenu.Size = new System.Drawing.Size(234, 100);
             // 
             // RunMenuItem
             // 
@@ -154,16 +151,6 @@ namespace DevIdent.Forms
             this.StopMenuItem.Size = new System.Drawing.Size(233, 24);
             this.StopMenuItem.Text = "Остановить службу";
             this.StopMenuItem.Click += new System.EventHandler(this.StopMenuItem_Click);
-            // 
-            // PauseMenuItem
-            // 
-            this.PauseMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(125)))));
-            this.PauseMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.PauseMenuItem.ForeColor = System.Drawing.Color.White;
-            this.PauseMenuItem.Name = "PauseMenuItem";
-            this.PauseMenuItem.Size = new System.Drawing.Size(233, 24);
-            this.PauseMenuItem.Text = "Приостановить службу";
-            this.PauseMenuItem.Click += new System.EventHandler(this.PauseMenuItem_Click);
             // 
             // RestartMenuItem
             // 
@@ -333,7 +320,7 @@ namespace DevIdent.Forms
             this.Name = "ServicesForm";
             this.Opacity = 0.85D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Services";
+            this.Text = "Службы";
             this.Load += new System.EventHandler(this.ServicesForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServicesForm_MouseDown);
             this.MainMenu.ResumeLayout(false);
@@ -366,7 +353,6 @@ namespace DevIdent.Forms
         private System.Windows.Forms.ContextMenuStrip WorkWithServiceMenu;
         private System.Windows.Forms.ToolStripMenuItem RunMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StopMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PauseMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RestartMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
         private System.Windows.Forms.ContextMenuStrip ServiceSettingsMenu;

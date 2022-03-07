@@ -109,14 +109,14 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power", true).SetValue("HiberFileSizePercent", 0);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power", true).SetValue("HibernateEnabled", 0);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Power").SetValue("HiberFileSizePercent", 0);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Power").SetValue("HibernateEnabled", 0);
                     Process.Start(new ProcessStartInfo { FileName = "cmd", Arguments = "/c powercfg -h off", WindowStyle = ProcessWindowStyle.Hidden }).WaitForExit();
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power", true).SetValue("HiberFileSizePercent", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power", true).SetValue("HibernateEnabled", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Power").SetValue("HiberFileSizePercent", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Power").SetValue("HibernateEnabled", 1);
                     Process.Start(new ProcessStartInfo { FileName = "cmd", Arguments = "/c powercfg -h on", WindowStyle = ProcessWindowStyle.Hidden }).WaitForExit();
                 }
             }
@@ -141,11 +141,11 @@ namespace DevIdent.Classes
                 }
                 if (enabled)
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", true).SetValue("Startupdelayinmsec", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize").SetValue("Startupdelayinmsec", 0);
                 }
                 else
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", true).SetValue("Startupdelayinmsec", "");
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize").SetValue("Startupdelayinmsec", "");
                 }
             }
             catch
@@ -164,11 +164,11 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers", true).SetValue("DisableAutoplay", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers").SetValue("DisableAutoplay", 1);
                 }
                 else
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers", true).SetValue("DisableAutoplay", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers").SetValue("DisableAutoplay", 0);
                 }
             }
             catch
@@ -187,11 +187,11 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", true).SetValue("LargeSystemCache", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management").SetValue("LargeSystemCache", 1);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", true).SetValue("LargeSystemCache", 0);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management").SetValue("LargeSystemCache", 0);
                 }
             }
             catch
@@ -210,13 +210,13 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Security", true).SetValue("DisableSecuritySettingsCheck", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3", true).SetValue("1806", 0);
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Security").SetValue("DisableSecuritySettingsCheck", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3").SetValue("1806", 0);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Security", true).SetValue("DisableSecuritySettingsCheck", "");
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3", true).SetValue("1806", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Internet Explorer\Security").SetValue("DisableSecuritySettingsCheck", "");
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3").SetValue("1806", "");
                 }
             }
             catch
@@ -235,21 +235,21 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Accessibility", true).SetValue("Enabled", 0);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\BrowserSettings", true).SetValue("Enabled", 0);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Credentials", true).SetValue("Enabled", 0);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Language", true).SetValue("Enabled", 0);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Personalization", true).SetValue("Enabled", 0);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Windows", true).SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Accessibility").SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\BrowserSettings").SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Credentials").SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Language").SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Personalization").SetValue("Enabled", 0);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Windows").SetValue("Enabled", 0);
                 }
                 else
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Accessibility", true).SetValue("Enabled", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\BrowserSettings", true).SetValue("Enabled", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Credentials", true).SetValue("Enabled", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Language", true).SetValue("Enabled", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Personalization", true).SetValue("Enabled", 1);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Windows", true).SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Accessibility").SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\BrowserSettings").SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Credentials").SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Language").SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Personalization").SetValue("Enabled", 1);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\SettingSync\Groups\Windows").SetValue("Enabled", 1);
                 }
             }
             catch
@@ -270,29 +270,29 @@ namespace DevIdent.Classes
                 {
                     if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
                     {
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 0);
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", 4);
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", 4);
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener").SetValue("Start", 0);
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack").SetValue("Start", 4);
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice").SetValue("Start", 4);
                         return;
                     }
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 0);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", 4);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", 4);
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments", true).SetValue("SaveZoneInformation ", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener").SetValue("Start", 0);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack").SetValue("Start", 4);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice").SetValue("Start", 4);
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments").SetValue("SaveZoneInformation ", 1);
                 }
                 else
                 {
                     if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1)
                     {
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 1);
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", "");
-                        Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", "");
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener").SetValue("Start", 1);
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack").SetValue("Start", "");
+                        Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice").SetValue("Start", "");
                         return;
                     }
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener", true).SetValue("Start", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack", true).SetValue("Start", "");
-                    Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice", true).SetValue("Start", "");
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments", true).SetValue("SaveZoneInformation ", "");
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\WMI\Autologger\Diagtrack-Listener").SetValue("Start", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\DiagTrack").SetValue("Start", "");
+                    Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\dmwappushservice").SetValue("Start", "");
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Attachments").SetValue("SaveZoneInformation ", "");
                 }
             }
             catch
@@ -316,11 +316,11 @@ namespace DevIdent.Classes
                 }
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\AppCompat", true).SetValue("DisableInventory", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\AppCompat").SetValue("DisableInventory", 1);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\AppCompat", true).SetValue("DisableInventory", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\AppCompat").SetValue("DisableInventory", "");
                 }
             }
             catch
@@ -339,15 +339,15 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableLocation", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableLocationScripting", 1);
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableWindowsLocationProvider", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableLocation", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableLocationScripting", 1);
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableWindowsLocationProvider", 1);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableLocation", "");
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableLocationScripting", "");
-                    Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors", true).SetValue("DisableWindowsLocationProvider", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableLocation", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableLocationScripting", "");
+                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors").SetValue("DisableWindowsLocationProvider", "");
                 }
             }
             catch
@@ -366,12 +366,13 @@ namespace DevIdent.Classes
             {
                 if (enabled)
                 {
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer", true).SetValue("EnableAutoTray", 0);
-
+                    Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer").SetValue("EnableAutoTray", 0);
                 }
                 else
                 {
-                    Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer", true).SetValue("EnableAutoTray", "");
+                    RegistryKey helloKittyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer", true);
+                    helloKittyKey.DeleteValue("EnableAutoTray");
+                    helloKittyKey.Close();
                 }
             }
             catch
@@ -397,11 +398,8 @@ namespace DevIdent.Classes
                 }
                 else
                 {
-                    Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons").SetValue("29", "");
-                    if (File.Exists("C:\\Windows\\RemoveArrow.ico"))
-                    {
-                        File.Delete("C:\\Windows\\RemoveArrow.ico");
-                    }
+                    Registry.LocalMachine.DeleteSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", true);
+                    if (File.Exists("C:\\Windows\\RemoveArrow.ico")) File.Delete("C:\\Windows\\RemoveArrow.ico");
                 }
             }
             catch

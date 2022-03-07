@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace DevIdent.Classes
 {
-    public class Processor
+    public class Processor 
     {
 
         #region Получение информации

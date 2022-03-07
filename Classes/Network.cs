@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 
 namespace DevIdent
 {
-    public static class Network
+    public class Network 
     {
         public static string[] networkInfoList = new string[] { "" };
 

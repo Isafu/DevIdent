@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DevIdent.Classes.BIOS">
+    <Position X="3" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Classes\BIOS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.ColorChanger">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\ColorChanger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.Drives">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Classes\Drives.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.MotherBoard">
+    <Position X="3" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\MotherBoard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.NotepadMessager">
+    <Position X="3" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAASAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\NotepadMessager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.Notify">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Classes\Notify.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.OS">
+    <Position X="10" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAACAAAAAAAAQAAAAAAAAAAAAAAACAAAAQAAIEAA=</HashCode>
+      <FileName>Classes\OS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.Processor">
+    <Position X="7.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAEAAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Processor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.RAM">
+    <Position X="5.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAEAAAAAEABAAAAAIAAAAAACAAAACAAAAAAAAAQAA=</HashCode>
+      <FileName>Classes\RAM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.ThemeChanger">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Classes\ThemeChanger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.UniversalCleaner">
+    <Position X="11.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAARAAAAAAAAIAAAAAAAAIAAAAAAEEAAAAAAAA=</HashCode>
+      <FileName>Classes\UniversalCleaner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.Classes.VideoController">
+    <Position X="8" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAABBAAAAAAAAAAAQAAAAAAIAAAAEAAAAAA=</HashCode>
+      <FileName>Classes\VideoController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevIdent.ComputerComponent">
+    <Position X="5.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComputerComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="DevIdent.Classes.BrowserCleaner">
+    <Position X="8" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAIAAAAAAAgAAAgAAAAAAAEAAAAQAAAAAAAACA=</HashCode>
+      <FileName>Classes\BrowserCleaner.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DevIdent.Classes.SystemCleaner">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Classes\SystemCleaner.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DevIdent.Classes.WindowsSettings">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAQAAIBAAAIAAAAAAAEAgAAAEwAAEAAQAAAAAA=</HashCode>
+      <FileName>Classes\WindowsSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

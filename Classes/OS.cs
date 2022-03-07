@@ -3,7 +3,7 @@ using System;
 
 namespace DevIdent.Classes
 {
-    public class OS
+    public class OS 
     {
         public static string HKLM_GetString(string path, string key)
         {
